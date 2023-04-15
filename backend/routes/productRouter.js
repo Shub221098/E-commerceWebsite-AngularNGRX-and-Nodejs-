@@ -1,0 +1,59 @@
+const express = require("express");
+const router = express.Router({ mergeParams: true });
+const productController = require("../controller/productController");
+const authController = require("../controller/authController");
+const reviewRouter = require("./reviewRouter");
+
+router
+  .route("/getProductHaveLessQuantity")
+  .get(
+    authController.protect,
+    authController.restrictTo("admin"),
+    productController.getProductHaveLessQuantity
+  );
+router
+  .route("/getProductHaveMostSell")
+  .get(
+    authController.protect,
+    authController.restrictTo("admin"),
+    productController.getProductsHaveMostSell
+  );
+
+//User and Admin both access All Products
+// Admin can add Product
+router
+  .route("/")
+  .get(productController.getAllProducts)
+  .post(
+    authController.protect,
+    authController.restrictTo("admin"),
+    productController.createProduct
+  );
+
+// get product categories
+router.get("/categories", productController.getProductCategories);
+
+// get products by categoryName
+router.get(
+  "/categories/:categoryName",
+  productController.getProductByCategoryName
+);
+
+// User and Admin can get any product details and Search any Product
+// Admin can Update product
+// Admin can Delete product
+router
+  .route("/:id")
+  .get(productController.getProduct)
+  .patch(
+    authController.protect,
+    authController.restrictTo("admin"),
+    productController.updateProduct
+  )
+  .delete(
+    authController.protect,
+    authController.restrictTo("admin"),
+    productController.deleteProduct
+  );
+
+module.exports = router;

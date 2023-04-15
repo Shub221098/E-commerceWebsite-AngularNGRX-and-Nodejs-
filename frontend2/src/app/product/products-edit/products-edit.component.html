@@ -1,0 +1,130 @@
+<form class="form-horizontal"  [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <fieldset>
+    
+    <legend>PRODUCTS</legend>
+    
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="product_name">PRODUCT NAME</label>  
+      <div class="col-md-4">
+      <input id="product_name" name="product_name" placeholder="PRODUCT NAME" class="form-control input-md" formControlName="productName"required type="text">
+        
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="product_name_fr">PRODUCT DESCRIPTION</label>  
+      <div class="col-md-4">
+      <input id="product_name_fr" name="product_name_fr" placeholder="PRODUCT DESCRIPTION" class="form-control input-md" formControlName="productDesc" required type="text">
+        
+      </div>
+    </div>
+    
+    <!-- Select Basic -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="product_categorie">PRODUCT CATEGORY</label>
+      <div class="col-md-4">
+        <input id="product_categorie" name="product_categorie" class="form-control" placeholder="PRODUCT CATEGORY" formControlName="productCategory">
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="product_brand">PRODUCT BRAND</label>  
+      <div class="col-md-4">
+      <input id="product_brand" name="product_brand" placeholder="PRODUCT_BRAND" class="form-control input-md" formControlName="productBrand" required type="text">
+        
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="product_price">PRODUCT PRICE</label>  
+      <div class="col-md-4">
+      <input id="product_price" name="product_price" placeholder="PRODUCT PRICE" class="form-control input-md" formControlName="productPrice" required type="text">
+        
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="product_discountPrice">DISCOUNT PRICE</label>
+      <div class="col-md-4">                     
+        <input class="form-control" id="product_discountPrice" name="product_discountPrice" formControlName="productDiscountPrice" required>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="stock">STOCK</label>  
+      <div class="col-md-4">
+      <input id="stock" name="stock" placeholder="STOCK" class="form-control input-md" formControlName="productStock" type="text">
+        
+      </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="stock">RATING</label>  
+        <div class="col-md-4">
+        <input id="rating" name="rating" placeholder="RATING" class="form-control input-md" formControlName="productRating" type="number">
+          
+        </div>
+      </div>
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="totalStock">TOTAL STOCK</label>
+      <div class="col-md-4">
+        <input id="total_stock" name="total_stock" placeholder="TOTAL STOCK" class="form-control input-md" formControlName="totalStock" required type="search">
+        
+      </div>
+    </div>
+      
+     <
+     <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="mainimagePath">MainImageURL</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="mainimagePath"
+              #mainimagePath
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <img [src]="mainimagePath.value" class="img-responsive" alt="" />
+        </div>
+      </div>
+    <
+    <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="imagePath">Images URL</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="imagePath"
+              #imagePath
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <img [src]="imagePath.value" class="img-responsive" alt="" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+          <button
+            type="submit"
+            class="btn btn-success"
+            [disabled]="!productForm.valid"
+          >
+            Save
+          </button>
+          <button type="button" class="btn btn-danger" (click)="onCancel()">
+            Cancel
+          </button>
+        </div>
+      </div>
+    
+    </fieldset>
+    </form>

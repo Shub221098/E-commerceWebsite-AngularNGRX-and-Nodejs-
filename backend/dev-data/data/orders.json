@@ -1,0 +1,157 @@
+[
+  {
+    "items": [
+      {
+        "productId": "5c88fa8cf4afda39709c2955",
+        "productName": "iPhone 9",
+        "totalProductQuantity": 3,
+        "totalProductPrice": 1549,
+        "totalProductDiscountPrice": 999
+      },
+      {
+        "productId": "5c88fa8cf4afda39709c2951",
+        "productName": "iPhone X",
+        "totalProductQuantity": 2,
+        "totalProductPrice": 2099,
+        "totalProductDiscountPrice": 1599
+      }
+    ],
+    "userId": "5c8a1dfa2f8fb814b56fa181",
+    "totalPrice": 2598,
+    "totalItems": 2,
+    "totalQuantity": 5,
+    "shippingAddress": {
+      "address": "safdib adfhisad adsfnisadf",
+      "city": "Kota",
+      "postalCode": "326548",
+      "country": "India"
+    },
+    "phone": 9602650160,
+    "status": "Not Processed",
+    "createdAt": "2023-04-06T08:20:21.812+00:00"
+  },
+  {
+    "items": [
+      {
+        "productId": "5c88fa8cf4afda39709c295a",
+        "productName": "Samsung Universe 9",
+        "totalProductQuantity": 2,
+        "totalProductPrice": 1249,
+        "totalProductDiscountPrice": 899
+      },
+      {
+        "productId": "5c88fa8cf4afda39709c2961",
+        "productName": "OPPOF19",
+        "totalProductQuantity": 4,
+        "totalProductPrice": 480,
+        "totalProductDiscountPrice": 299
+      }
+    ],
+    "totalPrice": 1198,
+    "userId": "5c8a1e1a2f8fb814b56fa182",
+    "totalItems": 2,
+    "totalQuantity": 6,
+    "shippingAddress": {
+      "address": "safdib adfhisad",
+      "city": "Delhi",
+      "postalCode": "326548",
+      "country": "India"
+    },
+    "phone": 9602650485,
+    "status": "Processing",
+    "createdAt": "2023-04-05T08:20:21.812+00:00"
+  },
+  {
+    "items": [
+      {
+        "productId": "5c88fa8cf4afda39709c295d",
+        "productName": "MacBook Pro",
+        "totalProductQuantity": 1,
+        "totalProductPrice": 1749,
+        "totalProductDiscountPrice": 1399
+      },
+      {
+        "productId": "5c88fa8cf4afda39709c2966",
+        "productName": "Samsung Galaxy Book",
+        "totalProductQuantity": 2,
+        "totalProductPrice": 499,
+        "totalProductDiscountPrice": 349
+      }
+    ],
+    "totalPrice": 1748,
+    "userId": "5c8a1ec62f8fb814b56fa183",
+    "totalItems": 2,
+    "totalQuantity": 3,
+    "shippingAddress": {
+      "address": "safdib adfhisad ffdgs adsfnisadf",
+      "city": "Mumbai",
+      "postalCode": "345548",
+      "country": "India"
+    },
+    "phone": 9602450160,
+    "status": "Shipped",
+    "createdAt": "2023-03-04T08:20:21.812+00:00"
+  },
+  {
+    "items": [
+      {
+        "productId": "5c88fa8cf4afda39709c2970",
+        "productName": "Infinix INBOOK",
+        "totalProductQuantity": 1,
+        "totalProductPrice": 2500,
+        "totalProductDiscountPrice": 2299
+      },
+      {
+        "productId": "5c88fa8cf4afda39709c2974",
+        "productName": "Hyaluronic Acid Serum",
+        "totalProductQuantity": 1,
+        "totalProductPrice": 250,
+        "totalProductDiscountPrice": 149
+      }
+    ],
+    "totalPrice": 2448,
+    "userId": "5c8a1f292f8fb814b56fa184",
+    "totalItems": 2,
+    "totalQuantity": 2,
+    "shippingAddress": {
+      "address": "safdib adfhisad ffdgs adsfnisadf sdgsgfd",
+      "city": "Hyderabad",
+      "postalCode": "345378",
+      "country": "India"
+    },
+    "phone": 9602454560,
+    "status": "Delivered",
+    "createdAt": "2022-03-03T08:20:21.812+00:00"
+  },
+  {
+    "items": [
+      {
+        "productId": "5c88fa8cf4afda39709c296c",
+        "productName": "Tree Oil 30ml",
+        "totalProductQuantity": 3,
+        "totalProductPrice": 1199,
+        "totalProductDiscountPrice": 799
+      },
+      {
+        "productId": "5c88fa8cf4afda39709c2574",
+        "productName": "Oil Free Moisturizer 100ml",
+        "totalProductQuantity": 1,
+        "totalProductPrice": 1999,
+        "totalProductDiscountPrice": 1799
+      }
+    ],
+    "totalPrice": 2598,
+    "userId": "5c8a1f4e2f8fb814b56fa185",
+    "totalItems": 2,
+    "totalQuantity": 4,
+    "shippingAddress": {
+      "address": "safdib adfhisad ffdgs adsfnisadf fdfgbh",
+      "city": "Pune",
+      "postalCode": "389548",
+      "country": "India"
+    },
+    "phone": 7872450160,
+    "status": "Cancelled",
+    "createdAt": "2023-02-01T08:20:21.812+00:00"
+  }
+]

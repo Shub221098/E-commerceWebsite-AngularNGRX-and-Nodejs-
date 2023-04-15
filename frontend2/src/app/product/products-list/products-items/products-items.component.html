@@ -1,0 +1,26 @@
+<div class="card-product">
+  <a class="product__link" routerLink="[index]">
+    <img
+      src="https://images.pexels.com/photos/892760/pexels-photo-892760.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+      alt=""
+    />
+  </a>
+  <div class="card-body product__text">
+    <h4 class="card-title product__title">
+      <a>{{ products.name }}</a>
+    </h4>
+    <p class="card-text-paragraph">{{ products.description }}</p>
+    <h5 class="product__price">
+      {{ products.price | currency : "INR" : "symbol" : "1.2-2" }}
+    </h5>
+    <h5 class="card-text">
+      {{ products.discountPrice | currency : "INR" : "symbol" : "1.2-2" }}
+    </h5>
+    <div class="button-wrapper">
+      <button class="btn btn-info product__add-to-cart" (click)="onCart()">Add to cart</button>
+      <button class="btn btn-info product__add-to-cart" (click)="onDetail()">
+        More Info
+      </button>
+    </div>
+  </div>
+</div>
