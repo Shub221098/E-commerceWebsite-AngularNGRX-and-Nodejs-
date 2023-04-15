@@ -1,3 +1,5 @@
+import { ProductEditComponent } from './products-edit/products-edit.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { ProductSliderComponent } from './products-slider/products-slider.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -10,7 +12,6 @@ import { CoreModule } from '../core.module';
 import { ProductsItemsComponent } from './products-list/products-items/products-items.component';
 import { PaginationModule } from "../shared/pagination/pagination.module";
 import { ProductRoutingModule } from './products.routing.module';
-import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
@@ -19,14 +20,15 @@ import { ReactiveFormsModule } from '@angular/forms';
         // ProductSliderComponent,
         // ProductSliderDotsComponent,
         ProductsItemsComponent,
+        ProductEditComponent,
         ProductListComponent,
     ],
     imports: [
         CommonModule,
         CoreModule,
-        ReactiveFormsModule,
         RouterModule,
         PaginationModule,
+        ReactiveFormsModule,
         ProductRoutingModule 
     ]
 })

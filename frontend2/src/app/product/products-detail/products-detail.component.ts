@@ -1,3 +1,4 @@
+import * as ProductActions from './../store/products.action';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, Input, OnInit } from '@angular/core';
 import { Products } from '../products.model';
@@ -9,25 +10,26 @@ import { map, switchMap } from 'rxjs';
 @Component({
   selector: 'app-products-detail',
   templateUrl: './products-detail.component.html',
+  styleUrls: ['./products-detail.component.css'],
 })
 export class ProductDetailComponent implements OnInit {
   product: Products;
-  id: string;
+  id: number;
   constructor(private store: Store<fromApp.AppState>, private router : Router, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.params
       .pipe(
         map((params) => {
-          return params['id'];
+          return +params['id'];
         }),
         switchMap((id) => {
           this.id = id;
           return this.store.select('products');
         }),
         map((productsState) =>
-          productsState.products.find((product) => {
-            return product.id === this.id;
+          productsState.products.find((product, index) => {
+            return index === this.id;
           })
         )
       )
@@ -41,5 +43,13 @@ export class ProductDetailComponent implements OnInit {
 
   onAddProductToCart(): void {
     // this.store.dispatch(new AddProductToCart(this.product));
+  }
+  onEditRecipe() {
+    this.router.navigate(['edit'], { relativeTo: this.route });
+  }
+  onDeleteRecipe() {
+    // this.recipesService.deleteRecipe(this.id);
+    this.store.dispatch(new ProductActions.DeleteProducts(this.id));
+    this.router.navigate(['/products']);
   }
 }

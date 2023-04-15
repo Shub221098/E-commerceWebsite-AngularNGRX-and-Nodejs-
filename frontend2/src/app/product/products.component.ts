@@ -8,8 +8,13 @@ import * as ProductActions from '.././product/store/products.action';
   styleUrls: ['./products.component.css'],
 })
 export class ProductComponent implements OnInit {
+  loading = false;
   constructor(private store: Store<fromApp.AppState>) {}
-  ngOnInit() {
-    this.store.dispatch(new ProductActions.GetProducts());
+  ngOnInit(){
+    if(!this.loading){
+      console.log(this.loading)
+      this.loading = true;
+      this.store.dispatch(new ProductActions.GetProducts())
+    }
   }
 }

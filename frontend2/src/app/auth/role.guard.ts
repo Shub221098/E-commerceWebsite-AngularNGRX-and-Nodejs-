@@ -14,7 +14,7 @@ import { Store } from '@ngrx/store';
 import * as fromApp from './../store/app.reducer';
 import { map, Observable, take, tap } from 'rxjs';
 @Injectable({ providedIn: 'root' })
-export class AuthGuard implements CanActivate {
+export class RoleGuard implements CanActivate {
   constructor(private store: Store<fromApp.AppState>, private router: Router) {}
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -28,9 +28,7 @@ export class AuthGuard implements CanActivate {
       take(1),
       map((authState) => authState.user),
       map((user) => {
-        console.log(user)
-        const isAuth = !!user;
-        if (isAuth) {
+        if (user?.role === 'admin') {
           return true;
         }
         return this.router.createUrlTree(['/auth']);

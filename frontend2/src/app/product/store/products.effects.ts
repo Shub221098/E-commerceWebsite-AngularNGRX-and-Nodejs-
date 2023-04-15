@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import * as ProductActions from './products.action';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Products } from '../products.model';
-import { map, switchMap, withLatestFrom } from 'rxjs';
+import { map, switchMap, take, withLatestFrom } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 
@@ -14,9 +14,10 @@ export class ProductsEffects {
       ofType(ProductActions.GET_PRODUCTS),
       switchMap(() => {
         return this.http.get<Products[]>(
-          'http://localhost:4000/api/v1/products'
+          'http://localhost:3000/api/v1/products'
         );
       }),
+
       map((product) => {
         console.log(product);
         return new ProductActions.SaveNewProducts(product);

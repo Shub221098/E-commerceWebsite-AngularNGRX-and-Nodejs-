@@ -5,7 +5,7 @@ export class User {
     public name: string,
     public role: string,
     public active: boolean,
-    private _token: string,
+    public _token: string,
   ) {}
   get token() {
     return this._token;

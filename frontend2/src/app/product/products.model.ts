@@ -5,7 +5,6 @@ export class Products {
   public category: string;
   public brand: string;
   public mainImage: string;
-  public images: [string];
   public price: number;
   public discountPrice: number;
   public rating: number;
@@ -22,7 +21,6 @@ export class Products {
     category: string,
     brand: string,
     mainImage: string,
-    images: [string],
     price: number,
     discountPrice: number,
     rating: number,
@@ -38,7 +36,6 @@ export class Products {
     this.category = category;
     this.brand = brand;
     this.mainImage = mainImage;
-    this.images = images;
     this.price = price;
     this.discountPrice = discountPrice;
     this.rating = rating;

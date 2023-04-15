@@ -1,51 +1,62 @@
-<article class="card-body p-5" *ngIf="product">
-  <h3 class="title mb-3">{{ product.name }}</h3>
-  <p class="price-detail-wrap">
-    <span class="price h3 text-warning">
-      <span class="currency">$</span
-      ><span class="num">{{ product.price }}</span>
-    </span>
-  </p>
-  <dl class="item-property">
-    <dt>Description</dt>
-    <dd>
-      <p class="text-capitalize">{{ product.description }}</p>
-    </dd>
-  </dl>
-  <dl class="param param-feature">
-    <dt>Brand</dt>
-    <dd class="text-capitalize">{{ product.brand }}</dd>
-  </dl>
-  <dl class="param param-feature">
-    <dt>Size</dt>
-    <dd>{{ product.category }}</dd>
-  </dl>
-  <dl class="param param-feature">
-    <dt>Camera</dt>
-    <dd>{{ product.totalStock }}</dd>
-  </dl>
-  <dl class="param param-feature">
-    <dt>CPU</dt>
-    <dd>{{ product.ratingAverage }}</dd>
-  </dl>
-  <dl class="param param-feature">
-    <dt>Memory</dt>
-    <dd>{{ product.rating }}</dd>
-  </dl>
-  <dl class="param param-feature">
-    <dt>Display</dt>
-    <dd>{{ product.discountPrice }}</dd>
-  </dl>
-  <dl class="param param-feature">
-    <dt>Battery</dt>
-    <dd>{{ product.stock }}</dd>
-  </dl>
-  <hr />
-  <button
-    (click)="onAddProductToCart()"
-    class="btn btn-lg btn-outline-primary text-uppercase"
-  >
-    <i class="fa fa-shopping-cart"></i> Add to cart
-  </button>
-  -->
-</article>
+<div class="card-details">
+  <div class="main-images">
+    <img src="{{ product.mainImage }}" alt="" />
+  </div>
+  <div class="main-content">
+    <article class="card-body p-5" *ngIf="product">
+      <h3 class="title mb-3">{{ product.name }}</h3>
+      <p class="price-detail-wrap">
+        <span class="price h3 text-warning">
+          <span class="num">{{
+            product.price | currency : "INR" : "symbol" : "1.2-2"
+          }}</span>
+        </span>
+      </p>
+      <dl class="item-property">
+        <dt>Description</dt>
+        <dd>
+          <p class="text-capitalize">{{ product.description }}</p>
+        </dd>
+      </dl>
+      <div class="features-details">
+        <dl class="param param-feature">
+          <dt>Brand</dt>
+          <dd class="text-capitalize">{{ product.brand }}</dd>
+        </dl>
+        <dl class="param param-feature">
+          <dt>Category</dt>
+          <dd>{{ product.category }}</dd>
+        </dl>
+        <dl class="param param-feature">
+          <dt>Total Stock</dt>
+          <dd>{{ product.totalStock }}</dd>
+        </dl>
+      </div>
+      <div class="features-details">
+        <dl class="param param-feature">
+          <dt>Rating</dt>
+          <dd>{{ product.rating }}</dd>
+        </dl>
+        <dl class="param param-feature">
+          <dt>DiscountPrice</dt>
+          <dd>{{ product.discountPrice }}</dd>
+        </dl>
+        <dl class="param param-feature">
+          <dt>Stock</dt>
+          <dd>{{ product.stock }}</dd>
+        </dl>
+      </div>
+      <dl class="param param-feature">
+        <dt>Rating Average</dt>
+        <dd>{{ product.ratingAverage }}</dd>
+      </dl>
+      <hr />
+      <button
+        (click)="onAddProductToCart()"
+        class="btn btn-lg btn-outline-primary text-uppercase"
+      >
+        <i class="fa fa-shopping-cart"></i> Add to cart
+      </button>
+    </article>
+  </div>
+</div>

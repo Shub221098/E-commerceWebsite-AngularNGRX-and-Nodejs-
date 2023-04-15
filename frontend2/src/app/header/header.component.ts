@@ -14,7 +14,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isAuthenticated: boolean;
   role: string;
   admin: boolean;
-  constructor(private store: Store<fromApp.AppState>, private router: Router, private route : ActivatedRoute) {}
+  constructor(
+    private store: Store<fromApp.AppState>,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
   ngOnInit() {
     this.userSub = this.store
       .select('auth')
@@ -28,7 +32,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           }
         }
       });
-  }
+    }
   onLogout() {
     this.store.dispatch(new AuthAction.Logout());
   }

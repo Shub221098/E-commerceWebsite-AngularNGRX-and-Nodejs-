@@ -6,6 +6,7 @@ export interface ProductState {
 }
 const intialState: ProductState = {
   products: [],
+
 };
 export function productsReducer(
   state: ProductState = intialState,
@@ -16,6 +17,7 @@ export function productsReducer(
       return {
         ...state,
         products: [...action.payload],
+        isLoading: true,
       };
     case ProductActions.ADD_PRODUCT:
       return {

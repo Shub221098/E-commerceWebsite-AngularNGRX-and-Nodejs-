@@ -4,4 +4,5 @@ import { AuthState } from './auth.reducers';
 const selectState =
   createFeatureSelector<AuthState>('auth');
 
-export const getUser = createSelector(selectState, state => state.user)
+export const getRole = createSelector(selectState, state => state.user?.role)
+export const getAuthenticate = createSelector(selectState, state => state.isAuthenticated)

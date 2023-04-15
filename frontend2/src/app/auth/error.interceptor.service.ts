@@ -8,7 +8,7 @@ import * as fromApp from './../store/app.reducer'
 import * as AuthActions from './../auth/store/auth.actions'
 
 @Injectable()
-export class ErrorInterceptor implements HttpInterceptor {
+export class ErrorInterceptorService implements HttpInterceptor {
     constructor(private store: Store<fromApp.AppState>, private router : Router) {}
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
