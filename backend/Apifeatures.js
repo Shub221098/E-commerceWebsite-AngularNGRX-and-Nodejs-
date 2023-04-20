@@ -13,15 +13,19 @@ class APIFeatures {
     //1B - Advanced Filtering
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-    this.query.find(JSON.parse(queryStr));
+    queryStr = queryStr.replace(/\b(eq|ne|regex)\b/g, (match) => `$${match}`);
+    queryStr = queryStr.replace(/\b(i?n)\b/g, (match) => `$${match}`);
+    const product = this.query.find(JSON.parse(queryStr));
+    console.log(product);
     // let query = Tour.find(JSON.parse(queryStr));
     return this;
   }
   sort() {
     if (this.queryString.sort) {
-      const sortBy = this.queryString.sort.split(",").join(" ");
-      console.log(sortBy);
-      this.query = this.query.sort(sortBy);
+      const sortBy = this.queryString.sort.split(",");
+      const sortObject = {};
+      sortObject[sortBy[0]] = +sortBy[1];
+      this.query = this.query.sort(sortObject);
     } else {
       this.query = this.query.sort("-createdAt");
     }
@@ -37,6 +41,7 @@ class APIFeatures {
     }
     return this;
   }
+
   paginate() {
     //Pagination
     const page = this.queryString.page * 1 || 1;
@@ -47,6 +52,7 @@ class APIFeatures {
 
     return this;
   }
+ 
 }
 
 module.exports = APIFeatures;

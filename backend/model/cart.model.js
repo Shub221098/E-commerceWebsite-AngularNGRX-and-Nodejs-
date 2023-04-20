@@ -32,22 +32,6 @@ const cartSchema = mongoose.Schema(
       ref: "User",
       required: [true, "Cart must belong to a user"],
     },
-    totalPrice: {
-      type: Number,
-      required: true,
-    },
-    totalDiscountPrice: {
-      type: Number,
-      required: true,
-    },
-    totalItems: {
-      type: Number,
-      required: true,
-    },
-    totalQuantity: {
-      type: Number,
-      required: true,
-    },
   },
   { timestamps: true }
 );

@@ -20,8 +20,7 @@ const productSchema = new mongoose.Schema(
     },
     rating: {
       type: Number,
-      required: [true, "Please provide a product rating"],
-      default: 4.5,
+      default: 3.0,
     },
 
     stock: {
@@ -49,7 +48,6 @@ const productSchema = new mongoose.Schema(
     },
     images: {
       type: [String],
-      required: [true, "A product must have sub images"],
     },
     numberofReviews: {
       type: Number,
@@ -63,7 +61,10 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: true,
     },
-
+    quantity: {
+      type:Number,
+      default:1,
+    },
     ratingsAverage: {
       type: Number,
       default: 4.5,

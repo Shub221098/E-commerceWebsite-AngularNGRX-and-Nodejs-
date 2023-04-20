@@ -8,7 +8,6 @@ exports.getAll = (Model) =>
     let filter = {};
     if (req.params.productId) filter = { product: req.params.productId };
     if (req.params.userId) filter = { userId: req.params.userId };
-    console.log(req.query)
     const features = new APIFeatures(Model.find(filter), req.query)
       .filter()
       .sort()

@@ -3,7 +3,7 @@ const router = express.Router();
 const userController = require('../controller/userController');
 const authController = require("../controller/authController");
 const cartRouter = require('./cartRouter');
-
+router.use('/:userId/carts', cartRouter);
 // Routes
 router.post("/signup", authController.signup);
 router.post("/verify-account", authController.verifyEmail);

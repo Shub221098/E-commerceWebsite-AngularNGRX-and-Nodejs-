@@ -16,11 +16,7 @@
         "totalProductDiscountPrice": 1599
       }
     ],
-    "userId": "5c8a1dfa2f8fb814b56fa181",
-    "totalPrice": 3648,
-    "totalDiscountPrice": 2598,
-    "totalItems": 2,
-    "totalQuantity": 5
+    "userId": "5c8a1dfa2f8fb814b56fa181"
   },
   {
     "items": [
@@ -39,11 +35,7 @@
         "totalProductDiscountPrice": 299
       }
     ],
-    "totalPrice": 1679,
-    "totalDiscountPrice": 1198,
-    "userId": "5c8a1e1a2f8fb814b56fa182",
-    "totalItems": 2,
-    "totalQuantity": 6
+    "userId": "5c8a1e1a2f8fb814b56fa182"
   },
   {
     "items": [
@@ -62,11 +54,7 @@
         "totalProductDiscountPrice": 349
       }
     ],
-    "totalPrice": 2248,
-    "totalDiscountPrice": 1748,
-    "userId": "5c8a1ec62f8fb814b56fa183",
-    "totalItems": 2,
-    "totalQuantity": 3
+    "userId": "5c8a1ec62f8fb814b56fa183"
   },
   {
     "items": [
@@ -85,11 +73,7 @@
         "totalProductDiscountPrice": 149
       }
     ],
-    "totalPrice": 2750,
-    "totalDiscountPrice": 2448,
-    "userId": "5c8a1f292f8fb814b56fa184",
-    "totalItems": 2,
-    "totalQuantity": 2
+    "userId": "5c8a1f292f8fb814b56fa184"
   },
   {
     "items": [
@@ -108,10 +92,6 @@
         "totalProductDiscountPrice": 1799
       }
     ],
-    "totalPrice": 3198,
-    "totalDiscountPrice": 2598,
-    "userId": "5c8a1f4e2f8fb814b56fa185",
-    "totalItems": 2,
-    "totalQuantity": 4
+    "userId": "6437e2860b4396006d6e0796"
   }
 ]

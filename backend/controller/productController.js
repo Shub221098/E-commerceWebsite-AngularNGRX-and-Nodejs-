@@ -5,9 +5,10 @@ const Product = require('../model/product.model')
 // final Separation
 exports.getAllProducts = factory.getAll(Product);
 exports.getProduct = factory.getOne(Product, { path: "reviews" });
-exports.updateProduct = factory.updateOne(Product);
 exports.createProduct = factory.createOne(Product);
 exports.deleteProduct = factory.deleteOne(Product);
+exports.updateProduct = factory.updateOne(Product)
+  
 
 exports.getProductCategories = catchAsync(async (req, res) => {
   const product = await Product.find();

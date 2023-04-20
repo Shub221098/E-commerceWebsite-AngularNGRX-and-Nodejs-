@@ -6,6 +6,7 @@ const AppError = require("../appError");
 const sendEmail = require("../email");
 const crypto = require("crypto");
 const querystring = require("querystring");
+const pug = require("pug");
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -26,6 +27,7 @@ const createSendToken = (user, statusCode, res) => {
 // ***************************************** SIGN UP USER *********************************************
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create(req.body);
+  console.log(newUser)
   const token = signToken(newUser._id);
   newUser.passwordResetToken = crypto
     .createHash("sha256")
@@ -34,14 +36,16 @@ exports.signup = catchAsync(async (req, res, next) => {
   newUser.passwordResetExpires = Date.now() + 10 * 60 * 1000;
   await newUser.save({ validateBeforeSave: false });
   const resetUrl = `http://localhost:4200/auth/verifyEmail/${token}`;
-
-  const message = `Verification Mail for registration on E-commerce website:- ${resetUrl}\n`;
-
+  const html = pug.renderFile(`${__dirname}/../views/emails/baseemail.pug`, {
+    username: newUser.name,
+    verificationLink: resetUrl,
+  });
+  // const message = `Verification Mail for registration on E-commerce website:- ${resetUrl}\n`;
   try {
     await sendEmail({
       email: newUser.email,
-      subject: "Your password reset token (valid for 10 minutes)",
-      message,
+      subject: "Colafee Registration Mail (valid for 10 minutes)",
+      html
     });
     res.status(200).json({
       status: "success",
@@ -111,8 +115,13 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError("Incorrect Email or Password", 401));
   }
+  const token = signToken(user._id);
   // 3. If everything ok, send token to client
-  createSendToken(user, 200, res);
+  res.status(200).json({
+    status: "Login Successfully",
+    token,
+    user,
+  });
 });
 
 // ***************************************** FORGOT PASSWORD ROUTE*************************************8
@@ -210,10 +219,11 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 
 // *********************************************AUTHERIZATION ROUTE****************************************
 exports.protect = catchAsync(async (req, res, next) => {
-  console.log();
+  console.log("Update");
   // 1. Getting token and check of it's there
-  console.log(req.headers.authorization);
   let token;
+  console.log("hello", req.headers.authorization);
+  console.log("hello", req.query);
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")

@@ -21,6 +21,15 @@ const userSchema = new mongoose.Schema(
       required: [true, "Please provide your password"],
       minlength: 8,
       select: false, // Hide this field when fetch data from database
+      validate: {
+        validator: function (e) {
+            const exp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
+            const pwd = e.match(exp)
+            const ans = JSON.parse((JSON.stringify(pwd.input)).replaceAll(" ", ''))
+            return ans
+        },
+        message: "Minimum eight characters, at least one letter, one number and one special character and not allow space between character"
+    }
     },
     role: {
       type: String,
