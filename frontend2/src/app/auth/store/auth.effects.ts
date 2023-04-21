@@ -5,7 +5,7 @@ import { catchError, map, of, switchMap, tap } from 'rxjs';
 import * as AuthActions from '../../auth/store/auth.actions';
 import { Router } from '@angular/router';
 import { User } from '../user.model';
-import { ThisReceiver } from '@angular/compiler';
+import { ToastrService } from 'ngx-toastr';
 
 export const handleAuthentication = (
   userId: string,
@@ -13,16 +13,9 @@ export const handleAuthentication = (
   name: string,
   role: string,
   active: boolean,
-  token: string,
+  token: string
 ) => {
-  const user = new User(
-    userId,
-    email,
-    name,
-    role,
-    active,
-    token,
-  );
+  const user = new User(userId, email, name, role, active, token);
   localStorage.setItem('userData', JSON.stringify(user));
 
   return new AuthActions.AuthenticateSuccess({
@@ -32,27 +25,27 @@ export const handleAuthentication = (
     role: user.role,
     active: user.active,
     token: user.token,
-    redirect :true,
+    redirect: true,
   });
 };
 
 export const handleError = (errResp: any) => {
   let errorMessage = 'An unknown error occurred while signing up';
-  if (!errResp.error || !errResp.error.error) {
-    return of(new AuthActions.AuthenticateFail(errorMessage));
-  }
-  switch (errResp.error.error.message) {
-    case 'EMAIL_EXISTS':
-      errorMessage = 'Email already exists';
-      break;
-    case 'EMAIL_NOT_FOUND':
-      errorMessage = 'Email not found';
-      break;
-    case 'INVALID_PASSWORD':
-      errorMessage = 'This password is not correct';
-      break;
-  }
-  return of(new AuthActions.AuthenticateFail(errorMessage));
+  // if (!errResp.error || !errResp.error.error) {
+  //   return of(new AuthActions.AuthenticateFail(errorMessage));
+  // }
+  // switch (errResp.error.error.message) {
+  //   case 'EMAIL_EXISTS':
+  //     errorMessage = 'Email already exists';
+  //     break;
+  //   case 'EMAIL_NOT_FOUND':
+  //     errorMessage = 'Email not found';
+  //     break;
+  //   case 'INVALID_PASSWORD':
+  //     errorMessage = 'This password is not correct';
+  //     break;
+  // }
+  return of(new AuthActions.AuthenticateFail(errResp));
 };
 
 @Injectable()
@@ -75,7 +68,7 @@ export class AuthEffects {
             )
             .pipe(
               map((resData) => {
-                alert(resData.message);
+                return resData;
                 // this.router.navigate(['/auth/signup']);
               }),
               catchError((errResp) => {
@@ -104,10 +97,11 @@ export class AuthEffects {
                   resData.user.name,
                   resData.user.role,
                   resData.user.active,
-                  resData.token,
+                  resData.token
                 );
               }),
               catchError((errResp) => {
+                console.log(errResp);
                 return handleError(errResp);
               })
             );
@@ -134,10 +128,12 @@ export class AuthEffects {
                 resData.user.name,
                 resData.user.role,
                 resData.user.active,
-                resData.user.token
+                resData.token
               );
-            }),catchError((errResp) => {
-              return handleError(errResp) 
+            }),
+            catchError((errResp) => {
+              console.log(errResp);
+              return handleError(errResp);
             })
           );
       })
@@ -178,7 +174,7 @@ export class AuthEffects {
           userData.name,
           userData.role,
           userData.active,
-          userData.token,
+          userData.token
         );
         if (loadedUser.token) {
           return new AuthActions.AuthenticateSuccess({
@@ -188,10 +184,10 @@ export class AuthEffects {
             role: loadedUser.role,
             active: loadedUser.active,
             token: loadedUser.token,
-            redirect : true,
+            redirect: true,
           });
         }
-        return { type: 'DUMMY' };
+        return { type: 'Bybyby' };
       })
     );
   });
@@ -200,8 +196,7 @@ export class AuthEffects {
     ofType(AuthActions.LOGOUT),
     tap(() => {
       localStorage.removeItem('userData');
-      console.log('hello)')
-      this.router.navigate(['/auth']);
+      this.router.navigate(['/auth/login']);
     })
   );
   authForgetPassword = createEffect(() => {
@@ -210,14 +205,15 @@ export class AuthEffects {
       switchMap((authData: AuthActions.ForgetPassword) => {
         return this.http
           .post<any>('http://localhost:3000/api/v1/users/forgotPassword', {
-            email: authData.payload
+            email: authData.payload,
           })
           .pipe(
             tap((resData) => {
               alert(resData.message);
               // this.router.navigate(['/auth/forgetPassword']);
-            }),catchError((errResp) => {
-              return handleError(errResp) 
+            }),
+            catchError((errResp) => {
+              return handleError(errResp);
             })
           );
       })
@@ -231,7 +227,7 @@ export class AuthEffects {
           return this.http
             .patch<any>(`http://localhost:3000/api/v1/users/reset-password`, {
               token: resetPasswordAction.payload.token,
-              password: resetPasswordAction.payload.password
+              password: resetPasswordAction.payload.password,
             })
             .pipe(
               map((resData) => {
@@ -241,12 +237,12 @@ export class AuthEffects {
                   resData.user.name,
                   resData.user.role,
                   resData.user.active,
-                  resData.token,
+                  resData.token
                 );
               }),
               tap(() => {
-                  alert("Password Changed Successfully.Login with New Password")
-                  this.router.navigate(['/auth/login'])
+                alert('Password Changed Successfully.Login with New Password');
+                this.router.navigate(['/auth/login']);
               }),
               catchError((errResp) => {
                 return handleError(errResp);
@@ -261,6 +257,6 @@ export class AuthEffects {
     private actions$: Actions,
     private http: HttpClient,
     private router: Router,
+    private toastr: ToastrService
   ) {}
 }
-

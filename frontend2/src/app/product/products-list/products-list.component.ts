@@ -3,11 +3,9 @@ import { Products } from './../products.model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
-import { map, Subscription } from 'rxjs';
+import { map, Subscription, switchMap } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-// // import {brandPurePipe} from '../../core/pure-pipes/brand.pure.pipe';
-// // import {orderByPricePurePipe} from '../../core/pure-pipes/order-by-price.pure.pipe';
-// // import {Order} from '../../core/enums/order';
+import { ProductsService } from '../products-service';
 
 @Component({
   selector: 'app-products-list',
@@ -16,29 +14,127 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class ProductListComponent implements OnInit {
   products: Products[];
+  searchStr: string;
   userSub: Subscription;
+  category: string;
   productSub: Subscription;
   admin: boolean;
   constructor(
     private store: Store<fromApp.AppState>,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private productService: ProductsService
   ) {}
-
+  filteredBy = '';
+  filteredType = '';
+  sortOrder = 1;
   ngOnInit() {
-     this.userSub = this.store
-      .select(getRole)
-      .subscribe((role) => {
-        if (role === 'admin') {
-          console.log(role)
-            this.admin = true;
+    console.log("Calling ngOninit")
+    this.searchStr = '';
+    this.filteredBy = '';
+    this.filteredType = '';
+    this.sortOrder = 1;
+    (this.userSub = this.store.select(getRole).subscribe((role) => {
+      if (role === 'admin') {
+        console.log(role);
+        this.admin = true;
+      }
+    })),
+      this.route.queryParams
+        .pipe(
+          map((params) => {
+            return params['category'];
+          }),
+          switchMap((category) => {
+            this.category = category;
+            return this.store.select('products');
+          }),
+          map((productsState) =>
+            productsState.products.filter((product) => {
+              if (this.category) {
+                console.log(this.category);
+                return product.category === this.category;
+              } else {
+                return product;
+              }
+            })
+          )
+        )
+        .subscribe((product) => {
+          console.log(product);
+          if (product !== undefined) {
+            this.products = product;
           }
-        }),
-    this.store
-      .select('products')
-      .pipe(map((productsState) => productsState.products))
-      .subscribe((product: Products[]) => {
-        this.products = product;
-      });
+        });
+  }
+  lastAdded() {
+    this.productService
+      .getProductsLastAdded(this.filteredBy, this.filteredType)
+      .subscribe((product) => Object.assign(this.products, product));
+  }
+  sortByPrice(order: string) {
+    if (order === 'asc') {
+      this.sortOrder = 1;
+      this.productService
+        .getProducts(this.sortOrder, this.filteredBy, this.filteredType)
+        .subscribe((product) => Object.assign(this.products, product));
+    } else {
+      this.sortOrder = -1;
+      this.productService
+        .getProducts(this.sortOrder, this.filteredBy, this.filteredType)
+        .subscribe((product) => Object.assign(this.products, product));
+    }
+  }
+
+  filterProductsByCategory(order: string) {
+    this.filteredBy = order;
+    this.filteredType = 'category';
+    this.productService
+      .getFilterProductsByCategory(order, this.sortOrder)
+      .subscribe((product: any) => (this.products = product));
+  }
+  filterProductsByBrand(order: string) {
+    this.filteredBy = order;
+    this.filteredType = 'brand';
+    this.productService
+      .getFilterProductsByBrand(order, this.sortOrder)
+      .subscribe((product: any) => (this.products = product));
+  }
+  onSearch() {
+    let catFound = this.products.find(
+      (value) => value.category == this.searchStr
+    );
+    console.log(catFound , "sadhofisadfnova");
+    let brFound = this.products.find(
+      (value) => value.brand == this.searchStr
+    );
+    console.log(brFound);
+    let nmFound = this.products.find(
+      (value) => value.name == this.searchStr
+    );
+    console.log(nmFound);
+    let searchType = '';
+    if (catFound) {
+      searchType = 'category';
+    } else if (nmFound) {
+      searchType = 'name';
+    } else {
+      searchType = 'brand';
+    }
+    this.productService
+      .searchProduct(searchType, this.searchStr)
+      .subscribe((product: any) => (this.products = product));
+  }
+  onExist(e : any) {
+    if(e.key === 'Backspace' || e.keyCode === 8){
+      // console.log(this.searchStr, " Heloosdfasdfsafadf")
+        if(this.searchStr === ''){
+          console.log(this.searchStr, " Heloosdfasdfsafadf")
+          this.clear()
+        }
+    }
+    }
+  clear() {
+    this.ngOnInit();
   }
 }

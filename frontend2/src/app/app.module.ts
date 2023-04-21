@@ -1,3 +1,4 @@
+import { ShoppingCartEffects } from './shop/store/shopping-list.effects';
 import { ProductsEffects } from './product/store/products.effects';
 import { CoreModule } from './core.module';
 import { NgModule } from '@angular/core';
@@ -15,6 +16,8 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environment/environment.prod';
 import { HomeComponent } from './home/home.component';
+import { FormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
 @NgModule({
   declarations: [AppComponent, HeaderComponent, HomeComponent],
   imports: [
@@ -23,9 +26,11 @@ import { HomeComponent } from './home/home.component';
     HttpClientModule,
     SharedModule,
     CoreModule,
+    FormsModule,
+    ToastrModule.forRoot(),
     StoreModule.forRoot(fromApp.appReducer),
     StoreDevtoolsModule.instrument({ logOnly: environment.production }),
-    EffectsModule.forRoot([AuthEffects, ProductsEffects]),
+    EffectsModule.forRoot([AuthEffects, ProductsEffects, ShoppingCartEffects]),
     StoreRouterConnectingModule.forRoot(),
   ],
   bootstrap: [AppComponent],

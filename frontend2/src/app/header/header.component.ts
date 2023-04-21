@@ -1,3 +1,4 @@
+import * as ShoppingCartActions from './../shop/store/shopping-list.action';
 import * as ProductActions from '../product/store/products.action';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { map, Subscription } from 'rxjs';
@@ -12,6 +13,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class HeaderComponent implements OnInit, OnDestroy {
   private userSub: Subscription;
   isAuthenticated: boolean;
+  loading : boolean;
+  userId : string
   role: string;
   admin: boolean;
   constructor(
@@ -25,6 +28,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .pipe(map((authState) => authState))
       .subscribe((user) => {
         this.isAuthenticated = user.isAuthenticated;
+        if(user.user?.id){
+          this.userId = user.user.id;
+        }
         if (user.user?.role) {
           this.role = user.user.role;
           if (this.role === 'admin') {
@@ -32,7 +38,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
           }
         }
       });
-    }
+      this.store.dispatch(new ProductActions.GetProducts());
+  }
   onLogout() {
     this.store.dispatch(new AuthAction.Logout());
   }

@@ -25,6 +25,10 @@ const cartSchema = mongoose.Schema(
           type: Number,
           required: true,
         },
+        totalAvailableStock: {
+          type: Number,
+          required: true,
+        },
       },
     ],
     userId: {

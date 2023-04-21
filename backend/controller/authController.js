@@ -3,10 +3,8 @@ const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const User = require("../model/user.model");
 const AppError = require("../appError");
-const sendEmail = require("../email");
+const sendVerificationEmail = require("../email");
 const crypto = require("crypto");
-const querystring = require("querystring");
-const pug = require("pug");
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -27,7 +25,6 @@ const createSendToken = (user, statusCode, res) => {
 // ***************************************** SIGN UP USER *********************************************
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create(req.body);
-  console.log(newUser)
   const token = signToken(newUser._id);
   newUser.passwordResetToken = crypto
     .createHash("sha256")
@@ -35,18 +32,12 @@ exports.signup = catchAsync(async (req, res, next) => {
     .digest("hex");
   newUser.passwordResetExpires = Date.now() + 10 * 60 * 1000;
   await newUser.save({ validateBeforeSave: false });
-  const resetUrl = `http://localhost:4200/auth/verifyEmail/${token}`;
-  const html = pug.renderFile(`${__dirname}/../views/emails/baseemail.pug`, {
-    username: newUser.name,
-    verificationLink: resetUrl,
-  });
-  // const message = `Verification Mail for registration on E-commerce website:- ${resetUrl}\n`;
+  const name = newUser.name
+  const email = newUser.email
+  const action = "verify your account"
+  const action2 = "Login"
   try {
-    await sendEmail({
-      email: newUser.email,
-      subject: "Colafee Registration Mail (valid for 10 minutes)",
-      html
-    });
+    await sendVerificationEmail(name, email, token, action, action2);
     res.status(200).json({
       status: "success",
       message:
@@ -140,16 +131,12 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   user.passwordResetExpires = Date.now() + 10 * 60 * 1000;
   await user.save({ validateBeforeSave: false });
   // 3. Send it to user's email
-  const resetUrl = `http://localhost:4200/auth/resetPassword/${newToken}`;
-
-  const message = `Forget your password. Submit a patch request with your new password and passwordConfirm to: ${resetUrl}\n If you didn't forget  your password then ignore this email!`;
-
+  const name = user.name
+  const email = user.email
+  const action = "reset your password"
+  const action2 = "Change Password"
   try {
-    await sendEmail({
-      email: user.email,
-      subject: "Your password reset token (valid for 10 minutes)",
-      message,
-    });
+    await sendVerificationEmail(name, email, token, action, action2)
     res.status(200).json({
       status: "success",
       message: "Token send to email.Click the link and Enter new Password!",

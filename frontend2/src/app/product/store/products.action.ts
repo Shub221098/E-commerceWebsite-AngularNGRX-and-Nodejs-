@@ -9,8 +9,7 @@ export const UPDATE_PRODUCT = '[Products] Update Product';
 export const STORE_PRODUCTS = '[Products] Store Products';
 export class SaveNewProducts implements Action {
   readonly type = SAVE_NEW_PRODUCTS;
-  constructor(public payload: Products[]) {
-    console.log(payload)
+  constructor(public payload: Products[] | any) {
   }
 }
 export class GetProducts implements Action {
@@ -22,11 +21,11 @@ export class AddProducts implements Action {
 }
 export class UpdateProducts implements Action {
   readonly type = UPDATE_PRODUCT;
-  constructor(public payload: { index: number; newRecipe: Products }) {}
+  constructor(public payload: { index: string; newProduct: Products }) {}
 }
 export class DeleteProducts implements Action {
   readonly type = DELETE_PRODUCT;
-  constructor(public payload: number) {}
+  constructor(public payload: string) {}
 }
 export class StoreProducts implements Action {
   readonly type = STORE_PRODUCTS;

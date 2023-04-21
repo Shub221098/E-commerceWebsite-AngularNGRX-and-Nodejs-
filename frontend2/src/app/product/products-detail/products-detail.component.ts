@@ -5,7 +5,8 @@ import { Products } from '../products.model';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
 import { map, switchMap } from 'rxjs';
-// import { AddProductToCart } from '../../store/shop/shop.action';
+import * as ShoppingListActions from 'src/app/shop/store/shopping-list.action';
+import { Shop } from 'src/app/shop/shop.model';
 
 @Component({
   selector: 'app-products-detail',
@@ -14,22 +15,27 @@ import { map, switchMap } from 'rxjs';
 })
 export class ProductDetailComponent implements OnInit {
   product: Products;
-  id: number;
-  constructor(private store: Store<fromApp.AppState>, private router : Router, private route: ActivatedRoute) {}
+  id: string;
+  cart : Shop
+  constructor(
+    private store: Store<fromApp.AppState>,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.route.params
       .pipe(
         map((params) => {
-          return +params['id'];
-        }),
+          return params['id'];
+        }), 
         switchMap((id) => {
           this.id = id;
           return this.store.select('products');
         }),
         map((productsState) =>
-          productsState.products.find((product, index) => {
-            return index === this.id;
+          productsState.products.find((product) => {
+            return product.id === this.id;
           })
         )
       )
@@ -38,18 +44,26 @@ export class ProductDetailComponent implements OnInit {
           this.product = product;
         }
       });
-      console.log(this.product);
+      this.store.select('shop').pipe(map((shopState) => shopState)).subscribe((cart) => console.log(cart))
   }
-
+  onDecrementCartItem() {
+    console.log('Decrement');
+    this.store.dispatch(new ShoppingListActions.DecrementItemQuantity(this.id));
+  }
+  onIncrementCartItem() {
+    console.log('Increment');
+    this.store.dispatch(new ShoppingListActions.IncrementItemQuantity(this.id));
+  }
   onAddProductToCart(): void {
-    // this.store.dispatch(new AddProductToCart(this.product));
+
+    this.store.dispatch(new ShoppingListActions.AddProductToCart(this.product));
   }
-  onEditRecipe() {
-    this.router.navigate(['edit'], { relativeTo: this.route });
-  }
-  onDeleteRecipe() {
-    // this.recipesService.deleteRecipe(this.id);
-    this.store.dispatch(new ProductActions.DeleteProducts(this.id));
-    this.router.navigate(['/products']);
-  }
+  // onEditRecipe() {
+  //   this.router.navigate(['edit'], { relativeTo: this.route });
+  // }
+  // onDeleteRecipe() {
+  //   // this.recipesService.deleteRecipe(this.id);
+  //   this.store.dispatch(new ProductActions.DeleteProducts(this.id));
+  //   this.router.navigate(['/products']);
+  // }
 }

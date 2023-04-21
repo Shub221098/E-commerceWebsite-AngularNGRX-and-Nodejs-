@@ -1,6 +1,4 @@
 const nodemailer = require("nodemailer");
-const { convert } = require('html-to-text');
-const sendEmail = async (options) => {
   // 1. Create a transporter
   const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
@@ -11,15 +9,27 @@ const sendEmail = async (options) => {
     },
   });
   // 2. Define the email options
+const sendVerificationEmail = async (name, email, token, action, action2) => {
+  console.log(email, name, token, action, action2);
+      const mailOptions = {
+        from: 'Colafee <shubhampareta0@gmail.com>',
+        to: email,
+        subject: 'Verify Your Email',
+        html: `
+        <p>Hello ${name},</p>
 
-  const mailOptions = {
-    from: "Shubham Pareta <paretashubham2210@gmail.com>",
-    to: options.email,
-    subject: options.subject,
-    text: options.message,
-  };
+        <p>Please click on the following link to ${action}:</p>
+        
+        <a href="http://localhost:4200/auth/verifyEmail/${token}">Click here to ${action2}</a>
+        
+        <p>Thank you,</p>
+        <p>The Colafee Team</p>
+        `,
+      };
+    
   // 3. Actually send the email
 
   await transporter.sendMail(mailOptions).catch((err) => console.log(err));
 };
-module.exports = sendEmail;
+
+module.exports = sendVerificationEmail;

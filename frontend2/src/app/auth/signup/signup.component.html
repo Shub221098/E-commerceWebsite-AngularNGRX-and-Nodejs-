@@ -1,82 +1,150 @@
 <ng-template appPlaceHolder></ng-template>
-<div class="mask d-flex align-items-center h-100 gradient-custom-3">
-  <div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-12 col-md-9 col-lg-7 col-xl-6">
-        <div class="card" style="border-radius: 15px">
-          <div class="card-body p-5">
-            <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+<div class="row">
+  <div class="col-xs-12">
+    <app-alert
+      [message]="success"
+      *ngIf="success"
+      (close)="onHandlingError()"
+    ></app-alert>
+    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+      <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+            <div class="card" style="border-radius: 15px">
+              <div class="card-body p-5">
+                <h2 class="text-uppercase text-center mb-5">
+                  Create an account
+                </h2>
 
-            <form
-              #authForm="ngForm"
-              (ngSubmit)="onSubmit(authForm)"
-              *ngIf="!isLoading"
-            >
-              <div class="form-outline mb-4 form-group">
-                <label class="form-label" for="form3Example1cg"
-                  >Your Name</label
+                <form
+                  #authForm="ngForm"
+                  (ngSubmit)="onSubmit(authForm)"
+                  *ngIf="!isLoading"
                 >
-                <input
-                  type="text"
-                  id="form3Example1cg"
-                  class="form-control form-control-lg"
-                  ngModel
-                  name="name"
-                  required
-                />
-              </div>
+                  <div class="form-outline mb-4 form-group">
+                    <label class="form-label" for="form3Example1cg"
+                      >Your Name</label
+                    >
+                    <input
+                      type="text"
+                      id="form3Example1cg"
+                      class="form-control form-control-lg"
+                      ngModel
+                      name="name"
+                      required
+                      #name="ngModel"
+                    />
+                    <span
+                      class="text-danger"
+                      *ngIf="!name.valid && name.touched"
+                      >Name is required</span
+                    >
+                  </div>
 
-              <div class="form-outline mb-4 form-group">
-                <label class="form-label" for="form3Example3cg"
-                  >Your Email</label
-                >
-                <input
-                  type="email"
-                  id="form3Example3cg"
-                  class="form-control form-control-lg"
-                  ngModel
-                  name="email"
-                  required
-                  email
-                />
-              </div>
+                  <div class="form-outline mb-4 form-group">
+                    <label class="form-label" for="form3Example3cg"
+                      >Your Email</label
+                    >
+                    <input
+                      type="email"
+                      id="form3Example3cg"
+                      class="form-control form-control-lg"
+                      ngModel
+                      name="email"
+                      required
+                      email
+                      #email="ngModel"
+                    /><span
+                      class="text-danger"
+                      *ngIf="!email.valid && email.touched"
+                      >Please enter a valid email</span
+                    >
+                  </div>
 
-              <div class="form-outline mb-4 form-group">
-                <label class="form-label" for="form3Example4cg">Password</label>
-                <input
-                  type="password"
-                  id="form3Example4cg"
-                  class="form-control form-control-lg"
-                  ngModel
-                  name="password"
-                  required
-                  minlength="8"
-                />
-              </div>
+                  <div class="form-outline mb-4 form-group">
+                    <label class="form-label" for="form3Example4cg"
+                      >Password</label
+                    >
+                    <input
+                      type="password"
+                      id="form3Example4cg"
+                      class="form-control form-control-lg"
+                      ngModel
+                      name="password"
+                      required
+                      minlength="8"
+                      #password="ngModel"
+                      #pw
+                      pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{6,20}"
+                    /><span
+                      class="text-danger"
+                      ng-message="pattern"
+                      *ngIf="!password.valid && password.touched"
+                    >
+                      Password is required
+                    </span>
+                    <span
+                      class="text-danger"
+                      ng-message="pattern"
+                      *ngIf="password.errors?.['pattern']"
+                    >
+                      Password must contain at least one number, one uppercase
+                      and a lowercase letter and at least 6-20 characters<br />Password
+                      cannot contain whitespace
+                    </span>
+                  </div>
 
-              <div class="form-outline mb-4 form-group">
-                <label class="form-label" for="form3Example4cdg"
-                  >confirmPassword</label
-                >
-                <input
-                  type="password"
-                  id="form3Example4cdg"
-                  class="form-control form-control-lg"
-                  ngModel
-                  name="confirmPassword"
-                  required
-                />
+                  <div class="form-outline mb-4 form-group">
+                    <label class="form-label" for="form3Example4cdg"
+                      >confirmPassword</label
+                    >
+                    <input
+                      type="password"
+                      id="form3Example4cdg"
+                      class="form-control form-control-lg"
+                      ngModel
+                      name="confirmPassword"
+                      required
+                      #cpw
+                      (keyup)="onChange(pw.value, cpw.value)"
+                      #confirmPassword="ngModel"
+                      pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{6,20}"
+                    />
+                    <span
+                      class="text-danger"
+                      ng-message="pattern"
+                      *ngIf="!confirmPassword.valid && confirmPassword.touched"
+                    >
+                      Password is required
+                    </span>
+                    <span
+                      class="text-danger"
+                      ng-message="pattern"
+                      *ngIf="confirmPassword.errors?.['pattern']"
+                    >
+                      Password must contain at least one number, one uppercase
+                      and a lowercase letter and at least 8 characters<br />Password
+                      cannot contain whitespace
+                    </span>
+                    <span
+                      class="text-danger"
+                      *ngIf="!passwordsMatching && isConfirmPasswordDirty"
+                    >
+                      Password & confirm Password not match.
+                    </span>
+                  </div>
+                  <div class="d-flex justify-content-center">
+                    <button
+                      type="submit"
+                      class="btn btn-success btn-block btn-lg gradient-custom-4 text-body"
+                      [disabled]="!authForm.valid"
+                    >
+                      Register
+                    </button>
+                  </div>
+                </form>
               </div>
-              <div class="d-flex justify-content-center">
-                <button
-                  type="submit"
-                  class="btn btn-success btn-block btn-lg gradient-custom-4 text-body"
-                  [disabled]="!authForm.valid"
-                >
-                  Register
-                </button>
-              </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>

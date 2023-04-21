@@ -1,10 +1,12 @@
+import { AddProductToCart } from './../../../shop/store/shopping-list.action';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as fromApp from './../../../store/app.reducer';
 import { Products } from './../../products.model';
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { getRole } from 'src/app/auth/store/auth.selector';
-
+import * as ProductActions from '../../store/products.action';
+import * as ShoppingCartActions from '../../../shop/store/shopping-list.action'
 @Component({
   selector: 'app-products-items',
   templateUrl: './products-items.component.html',
@@ -12,28 +14,40 @@ import { getRole } from 'src/app/auth/store/auth.selector';
 })
 export class ProductsItemsComponent {
   @Input() products: Products;
-  @Input() index : number;
-  admin : boolean = false;
-  constructor(private store: Store<fromApp.AppState>, private router:Router, private route: ActivatedRoute) {
+  @Input() index: number;
+  @Input() productId: string;
+  @Input() category : string
+  admin: boolean = false;
+  constructor(
+    private store: Store<fromApp.AppState>,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
+  ngOnInit() {
+    this.store.select(getRole).subscribe((role) => {
+      if (role === 'admin') {
+        this.admin = true;
+      }
+    });
+    this.store.select('shop').subscribe((shop) => console.log(shop))
   }
-  ngOnInit(){
-    this.store.select(getRole)
-      .subscribe((role) => {
-        if (role === 'admin') {
-            this.admin = true;
-          }
-        })
+  onDetail() {
+    this.router.navigate([`${this.productId}`], { relativeTo: this.route });
   }
-  onDetail(){
-   this.router.navigate([`${this.index}`],{relativeTo: this.route})
+  onCart() {
+    if(!this.products.active){
+      alert("This product is not available for purchasing")
+    }
+     else{
+    this.store.dispatch(new ShoppingCartActions.AddProductToCart(this.products));
+    }
   }
-  onCart(){
+  onDelete() {
+    if (confirm('Are you sure?')) {
+      this.store.dispatch(new ProductActions.DeleteProducts(this.productId));
+    }
   }
-  onDelete(){
-    alert("Are you sure?")
-
-  }
-  onUpdate(){
-    this.router.navigate([`edit/${this.index}`], { relativeTo: this.route });
+  onUpdate() {
+    this.router.navigate([`${this.productId}/edit`], { relativeTo: this.route });
   }
 }

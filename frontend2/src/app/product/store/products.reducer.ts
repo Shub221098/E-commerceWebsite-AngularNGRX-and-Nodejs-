@@ -6,17 +6,16 @@ export interface ProductState {
 }
 const intialState: ProductState = {
   products: [],
-
 };
 export function productsReducer(
   state: ProductState = intialState,
   action: ProductActions.ProductActions
-){
+) {
   switch (action.type) {
     case ProductActions.SAVE_NEW_PRODUCTS:
       return {
         ...state,
-        products: [...action.payload],
+        products: [...state.products, ...action.payload],
         isLoading: true,
       };
     case ProductActions.ADD_PRODUCT:
@@ -25,23 +24,22 @@ export function productsReducer(
         products: [...state.products, action.payload],
       };
     case ProductActions.UPDATE_PRODUCT:
-      const updatedProduct = {
-        ...state.products[action.payload.index],
-        ...action.payload.newRecipe,
-      };
-    //   this.updated 
-      const updateProducts = [...state.products];
-      updateProducts[action.payload.index] = updatedProduct;
+      const updatedProduct = state.products.map((product) => {
+        return product.id === action.payload.index
+          ? action.payload.newProduct
+          : product;
+      });
       return {
         ...state,
-        products : updateProducts
+        products: updatedProduct,
       };
-    case ProductActions.DELETE_PRODUCT: 
-    return {
+    case ProductActions.DELETE_PRODUCT:
+      const updatedProducts = state.products.filter((product) => {
+        return product.id !== action.payload;
+      });
+      return {
         ...state,
-        products : state.products.filter((product, index) => {
-          return index !== action.payload;
-        }),
+        products: updatedProducts,
       };
     default:
       return state;

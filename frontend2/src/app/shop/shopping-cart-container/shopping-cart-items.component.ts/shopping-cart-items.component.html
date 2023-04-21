@@ -1,0 +1,61 @@
+<table class="table table-bordered table-hover mx-auto">
+  <thead class="table-dark">
+    <tr>
+      <th>Product Name</th>
+      <th>Quantity</th>
+      <th>Price</th>
+      <th>Discount</th>
+      <th>Total</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{ item.productName }}</td>
+      <td>
+        <div class="input-group" style="display: flex" width:10px>
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            (click)="onDecrementCartItem(item._id)"
+          >
+            -
+          </button>
+          <input
+            type="text"
+            class="form-control text-center"
+            style="width: 44px"
+            [(ngModel)]="item.totalProductQuantity"
+            readonly
+          />
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            (click)="onIncrementCartItem(item._id)"
+          >
+            +
+          </button>
+        </div>
+      </td>
+      <td>
+        {{ item.totalProductPrice | currency : "INR" : "symbol" : "1.2-2" }}
+      </td>
+      <td>
+        {{
+          item.totalProductDiscountPrice | currency : "INR" : "symbol" : "1.2-2"
+        }}
+      </td>
+      <td>
+        {{
+          item.totalProductQuantity * item.totalProductPrice
+            | currency : "INR" : "symbol" : "1.2-2"
+        }}
+      </td>
+      <td>
+        <button class="btn btn-danger" (click)="removeItem(item._id)">
+          Remove
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

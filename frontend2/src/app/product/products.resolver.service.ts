@@ -13,7 +13,7 @@ import * as fromApp from '../store/app.reducer';
 import * as ProductActions from './store/products.action';
 
 @Injectable({ providedIn: 'root' })
-export class RecipeResolver implements Resolve<Products[]> {
+export class ProductResolver implements Resolve<Products[]> {
   constructor(private store: Store<fromApp.AppState>, private actions$ : Actions) {}
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return this.store.select('products').pipe(

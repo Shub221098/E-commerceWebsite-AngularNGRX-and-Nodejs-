@@ -19,20 +19,47 @@ export class ProductsEffects {
       }),
 
       map((product) => {
-        console.log(product);
         return new ProductActions.SaveNewProducts(product);
       })
     );
   });
-  storeProducts = createEffect(
+  addProducts = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(ProductActions.STORE_PRODUCTS),
-        withLatestFrom(this.store.select('products')),
-        switchMap(([actionData, productsState]) => {
-          return this.http.put(
-            'https://e-commerce-application-1120c-default-rtdb.firebaseio.com/recipes.json',
-            productsState.products
+        ofType(ProductActions.ADD_PRODUCT),
+        switchMap((productAction: ProductActions.AddProducts) => {
+          return this.http.post<Products>(
+            'http://localhost:3000/api/v1/products',
+            productAction.payload
+          );
+        }),
+        map((product) => {
+          return new ProductActions.SaveNewProducts(product);
+        })
+      );
+    },
+  );
+  updateProducts = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(ProductActions.UPDATE_PRODUCT),
+        switchMap((productAction: ProductActions.UpdateProducts) => {
+          return this.http.patch(
+            `http://localhost:3000/api/v1/products/${productAction.payload.index}`,
+            productAction.payload.newProduct
+          );
+        })
+      );
+    },
+    { dispatch: false }
+  );
+  deleteProducts = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(ProductActions.DELETE_PRODUCT),
+        switchMap((productAction: ProductActions.DeleteProducts) => {
+          return this.http.delete(
+            `http://localhost:3000/api/v1/products/${productAction.payload}`
           );
         })
       );

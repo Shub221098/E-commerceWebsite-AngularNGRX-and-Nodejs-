@@ -6,3 +6,14 @@
   display: flex;
   justify-content: end;
 }
+
+.navbar-menu-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.drop-down-list {
+  display: flex;
+  column-gap: 10px;
+}

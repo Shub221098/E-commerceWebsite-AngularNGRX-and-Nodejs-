@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -11,7 +11,7 @@ import * as ProductsActions from '../store/products.action';
   templateUrl: './products-edit.component.html',
 })
 export class ProductEditComponent implements OnInit, OnDestroy {
-  id: number;
+  id: string;
   editMode = false;
   productForm: FormGroup;
   productImages = new FormArray<any>([]);
@@ -23,26 +23,24 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   ) {}
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
-      this.id = +params['id'];
+      this.id = params['id'];
       this.editMode = params['id'] != null;
       this.inItForm();
     });
   }
 
   onCancel() {
-    this.router.navigate(['../'], { relativeTo: this.route });
+    this.router.navigate(['../../'], { relativeTo: this.route });
   }
   onSubmit() {
     if (this.editMode) {
       this.store.dispatch(
         new ProductsActions.UpdateProducts({
           index: this.id,
-          newRecipe: this.productForm.value,
+          newProduct: this.productForm.value,
         })
       );
     } else {
-      // this.recipesService.addRecipe(this.recipeForm.value);
-      console.log(this.productForm.value);
       this.store.dispatch(
         new ProductsActions.AddProducts(this.productForm.value)
       );
@@ -54,7 +52,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     let productDesc = '';
     let productCategory = '';
     let productBrand = '';
-    let mainImagePath = '';
+    let mainImage = '';
     let productPrice;
     let productDiscountPrice;
     let productRating;
@@ -62,8 +60,8 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     let productTotalStock;
     if (this.editMode) {
       this.storeSub = this.store.select('products').pipe(map(productsState => {
-        return productsState.products.find((product, index) => {
-          return index === this.id
+        return productsState.products.find((product) => {
+          return product.id === this.id
         })
       })).subscribe(product => {
         if(product !== undefined){
@@ -71,7 +69,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
         productDesc = product.description;
         productCategory = product.category;
         productBrand = product.brand;
-        mainImagePath = product.mainImage;
+        mainImage = product.mainImage;
         productPrice = product.price;
         productDiscountPrice = product.discountPrice;
         productRating = product.rating;
@@ -84,7 +82,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       description: new FormControl(productDesc, Validators.required),
       category: new FormControl(productCategory, Validators.required),
       brand: new FormControl(productBrand, Validators.required),
-      mainImage: new FormControl(mainImagePath, Validators.required),
+      mainImage: new FormControl(mainImage, Validators.required),
       price: new FormControl(productPrice, Validators.required),
       discountPrice: new FormControl(productDiscountPrice, Validators.required),
       rating: new FormControl(productRating, Validators.required),

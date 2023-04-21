@@ -18,7 +18,7 @@
       </div>
 
       <div class="form-group">
-        <label class="col-md-4 control-label" for="product_name_fr"
+        <label class="col-md-4 control-label" for="product_description"
           >PRODUCT DESCRIPTION</label
         >
         <div class="col-md-4">
@@ -104,7 +104,6 @@
         >
         <div class="col-md-4">
           <input
-            
             class="form-control"
             type="number"
             id="totalStock"
@@ -115,11 +114,19 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="form-group">
-            <label for="mainimagePath">MainImageURL</label>
+            <label for="mainImage">MainImageURL</label>
+            <input
+              type="file"
+              class="form-control"
+              formControlName="mainImage"
+              #mainImage
+            />
+            <h5>Or</h5>
             <input
               type="text"
               class="form-control"
               formControlName="mainImage"
+              placeholder="Insert a link here to add the image"
               #mainImage
             />
           </div>
@@ -135,10 +142,11 @@
           <button
             type="submit"
             class="btn btn-success"
-            [disabled]="!productForm.valid"
+            
           >
             Save
-          </button> |
+          </button>
+          |
           <button type="button" class="btn btn-danger" (click)="onCancel()">
             Cancel
           </button>

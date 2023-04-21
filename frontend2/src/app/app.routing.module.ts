@@ -13,6 +13,10 @@ const routes: Routes = [
       import('./product/products.module').then((m) => m.ProductsModule),
   },
   {
+    path: 'shop', loadChildren: () =>
+    import('./shop/shopping-cart.module').then((m) => m.ShoppingCartModule),
+  },
+  {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
   },
@@ -23,11 +27,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
 })
-// {
-//   path: 'shopping-list',
-//   // loadChildren: () =>
-//   //   import('./shopping-cart-page/shopping-cart-page.module').then(
-//   //     (m) => m.ShoppingListModule
-//   //   ),
-// },
 export class AppRoutingModule {}

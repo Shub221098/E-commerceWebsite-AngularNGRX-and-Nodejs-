@@ -6,14 +6,16 @@
         "productName": "iPhone 9",
         "totalProductQuantity": 3,
         "totalProductPrice": 1549,
-        "totalProductDiscountPrice": 999
+        "totalProductDiscountPrice": 999,
+        "totalAvailableStock": 45
       },
       {
         "productId": "5c88fa8cf4afda39709c2951",
         "productName": "iPhone X",
         "totalProductQuantity": 2,
         "totalProductPrice": 2099,
-        "totalProductDiscountPrice": 1599
+        "totalProductDiscountPrice": 1599,
+        "totalAvailableStock": 34
       }
     ],
     "userId": "5c8a1dfa2f8fb814b56fa181"
@@ -25,14 +27,16 @@
         "productName": "Samsung Universe 9",
         "totalProductQuantity": 2,
         "totalProductPrice": 1249,
-        "totalProductDiscountPrice": 899
+        "totalProductDiscountPrice": 899,
+        "totalAvailableStock": 36
       },
       {
         "productId": "5c88fa8cf4afda39709c2961",
         "productName": "OPPOF19",
         "totalProductQuantity": 4,
         "totalProductPrice": 480,
-        "totalProductDiscountPrice": 299
+        "totalProductDiscountPrice": 299,
+        "totalAvailableStock" : 123
       }
     ],
     "userId": "5c8a1e1a2f8fb814b56fa182"
@@ -44,14 +48,16 @@
         "productName": "MacBook Pro",
         "totalProductQuantity": 1,
         "totalProductPrice": 1749,
-        "totalProductDiscountPrice": 1399
+        "totalProductDiscountPrice": 1399,
+        "totalAvailableStock" : 83
       },
       {
         "productId": "5c88fa8cf4afda39709c2966",
         "productName": "Samsung Galaxy Book",
         "totalProductQuantity": 2,
         "totalProductPrice": 499,
-        "totalProductDiscountPrice": 349
+        "totalProductDiscountPrice": 349,
+        "totalAvailableStock" : 50
       }
     ],
     "userId": "5c8a1ec62f8fb814b56fa183"
@@ -63,14 +69,16 @@
         "productName": "Infinix INBOOK",
         "totalProductQuantity": 1,
         "totalProductPrice": 2500,
-        "totalProductDiscountPrice": 2299
+        "totalProductDiscountPrice": 2299,
+        "totalAvailableStock" : 96
       },
       {
         "productId": "5c88fa8cf4afda39709c2974",
         "productName": "Hyaluronic Acid Serum",
         "totalProductQuantity": 1,
         "totalProductPrice": 250,
-        "totalProductDiscountPrice": 149
+        "totalProductDiscountPrice": 149,
+        "totalAvailableStock" : 110
       }
     ],
     "userId": "5c8a1f292f8fb814b56fa184"
@@ -82,14 +90,16 @@
         "productName": "Tree Oil 30ml",
         "totalProductQuantity": 3,
         "totalProductPrice": 1199,
-        "totalProductDiscountPrice": 799
+        "totalProductDiscountPrice": 799,
+        "totalAvailableStock" : 78
       },
       {
         "productId": "5c88fa8cf4afda39709c2574",
         "productName": "Oil Free Moisturizer 100ml",
         "totalProductQuantity": 1,
         "totalProductPrice": 1999,
-        "totalProductDiscountPrice": 1799
+        "totalProductDiscountPrice": 1799,
+        "totalAvailableStock" : 88
       }
     ],
     "userId": "6437e2860b4396006d6e0796"

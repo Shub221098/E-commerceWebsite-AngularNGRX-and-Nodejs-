@@ -1,8 +1,111 @@
+<div class="navbar-menu-list">
+  <div class="drop-down-list">
+    <li class="dropdown" style="list-style-type: none" appDropdown>
+      <a style="cursor: pointer" class="dropdown-toggle" role="button"
+        >Filter <span class="caret"></span
+      ></a>
+      <ul class="dropdown-menu" appDropdown>
+        <li class="dropdown" style="list-style-type: none">
+          <a style="cursor: pointer">Category &raquo;</a>
+          <ul class="dropdown-submenu" style="list-style-type: none">
+            <li class="dropdown-item">
+              <a
+                style="cursor: pointer"
+                (click)="filterProductsByCategory('smartphones')"
+                >Smartphones</a
+              >
+            </li>
+            <li class="dropdown-item">
+              <a
+                style="cursor: pointer"
+                (click)="filterProductsByCategory('laptops')"
+                >Laptop</a
+              >
+            </li>
+            <li class="dropdown-item">
+              <a
+                style="cursor: pointer"
+                (click)="filterProductsByCategory('skincare')"
+                >SkinCare</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="dropdown" style="list-style-type: none">
+          <a style="cursor: pointer">Brand &raquo;</a>
+          <ul class="dropdown-submenu" style="list-style-type: none">
+            <li class="dropdown-item">
+              <a
+                style="cursor: pointer"
+                (click)="filterProductsByBrand('Apple')"
+                >Apple</a
+              >
+            </li>
+            <li class="dropdown-item">
+              <a
+                style="cursor: pointer"
+                (click)="filterProductsByBrand('Samsung')"
+                >Samsung</a
+              >
+            </li>
+            <li class="dropdown-item">
+              <a style="cursor: pointer" (click)="filterProductsByBrand('OPPO')"
+                >Oppo</a
+              >
+            </li>
+            <li class="dropdown-item">
+              <a
+                style="cursor: pointer"
+                (click)="filterProductsByBrand('Dermive')"
+                >Dermive</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a style="cursor: pointer" (click)="clear()">Clear Filter</a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="dropdown" style="list-style-type: none" appDropdown>
+      <a style="cursor: pointer" class="dropdown-toggle" role="button"
+        >Sort <span class="caret"></span
+      ></a>
+      <ul class="dropdown-menu">
+        <li><a style="cursor: pointer" (click)="lastAdded()">Last Added</a></li>
+        <li>
+          <a style="cursor: pointer" (click)="sortByPrice('asc')"
+            >Price:Low to High</a
+          >
+        </li>
+        <li>
+          <a style="cursor: pointer" (click)="sortByPrice('dsc')"
+            >Price:High to Low</a
+          >
+        </li>
+      </ul>
+    </li>
+  </div>
+
+  <div class="navbar-form navbar-right">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Search Products by Category or Brand or Name"
+      [(ngModel)]="searchStr"
+      (keyup)="onExist($event)"
+      required
+    />
+    |
+    <button type="submit" class="btn btn-default" (click)="onSearch()" [disabled]="!searchStr">
+      Search
+    </button>
+  </div>
+</div>
 <div class="row" *ngIf="admin">
   <div class="addnew">
-    <button class="btn btn-success" routerLink="new">
-      Add New Product
-    </button>
+    <button class="btn btn-success" routerLink="new">Add New Product</button>
   </div>
 </div>
 <hr />
@@ -12,7 +115,11 @@
       class="col-12 col-md-3 col-lg-3"
       *ngFor="let product of products; let i = index"
     >
-      <app-products-items [products]="product" [index]="i"></app-products-items>
+      <app-products-items
+        [products]="product"
+        [index]="i"
+        [productId]="product.id"
+      ></app-products-items>
     </div>
   </div>
 </ng-container>

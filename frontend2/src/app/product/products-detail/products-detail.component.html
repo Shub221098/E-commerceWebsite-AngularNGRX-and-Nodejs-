@@ -8,7 +8,7 @@
       <p class="price-detail-wrap">
         <span class="price h3 text-warning">
           <span class="num">{{
-            product.price | currency : "INR" : "symbol" : "1.2-2"
+            product.discountPrice | currency : "INR" : "symbol" : "1.2-2"
           }}</span>
         </span>
       </p>
@@ -34,10 +34,6 @@
       </div>
       <div class="features-details">
         <dl class="param param-feature">
-          <dt>Rating</dt>
-          <dd>{{ product.rating }}</dd>
-        </dl>
-        <dl class="param param-feature">
           <dt>DiscountPrice</dt>
           <dd>{{ product.discountPrice }}</dd>
         </dl>
@@ -45,11 +41,34 @@
           <dt>Stock</dt>
           <dd>{{ product.stock }}</dd>
         </dl>
+        <dl class="quantity">
+          <label>Quantity</label>
+          <input
+            (click)="onIncrementCartItem()"
+            type="button"
+            value="+"
+            class="plus"
+          />
+          <input
+            [disabled]="true"
+            type="number"
+            step="1"
+            max="10"
+            min="1"
+            title="Qty"
+            value="1"
+            class="qty"
+            size="4"
+          />
+          <input
+            (click)="onDecrementCartItem()"
+            type="button"
+            value="-"
+            class="minus"
+          />
+        </dl>
       </div>
-      <dl class="param param-feature">
-        <dt>Rating Average</dt>
-        <dd>{{ product.ratingAverage }}</dd>
-      </dl>
+
       <hr />
       <button
         (click)="onAddProductToCart()"

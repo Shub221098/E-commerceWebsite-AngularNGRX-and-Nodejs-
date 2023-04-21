@@ -17,12 +17,32 @@
       {{ products.discountPrice | currency : "INR" : "symbol" : "1.2-2" }}
     </h5>
     <div class="button-wrapper">
-      <button class="btn btn-info product__add-to-cart" *ngIf="!admin" (click)="onCart()">Add to cart</button>
-      <button class="btn btn-info product__add-to-cart" *ngIf="!admin" (click)="onDetail()">
+      <button
+        class="btn btn-info product__add-to-cart"
+        *ngIf="!admin"
+        (click)="onCart()"
+      >
+        Add to cart
+      </button>
+      <button
+        class="btn btn-info product__add-to-cart"
+        *ngIf="!admin"
+        (click)="onDetail()"
+      >
         More Info
       </button>
-      <button class="btn btn-info product__add-to-cart" *ngIf="admin" (click)="onUpdate()">Update</button>
-      <button class="btn btn-info product__add-to-cart" *ngIf="admin" (click)="onDelete()">
+      <button
+        class="btn btn-info product__add-to-cart"
+        *ngIf="admin"
+        (click)="onUpdate()"
+      >
+        Update
+      </button>
+      <button
+        class="btn btn-info product__add-to-cart"
+        *ngIf="admin"
+        (click)="onDelete()"
+      >
         Delete
       </button>
     </div>

@@ -10,9 +10,10 @@ export class Products {
   public rating: number;
   public stock: number;
   public totalStock: number;
-  public ratingAverage: number;
+  public ratingsAverage: number;
   public inStock: boolean;
   public active: boolean;
+  quantity: any;
 
   constructor(
     id: string,
@@ -26,7 +27,7 @@ export class Products {
     rating: number,
     stock: number,
     totalStock: number,
-    ratingAverage: number,
+    ratingsAverage: number,
     inStock: boolean,
     active: boolean
   ) {
@@ -41,7 +42,7 @@ export class Products {
     this.rating = rating;
     this.stock = stock;
     this.totalStock = totalStock;
-    this.ratingAverage = ratingAverage;
+    this.ratingsAverage = ratingsAverage;
     this.inStock = inStock;
     this.active = active;
   }

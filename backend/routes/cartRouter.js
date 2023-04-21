@@ -12,6 +12,5 @@ router
   .post(cartController.setProductUserIds, cartController.addToCart);
 router
   .route("/:id")
-  .patch(cartController.updateCart)
   .delete(cartController.deleteCart);
 module.exports = router;

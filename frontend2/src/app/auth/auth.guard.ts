@@ -33,7 +33,8 @@ export class AuthGuard implements CanActivate {
         if (isAuth) {
           return true;
         }
-        return this.router.createUrlTree(['/auth']);
+        alert("You are not logged in.Please Login First")
+        return this.router.createUrlTree(['/auth/login']);
       })
     );
   }
