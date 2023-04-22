@@ -41,34 +41,31 @@
           <dt>Stock</dt>
           <dd>{{ product.stock }}</dd>
         </dl>
-        <dl class="quantity">
-          <label>Quantity</label>
-          <input
-            (click)="onIncrementCartItem()"
-            type="button"
-            value="+"
-            class="plus"
-          />
-          <input
-            [disabled]="true"
-            type="number"
-            step="1"
-            max="10"
-            min="1"
-            title="Qty"
-            value="1"
-            class="qty"
-            size="4"
-          />
-          <input
-            (click)="onDecrementCartItem()"
-            type="button"
-            value="-"
-            class="minus"
-          />
-        </dl>
       </div>
-
+      <div style="display: flex" width:10px>
+        <label>Quantity : </label>
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="onIncrementCartItem()"
+        >
+          +
+        </button>
+        <input
+          type="text"
+          class="form-control text-center"
+          style="width: 44px"
+          [(ngModel)]="product.quantity"
+          readonly
+        />
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="onDecrementCartItem()"
+        >
+          -
+        </button>
+      </div>
       <hr />
       <button
         (click)="onAddProductToCart()"

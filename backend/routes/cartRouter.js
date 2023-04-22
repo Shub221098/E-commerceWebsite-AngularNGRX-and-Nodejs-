@@ -13,4 +13,7 @@ router
 router
   .route("/:id")
   .delete(cartController.deleteCart);
+router.patch('/deleteQuantity/:id', cartController.setProductUserIds, cartController.deleteQuantity)
+router.patch('/addQuantity/:id', cartController.setProductUserIds, cartController.addQuantity)
+router.patch('/removeProduct/:id', cartController.setProductUserIds, cartController.removeProduct)
 module.exports = router;

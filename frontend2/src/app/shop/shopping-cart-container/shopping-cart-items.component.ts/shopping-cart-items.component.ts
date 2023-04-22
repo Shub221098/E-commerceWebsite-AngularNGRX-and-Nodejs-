@@ -16,13 +16,12 @@ export class ShoppingCartItemsComponent implements OnInit {
   @Input() item : OrderItem
   constructor(private store: Store<fromApp.AppState>) {}
     ngOnInit(){
-      console.log(this.item)
     }
 
   removeItem(id : string) {
     this.store.dispatch(new ShoppingListActions.RemoveProductFromCart(id))
   }
-  onIncrementCartItem(id : string) {
+  onIncrementCartItem(id: string) {
     this.store.dispatch(new ShoppingListActions.IncrementItemQuantity(id))
     
   }

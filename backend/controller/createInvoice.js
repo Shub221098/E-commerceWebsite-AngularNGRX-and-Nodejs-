@@ -37,18 +37,14 @@ function generateCustomerInformation(doc, invoice) {
   const shipping = invoice.shippingAddress;
 
   doc
-    .text(`Invoice Number: ${invoice._id}`, 50, 200)
-    .text(`Invoice Date: ${new Date()}`, 50, 215)
-    .text(`Balance: ${invoice.totalPrice}`, 50, 130)
-    .text(`Contact No: ${invoice.phone}`, 50, 215)
-
-    .text(shipping.userId, 300, 200)
-    .text(shipping.address, 300, 215)
-    .text(
-      `${shipping.city}, ${shipping.postalCode}, ${shipping.country}`,
-      300,
-      130
-    )
+  .text(`Invoice Number: ${invoice._id}`, 50, 200)
+  .text(`Invoice Date: ${new Date()}`, 50, 215)
+  .text(`Contact No: ${invoice.phone}`, 50, 230)
+  .text(`Name : ${invoice.name}`, 50, 215)
+  .text(`${shipping.address}`, 50, 250)
+  .text(`${shipping.city}`, 50, 265)
+  .text(`${shipping.postalCode}`, 50, 280)
+  .text(`${shipping.country}`, 50, 295)
     .moveDown();
   generateInvoiceTable(doc, invoice);
 

@@ -1,3 +1,5 @@
+import { OrderItem } from 'src/app/shop/shop.model';
+import { Orders } from './../order.model';
 import { Action } from '@ngrx/store';
 import { Shop } from '../shop.model';
 export const ADD_PRODUCT_TO_CART = '[ShoppingCart] Add Product to Cart';
@@ -6,9 +8,15 @@ export const INCREMENT_CART_ITEM_QUANTITY = '[ShoppingCart] Increment item quant
 export const DECREMENT_CART_ITEM_QUANTITY = '[ShoppingCart] Decrement item quantity';
 export const GET_USER_CART = '[ShoppingCart] Get User Cart';
 export const SAVE_USER_CART = '[ShoppingCart] Save User Cart';
+export const Checkout = '[Orders] Checkout'
 export class SaveUserCart implements Action {
   readonly type = SAVE_USER_CART
-  constructor(public payload: Shop[]) {
+  constructor(public payload: OrderItem[]) {
+  }
+}
+export class CartCheckout implements Action {
+  readonly type = Checkout
+  constructor(public payload: Orders) {
   }
 }
 export class GetUserCart implements Action{
@@ -44,4 +52,4 @@ export class DecrementItemQuantity implements Action{
   }
 }
 
-export type ShoppingCartActions = GetUserCart |SaveUserCart |AddProductToCart | RemoveProductFromCart | IncrementItemQuantity | DecrementItemQuantity;
+export type ShoppingCartActions = CartCheckout | GetUserCart |SaveUserCart |AddProductToCart | RemoveProductFromCart | IncrementItemQuantity | DecrementItemQuantity;

@@ -158,23 +158,23 @@ export class AuthEffects {
       ofType(AuthActions.AUTO_LOGIN),
       map(() => {
         const userData: {
-          userId: string;
+          id: string;
           email: string;
           name: string;
           role: string;
           active: true;
-          token: string;
+          _token: string;
         } = JSON.parse(localStorage.getItem('userData') || '{}');
         if (!userData) {
           return { type: 'DUMMY' };
         }
         const loadedUser = new User(
-          userData.userId,
+          userData.id,
           userData.email,
           userData.name,
           userData.role,
           userData.active,
-          userData.token
+          userData._token
         );
         if (loadedUser.token) {
           return new AuthActions.AuthenticateSuccess({
@@ -192,13 +192,13 @@ export class AuthEffects {
     );
   });
 
-  authLogout = this.actions$.pipe(
-    ofType(AuthActions.LOGOUT),
-    tap(() => {
-      localStorage.removeItem('userData');
-      this.router.navigate(['/auth/login']);
-    })
-  );
+  // authLogout = this.actions$.pipe(
+  //   ofType(AuthActions.LOGOUT),
+  //   tap(() => {
+  //     localStorage.removeItem('userData');
+  //     this.router.navigate(['/auth/login']);
+  //   })
+  // );
   authForgetPassword = createEffect(() => {
     return this.actions$.pipe(
       ofType(AuthActions.FORGET_PASSWORD),

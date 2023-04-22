@@ -1,7 +1,5 @@
 export interface Shop {
-  _id: string;
   items: OrderItem[];
-  userId: string;
 }
 
 export interface OrderItem {

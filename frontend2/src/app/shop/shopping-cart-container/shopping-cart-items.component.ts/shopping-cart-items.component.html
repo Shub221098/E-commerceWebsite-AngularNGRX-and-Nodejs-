@@ -17,7 +17,7 @@
           <button
             class="btn btn-outline-secondary"
             type="button"
-            (click)="onDecrementCartItem(item._id)"
+            (click)="onDecrementCartItem(item.productId)"
           >
             -
           </button>
@@ -31,7 +31,7 @@
           <button
             class="btn btn-outline-secondary"
             type="button"
-            (click)="onIncrementCartItem(item._id)"
+            (click)="onIncrementCartItem(item.productId)"
           >
             +
           </button>
@@ -52,7 +52,7 @@
         }}
       </td>
       <td>
-        <button class="btn btn-danger" (click)="removeItem(item._id)">
+        <button class="btn btn-danger" (click)="removeItem(item.productId)">
           Remove
         </button>
       </td>

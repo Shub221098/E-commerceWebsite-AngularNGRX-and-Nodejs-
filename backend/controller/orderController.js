@@ -162,6 +162,7 @@ exports.cancelOrder = factory.deleteOne(Order);
 // Create Order in Database And Sent An Invoice via Email.
 exports.createOrder = catchAsync(async (req, res, next) => {
   const doc = await Order.create(req.body);
+  console.log(doc)
   createInvoice(doc, "invoice.pdf");
 
   // 1. Create a transporter

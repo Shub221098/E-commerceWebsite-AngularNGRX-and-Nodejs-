@@ -3,7 +3,7 @@ import { Products } from './../products.model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
-import { map, Subscription, switchMap } from 'rxjs';
+import { map, startWith, Subscription, switchMap } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../products-service';
 
@@ -15,6 +15,7 @@ import { ProductsService } from '../products-service';
 export class ProductListComponent implements OnInit {
   products: Products[];
   searchStr: string;
+  search: string = '';
   userSub: Subscription;
   category: string;
   productSub: Subscription;
@@ -29,7 +30,7 @@ export class ProductListComponent implements OnInit {
   filteredType = '';
   sortOrder = 1;
   ngOnInit() {
-    console.log("Calling ngOninit")
+    console.log('Calling ngOninit');
     this.searchStr = '';
     this.filteredBy = '';
     this.filteredType = '';
@@ -104,14 +105,10 @@ export class ProductListComponent implements OnInit {
     let catFound = this.products.find(
       (value) => value.category == this.searchStr
     );
-    console.log(catFound , "sadhofisadfnova");
-    let brFound = this.products.find(
-      (value) => value.brand == this.searchStr
-    );
+    console.log(catFound, 'sadhofisadfnova');
+    let brFound = this.products.find((value) => value.brand == this.searchStr);
     console.log(brFound);
-    let nmFound = this.products.find(
-      (value) => value.name == this.searchStr
-    );
+    let nmFound = this.products.find((value) => value.name == this.searchStr);
     console.log(nmFound);
     let searchType = '';
     if (catFound) {
@@ -125,15 +122,23 @@ export class ProductListComponent implements OnInit {
       .searchProduct(searchType, this.searchStr)
       .subscribe((product: any) => (this.products = product));
   }
-  onExist(e : any) {
-    if(e.key === 'Backspace' || e.keyCode === 8){
+  onExist(e: any) {
+    this.search = this.search + e.key.toLowerCase();
+    this.search = this.search.replaceAll(' ', '');
+    if (e.key) {
+      this.products = this.products.filter((product) => {
+        const name = product.name.toLowerCase().replaceAll(' ', '');
+        return name.startsWith(this.search) && product;
+      });
+    }
+    if (e.key === 'Backspace' || e.keyCode === 8) {
       // console.log(this.searchStr, " Heloosdfasdfsafadf")
-        if(this.searchStr === ''){
-          console.log(this.searchStr, " Heloosdfasdfsafadf")
-          this.clear()
-        }
+      if (this.searchStr === '') {
+        console.log(this.searchStr, ' Heloosdfasdfsafadf');
+        this.clear();
+      }
     }
-    }
+  }
   clear() {
     this.ngOnInit();
   }

@@ -1,10 +1,10 @@
 import { catchError } from 'rxjs';
-import { Shop } from './../shop.model';
+import { OrderItem, Shop } from './../shop.model';
 // import { Products } from '../../product/products.model';
 import * as ShoppingCartActions from './shopping-list.action';
 
 export interface ShopState {
-  cart: Shop[];
+  cart: OrderItem[];
 }
 
 const initialState: ShopState = {
@@ -12,11 +12,10 @@ const initialState: ShopState = {
 };
 
 export function shoppingListReducer(
-  state : ShopState|any = initialState,
+  state: ShopState | any = initialState,
   action: ShoppingCartActions.ShoppingCartActions
 ) {
   let updatedCart;
-  let updatedItemIndex;
   switch (action.type) {
     case ShoppingCartActions.SAVE_USER_CART:
       return {
@@ -25,70 +24,39 @@ export function shoppingListReducer(
       };
     case ShoppingCartActions.INCREMENT_CART_ITEM_QUANTITY:
       updatedCart = state.cart;
-      const updatedItem1 = updatedCart.items.find(
-        action.payload
-      );
-
-      if (updatedItem1.totalAvailablestock < 5) {
-        return state;
-      }
-
-      updatedItem1.totalProductQuantity++;
-
-      updatedCart.items.splice(updatedItem1, 1);
-      return { ...state, cart: updatedCart };
-
+      let updated1 = updatedCart.map((item: any) => {
+        if (item.productId == action.payload) {
+          let updatedItem = JSON.parse(JSON.stringify(item));
+          if (updatedItem.totalProductQuantity < 10)
+            updatedItem.totalProductQuantity += 1;
+          return updatedItem;
+        }
+        return item;
+      });
+      return { ...state, cart: updated1 };
     case ShoppingCartActions.DECREMENT_CART_ITEM_QUANTITY:
       updatedCart = state.cart;
-      const updatedItem = updatedCart.map((item : any) => {
-          item.items({})
-      })
-      console.log(updatedItem)
-      const updatedItemIndex = updatedItem.find(
-          (cart: any) => cart._id = action.payload
-      );
-      console.log(updatedItemIndex)
+      let updated = updatedCart.map((item: any) => {
+        if (item.productId == action.payload) {
+          let updatedItem = JSON.parse(JSON.stringify(item));
+          if (updatedItem.totalProductQuantity > 1) {
+            updatedItem.totalProductQuantity -= 1;
+          }
+          return updatedItem;
+        }
+        return item;
+      });
+      return { ...state, cart: updated };
 
-
-      const decrementedItem = {
-        ...updatedItem[updatedItemIndex],
+    case ShoppingCartActions.REMOVE_PRODUCT_FROM_CART:
+      updatedCart= state.cart.filter((item: any) => {
+        return item.productId !== action.payload;
+      });
+      return {
+        ...state,
+        cart: updatedCart,
       };
-console.log(decrementedItem)
-      decrementedItem.totalProductQuantity--;
-
-      updatedCart[updatedItemIndex] = decrementedItem;
-
-      return { ...state, cart: updatedCart };
-
-   
-    // case ShoppingCartActions.ADD_PRODUCT_TO_CART:
-    //   updatedCart = [...state.cart];
-    //   updatedItemIndex = updatedCart.findIndex(
-    //     (item) => item.id === action.payload.id
-    //   );
-
-    //   if (updatedItemIndex < 0) {
-    //     updatedCart.push({ ...action.payload, stock: 1 });
-    //   } else {
-    //     const updatedItem = {
-    //       ...updatedCart[updatedItemIndex],
-    //     };
-
-    //     updatedItem.stock++;
-    //     updatedCart[updatedItemIndex] = updatedItem;
-    //   }
-
-    // return { ...state, cart: updatedCart };
-  //   case ShoppingCartActions.REMOVE_PRODUCT_FROM_CART:
-  //     updatedCart = [...state.cart];
-  //     updatedItemIndex = updatedCart.findIndex(
-  //       (item) => +item.id === action.payload
-  //     );
-
-  //     updatedCart.splice(updatedItemIndex, 1);
-
-  //     return { ...state, cart: updatedCart };
-  //   default:
-  //     return state;
+    default:
+      return state;
   }
 }

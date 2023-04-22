@@ -12,13 +12,13 @@ import { Store } from '@ngrx/store';
 // import * as fromShoppingList from '../store/shopping-list.reducers';
 import * as fromApp from '../../store/app.reducer';
 import { Shop } from '../shop.model';
+import { getEmail, getName } from 'src/app/auth/store/auth.selector';
 @Component({
   selector: 'app-shopping-cart-container',
   templateUrl: './shopping-cart-container.component.html',
 })
 export class ShoppingCartContainerComponent implements OnInit {
-  cartItems: OrderItem[];
-  cart: Shop[];
+  cart: OrderItem[];
   userSub: Subscription;
   totalPrice: number =0;
   totalDiscountPrice: number=0
@@ -26,22 +26,32 @@ export class ShoppingCartContainerComponent implements OnInit {
   totalItems: number=0;
   discount : number;
   itemsId :string
+  email : string
+  name: string
   constructor(private store: Store<fromApp.AppState>) {}
 
   ngOnInit() {
     this.store.select('shop').subscribe((shop) => {
       this.cart = shop.cart;
-      this.cartItems = this.cart[0].items;
       this.calculateTotals()
     });
+    this.store.select(getEmail).subscribe((email) => {
+      if(email){
+      this.email = email
+      }
+    })
+    this.store.select(getName).subscribe((name) => {
+      if(name){
+      this.name = name
+      }
+    })
   }
   calculateTotals() {
     this.totalPrice = 0;
     this.totalDiscountPrice = 0;
     this.totalQuantity = 0;
     this.totalItems = 0;
-    for (let item of this.cartItems) {
-      console.log(item)
+    for (let item of this.cart) {
       this.totalQuantity += item.totalProductQuantity;
       this.totalPrice += item.totalProductPrice  * item.totalProductQuantity;
       this.totalDiscountPrice += item.totalProductDiscountPrice  * item.totalProductQuantity;
@@ -52,11 +62,7 @@ export class ShoppingCartContainerComponent implements OnInit {
   removeItem(item: OrderItem) {
     this.store.dispatch(new ShoppingListActions.RemoveProductFromCart(item.productId))
   }
-  onIncrementCartItem(item: OrderItem) {
-    this.store.dispatch(new ShoppingListActions.IncrementItemQuantity(item.productId))
-    
-  }
-  onDecrementCartItem(id : string) {
-    this.store.dispatch(new ShoppingListActions.DecrementItemQuantity(id))
+  checkout() {
+    this.store.dispatch(new ShoppingListActions.CartCheckout({items :this.cart,name: this.name, email: this.email, totalPrice : this.totalDiscountPrice, totalQuantity: this.totalQuantity, totalItems: this.totalItems}))
   }
 }

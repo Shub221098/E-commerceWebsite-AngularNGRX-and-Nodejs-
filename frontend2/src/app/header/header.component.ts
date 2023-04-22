@@ -13,8 +13,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class HeaderComponent implements OnInit, OnDestroy {
   private userSub: Subscription;
   isAuthenticated: boolean;
-  loading : boolean;
-  userId : string
+  loading: boolean;
+  userId: string;
   role: string;
   admin: boolean;
   constructor(
@@ -28,7 +28,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .pipe(map((authState) => authState))
       .subscribe((user) => {
         this.isAuthenticated = user.isAuthenticated;
-        if(user.user?.id){
+        if (user.user?.id) {
           this.userId = user.user.id;
         }
         if (user.user?.role) {
@@ -38,9 +38,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
           }
         }
       });
-      this.store.dispatch(new ProductActions.GetProducts());
+    this.store.dispatch(new ProductActions.GetProducts());
   }
   onLogout() {
+    localStorage.removeItem('userData');
     this.store.dispatch(new AuthAction.Logout());
   }
   ngOnDestroy() {

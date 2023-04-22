@@ -28,6 +28,8 @@ router
   .post(
     authController.protect,
     authController.restrictTo("admin"),
+    productController.uploadUserPhoto,
+    productController.resizeUserPhoto,
     productController.createProduct
   )
 
@@ -54,6 +56,8 @@ router
   ).patch(
     authController.protect,
     authController.restrictTo("admin"),
+    productController.uploadUserPhoto,
+    productController.resizeUserPhoto,
     productController.updateProduct)
 
 module.exports = router;

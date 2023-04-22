@@ -1,15 +1,57 @@
 const Cart = require("../model/cart.model");
 const factory = require("./handlerFactory");
 const catchAsync = require("../catchAsync");
+const { ObjectId } = require("mongodb");
 exports.setProductUserIds = (req, res, next) => {
   if (!req.body.user) req.body.userId = req.user.id;
   console.log(req.body.userId);
   next();
 };
 
-exports.getUsersCart = factory.getAll(Cart);
+exports.getUsersCart = catchAsync(async (req, res) => {
+  const data = await Cart.findOne({ userId: req.params.userId });
+  return res.json(data.items);
+});
 exports.deleteCart = factory.deleteOne(Cart);
 
+exports.deleteQuantity = catchAsync(async (req, res) => {
+
+  const updatedCart = await Cart.findOneAndUpdate(
+    {
+      "items.productId": req.params.id,
+      userId: req.body.userId,
+      "items.totalProductQuantity": { $gt: 1 }
+
+    },
+    { $inc: { "items.$.totalProductQuantity": -1 } },
+    { new: true }
+  );
+});
+
+exports.addQuantity = catchAsync(async (req, res) => {
+
+  const updatedCart = await Cart.findOneAndUpdate(
+    {
+      "items.productId": req.params.id,
+      userId: req.body.userId,
+      "items.totalProductQuantity": { $lt: 10 }
+
+    },
+    { $inc: { "items.$.totalProductQuantity": +1 } },
+    { new: true }
+  );
+});
+exports.removeProduct= catchAsync(async(req, res, next) => {
+  const updatedCart = await Cart.findOneAndUpdate(
+    {
+      "items.productId": req.params.id,
+      userId: req.body.userId,
+    },
+    {$pull : { items: { productId: req.params.id } }},
+    { new: true }
+  );
+  console.log(updatedCart, "bybybybybybyb");
+}) 
 exports.addToCart = catchAsync(async (req, res, next) => {
   let carts = await Cart.findOne({ userId: req.body.userId });
   if (carts) {
@@ -19,7 +61,7 @@ exports.addToCart = catchAsync(async (req, res, next) => {
       totalProductQuantity: req.body.quantity,
       totalProductPrice: req.body.price,
       totalProductDiscountPrice: req.body.discountPrice,
-      totalAvailableStock : req.body.stock
+      totalAvailableStock: req.body.stock,
     };
     cartId = carts._id;
     carts.items.push(cart);
@@ -45,7 +87,7 @@ exports.addToCart = catchAsync(async (req, res, next) => {
           totalProductQuantity: req.body.quantity,
           totalProductPrice: req.body.price,
           totalProductDiscountPrice: req.body.discountPrice,
-          totalAvailableStock : req.body.stock
+          totalAvailableStock: req.body.stock,
         },
       ],
       userId: req.body.userId,

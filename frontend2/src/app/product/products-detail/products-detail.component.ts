@@ -6,7 +6,8 @@ import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
 import { map, switchMap } from 'rxjs';
 import * as ShoppingListActions from 'src/app/shop/store/shopping-list.action';
-import { Shop } from 'src/app/shop/shop.model';
+import { OrderItem } from 'src/app/shop/shop.model';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-products-detail',
@@ -16,7 +17,9 @@ import { Shop } from 'src/app/shop/shop.model';
 export class ProductDetailComponent implements OnInit {
   product: Products;
   id: string;
-  cart : Shop
+  cart : OrderItem[]
+  value : number = 1
+  productForm = FormGroup
   constructor(
     private store: Store<fromApp.AppState>,
     private router: Router,
@@ -42,28 +45,21 @@ export class ProductDetailComponent implements OnInit {
       .subscribe((product) => {
         if (product !== undefined) {
           this.product = product;
+          console.log(this.product)
         }
       });
       this.store.select('shop').pipe(map((shopState) => shopState)).subscribe((cart) => console.log(cart))
   }
   onDecrementCartItem() {
-    console.log('Decrement');
-    this.store.dispatch(new ShoppingListActions.DecrementItemQuantity(this.id));
+  this.store.dispatch(new ProductActions.RemoveQuantity(this.product.id));
   }
   onIncrementCartItem() {
-    console.log('Increment');
-    this.store.dispatch(new ShoppingListActions.IncrementItemQuantity(this.id));
+  this.store.dispatch(new ProductActions.AddQuantity(this.product.id));
   }
   onAddProductToCart(): void {
-
+    if(!this.product.active){
+      alert("This product is not available for purchasing")
+    }
     this.store.dispatch(new ShoppingListActions.AddProductToCart(this.product));
   }
-  // onEditRecipe() {
-  //   this.router.navigate(['edit'], { relativeTo: this.route });
-  // }
-  // onDeleteRecipe() {
-  //   // this.recipesService.deleteRecipe(this.id);
-  //   this.store.dispatch(new ProductActions.DeleteProducts(this.id));
-  //   this.router.navigate(['/products']);
-  // }
 }

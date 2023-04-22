@@ -16,6 +16,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   productForm: FormGroup;
   productImages = new FormArray<any>([]);
   private storeSub: Subscription;
+  
   constructor(
     private route: ActivatedRoute,
     private router: Router,

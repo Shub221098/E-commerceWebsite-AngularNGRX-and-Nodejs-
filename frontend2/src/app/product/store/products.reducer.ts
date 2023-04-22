@@ -1,17 +1,57 @@
+import { ConnectableObservable } from 'rxjs';
 import { Products } from '../products.model';
 import * as ProductActions from '../store/products.action';
 
 export interface ProductState {
-  products: Products[];
+  products: Products[]; 
 }
 const intialState: ProductState = {
   products: [],
 };
 export function productsReducer(
-  state: ProductState = intialState,
+  state: ProductState | any= intialState,
   action: ProductActions.ProductActions
 ) {
+  let updatedProduct
   switch (action.type) {
+    case ProductActions.ADD_QUANTITY: 
+    const updated1 = state.products.map((item: any) => {
+      if (item.id == action.payload) {
+        let updatedItem = JSON.parse(JSON.stringify(item));
+        if (updatedItem.quantity < 10)
+          updatedItem.quantity += 1;
+        return updatedItem;
+      }
+      return item;
+    });
+    return { ...state, products: updated1 };
+
+    case ProductActions.REMOVE_QUANTITY: 
+    const updated2 = state.products.map((item: any) => {
+      if (item.id == action.payload) {
+        let updatedItem = JSON.parse(JSON.stringify(item));
+        if (updatedItem.quantity > 1)
+          updatedItem.quantity -= 1;
+        return updatedItem;
+      }
+      return item;
+    });
+
+    return { ...state, products: updated2 };
+
+
+    case ProductActions.MAINTAIN_QUANTITY: 
+    const updated3 = state.products.map((item: any) => {
+      if (item.id == action.payload) {
+        let updatedItem = JSON.parse(JSON.stringify(item));
+        updatedItem.quantity = 1
+        return updatedItem;
+      }
+      return item;
+    });
+    console.log(updated1)
+
+    return { ...state, products: updated3 };
     case ProductActions.SAVE_NEW_PRODUCTS:
       return {
         ...state,
@@ -24,7 +64,7 @@ export function productsReducer(
         products: [...state.products, action.payload],
       };
     case ProductActions.UPDATE_PRODUCT:
-      const updatedProduct = state.products.map((product) => {
+      let updatedProduct = state.products.map((product: any) => {
         return product.id === action.payload.index
           ? action.payload.newProduct
           : product;
@@ -34,13 +74,14 @@ export function productsReducer(
         products: updatedProduct,
       };
     case ProductActions.DELETE_PRODUCT:
-      const updatedProducts = state.products.filter((product) => {
+      const updatedProducts = state.products.filter((product: any) => {
         return product.id !== action.payload;
       });
       return {
         ...state,
         products: updatedProducts,
       };
+    
     default:
       return state;
   }
