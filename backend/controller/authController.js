@@ -24,6 +24,10 @@ const createSendToken = (user, statusCode, res) => {
 
 // ***************************************** SIGN UP USER *********************************************
 exports.signup = catchAsync(async (req, res, next) => {
+  const user = await User.findOne({ email: req.body.email });
+  if (user) {
+    return next(new AppError("This email is already registered.", 403));
+  }
   const newUser = await User.create(req.body);
   const token = signToken(newUser._id);
   newUser.passwordResetToken = crypto
@@ -34,10 +38,11 @@ exports.signup = catchAsync(async (req, res, next) => {
   await newUser.save({ validateBeforeSave: false });
   const name = newUser.name
   const email = newUser.email
+  const subject = "Verification Mail from Colafee"
   const action = "verify your account"
   const action2 = "Login"
   try {
-    await sendVerificationEmail(name, email, token, action, action2);
+    await sendVerificationEmail(name, email, subject, token, action, action2);
     res.status(200).json({
       status: "success",
       message:
@@ -98,13 +103,13 @@ exports.login = catchAsync(async (req, res, next) => {
   }
   // 2. Check if user exists && password is correct
   const user = await User.findOne({ email }).select("+password");
+  if (!user || !(await user.correctPassword(password, user.password))) {
+    return next(new AppError("Incorrect Email or Password", 401));
+  }
   if (!user.active) {
     return res.status(401).send({
       message: "Pending Account. Please Verify Your Email!",
     });
-  }
-  if (!user || !(await user.correctPassword(password, user.password))) {
-    return next(new AppError("Incorrect Email or Password", 401));
   }
   const token = signToken(user._id);
   // 3. If everything ok, send token to client
@@ -134,18 +139,19 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   const name = user.name
   const email = user.email
   const action = "reset your password"
+  const subject = "Reset Password Mail from Colafee"
   const action2 = "Change Password"
   try {
-    await sendVerificationEmail(name, email, token, action, action2)
+    await sendVerificationEmail(name, email, subject, newToken, action, action2)
     res.status(200).json({
       status: "success",
-      message: "Token send to email.Click the link and Enter new Password!",
+      message: "Reset Password Link send to registered email.Click the link and Enter new Password!",
     });
   } catch (err) {
     return next(
       new AppError(
         "There was an error sending the email. Try again later!",
-        500
+        401
       )
     );
   }

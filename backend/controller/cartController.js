@@ -50,7 +50,6 @@ exports.removeProduct= catchAsync(async(req, res, next) => {
     {$pull : { items: { productId: req.params.id } }},
     { new: true }
   );
-  console.log(updatedCart, "bybybybybybyb");
 }) 
 exports.addToCart = catchAsync(async (req, res, next) => {
   let carts = await Cart.findOne({ userId: req.body.userId });

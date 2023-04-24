@@ -2,155 +2,262 @@
   <div class="col-xs-12">
     <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
       <legend>PRODUCTS</legend>
-
-      <div class="form-group">
-        <label class="col-md-4 control-label" for="product_name"
-          >PRODUCT NAME</label
-        >
-        <div class="col-md-4">
-          <input
-            class="form-control"
-            type="text"
-            id="name"
-            formControlName="name"
-          />
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="col-md-4 control-label" for="product_description"
-          >PRODUCT DESCRIPTION</label
-        >
-        <div class="col-md-4">
-          <input
-            class="form-control"
-            type="text"
-            id="description"
-            formControlName="description"
-          />
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="col-md-4 control-label" for="product_categories"
-          >PRODUCT CATEGORY</label
-        >
-        <div class="col-md-4">
-          <input
-            class="form-control"
-            type="text"
-            id="category"
-            formControlName="category"
-          />
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="col-md-4 control-label" for="product_brand"
-          >PRODUCT BRAND</label
-        >
-        <div class="col-md-4">
-          <input
-            class="form-control"
-            type="text"
-            id="brand"
-            formControlName="brand"
-          />
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="col-md-4 control-label" for="product_price"
-          >PRODUCT PRICE</label
-        >
-        <div class="col-md-4">
-          <input
-            class="form-control"
-            type="number"
-            id="price"
-            formControlName="price"
-          />
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="col-md-4 control-label" for="product_discountPrice"
-          >DISCOUNT PRICE</label
-        >
-        <div class="col-md-4">
-          <input
-            class="form-control"
-            type="number"
-            id="discountPrice"
-            formControlName="discountPrice"
-          />
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="col-md-4 control-label" for="stock">STOCK</label>
-        <div class="col-md-4">
-          <input
-            class="form-control"
-            type="number"
-            id="stock"
-            formControlName="stock"
-          />
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-md-4 control-label" for="totalStock"
-          >TOTAL STOCK</label
-        >
-        <div class="col-md-4">
-          <input
-            class="form-control"
-            type="number"
-            id="totalStock"
-            formControlName="totalStock"
-          />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="form-group">
-            <label for="mainImage">MainImageURL</label>
+      <div formGroupName="productData">
+        <div class="form-group">
+          <label class="col-md-4 control-label">PRODUCT NAME</label>
+          <div class="col-md-4">
             <input
-              type="file"
               class="form-control"
-              formControlName="mainImage"
-              #mainImage
-              accept="image/jpeg" 
-            />
-            <h5>Or</h5>
-            <input
               type="text"
-              class="form-control"
-              formControlName="mainImage"
-              placeholder="Insert a link here to add the image"
-              #mainImage
+              id="name"
+              formControlName="name"
             />
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <img [src]="mainImage.value" class="img-responsive" alt="" />
+
+        <div class="form-group">
+          <label class="col-md-4 control-label">PRODUCT DESCRIPTION</label>
+          <div class="col-md-4">
+            <input
+              class="form-control"
+              type="text"
+              id="description"
+              formControlName="description"
+            />
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <button
-            type="submit"
-            class="btn btn-success"
-            
+
+        <div class="form-group">
+          <label class="col-md-4 control-label">PRODUCT CATEGORY</label>
+          <select id="category" formControlName="category">
+            <option value="">Select a category</option>
+            <option value="smartphones">SmartPhones</option>
+            <option value="laptops">Laptops</option>
+            <option value="skincare">SkinCare</option>
+          </select>
+          <div
+            *ngIf="
+              !productForm.get('productData.category')!.valid &&
+              (productForm.get('productData.category')!.dirty ||
+                productForm.get('productData.category')!.touched)
+            "
           >
-            Save
-          </button>
-          |
-          <button type="button" class="btn btn-danger" (click)="onCancel()">
-            Cancel
-          </button>
+            <div
+              *ngIf="
+                productForm.get('productData.category');
+                $any: errors['required']
+              "
+            >
+              Category is required.
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-4 control-label">PRODUCT BRAND</label>
+          <select id="category" formControlName="category">
+            <option value="">Select a brand</option>
+            <option value="">Apple</option>
+            <option value="">Samsung</option>
+            <option value="">Oppo</option>
+            <option value="">Dermive</option>
+          </select>
+          <div
+            *ngIf="
+              !productForm.get('productData.brand')!.valid &&
+              (productForm.get('productData.brand')!.dirty ||
+                productForm.get('productData.brand')!.touched)
+            "
+          >
+            <div
+              *ngIf="
+                productForm.get('productData.brand');
+                $any: errors['required']
+              "
+            >
+              Brand is required.
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-4 control-label">PRODUCT PRICE</label>
+          <div class="col-md-4">
+            <input
+              class="form-control"
+              type="number"
+              id="price"
+              formControlName="price"
+            />
+          </div>
+          <div
+            *ngIf="
+              !productForm.get('productData.price')!.valid &&
+              (productForm.get('productData.price')!.dirty ||
+                productForm.get('productData.price')!.touched)
+            "
+          >
+            <div
+              *ngIf="
+                productForm.get('productData.price');
+                $any: errors['required']
+              "
+            >
+              Price is required.
+            </div>
+            <div
+              *ngIf="
+                productForm.get('productData.price');
+                $any: errors['pattern']
+              "
+            >
+              Price must be a valid number with up to 2 decimal places.
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-4 control-label">DISCOUNT PRICE</label>
+          <div class="col-md-4">
+            <input
+              class="form-control"
+              type="number"
+              id="discountPrice"
+              formControlName="discountPrice"
+            />
+          </div>
+          <div
+            *ngIf="
+              !productForm.get('productData.discountPrice')!.valid &&
+              (productForm.get('productData.discountPrice')!.dirty ||
+                productForm.get('productData.discountPrice')!.touched)
+            "
+          >
+            <div
+              *ngIf="
+                productForm.get('productData.discountPrice');
+                $any: errors['required']
+              "
+            >
+              Price is required.
+            </div>
+            <div
+              *ngIf="
+                productForm.get('productData.discountPrice');
+                $any: errors['pattern']
+              "
+            >
+              Price must be a valid number with up to 2 decimal places.
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-4 control-label">STOCK</label>
+          <div class="col-md-4">
+            <input
+              class="form-control"
+              type="number"
+              id="stock"
+              formControlName="stock"
+            />
+          </div>
+          <div
+            *ngIf="
+              !productForm.get('productData.stock')!.valid &&
+              (productForm.get('productData.stock')!.dirty ||
+                productForm.get('productData.stock')!.touched)
+            "
+          >
+            <div
+              *ngIf="
+                productForm.get('productData.stock');
+                $any: errors['required']
+              "
+            >
+              Stock Quantity is required.
+            </div>
+            <div
+              *ngIf="productForm.get('productData.stock'); $any: errors['min']"
+            >
+              Stock Quantity must be greater than or equal to 0.
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="mainImage">MainImageURL</label>
+              <input
+                type="file"
+                accept="image/jpeg"
+                class="form-control"
+                formControlName="mainImage"
+                #mainImage
+              />
+              <div *ngIf="mainImage.value" class="mt-2">
+                <img [src]="mainImage.value" class="img-fluid" alt="Preview" />
+              </div>
+            </div>
+            <div
+              *ngIf="
+                !productForm.get('productData.mainImage')!.valid &&
+                (productForm.get('productData.mainImage')!.dirty ||
+                  productForm.get('productData.mainImage')!.touched)
+              "
+              class="invalid-feedback d-block"
+            >
+              <div
+                *ngIf="
+                  productForm.get('productData.mainImage');
+                  $any: errors['required']
+                "
+              >
+                Main image is required
+              </div>
+              <div
+                *ngIf="
+                  productForm.get('productData.mainImage');
+                  $any: errors['invalidFileType']
+                "
+              >
+                Invalid file type, only jpeg images are allowed
+              </div>
+              <div
+                *ngIf="
+                  productForm.get('productData.mainImage');
+                  $any: errors['invalidFileSize']
+                "
+              >
+                File size should be less than 1 MB
+              </div>
+              <div
+                *ngIf="
+                  productForm.get('productData.mainImage');
+                  $any: errors['invalidImageSize']
+                "
+              >
+                Image dimensions should be at least 300x300 pixels
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <button
+              type="submit"
+              class="btn btn-success"
+              [disabled]="productForm.invalid"
+            >
+              Save
+            </button>
+            > |
+            <button type="button" class="btn btn-danger" (click)="onCancel()">
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </form>

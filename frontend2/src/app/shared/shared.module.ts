@@ -1,3 +1,4 @@
+import { LoadingSpinnerComponent } from './loading-spinners/loading.spinners.component';
 import { DropdownDirective } from './dropdown-directive';
 import { FilterPipe } from './pipes/filter.pipe';
 import { CommonModule } from '@angular/common';
@@ -10,12 +11,14 @@ import { PlaceHolderDirective } from './placeHolderDirective/placeholder.Directi
     AlertComponent,
     PlaceHolderDirective,
     DropdownDirective,
+    LoadingSpinnerComponent,
     FilterPipe,
   ],
   imports: [CommonModule],
   exports: [
     AlertComponent,
     PlaceHolderDirective,
+    LoadingSpinnerComponent,
     DropdownDirective,
     CommonModule,
     FilterPipe,

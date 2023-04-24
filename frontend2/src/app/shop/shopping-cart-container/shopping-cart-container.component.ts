@@ -61,6 +61,7 @@ export class ShoppingCartContainerComponent implements OnInit {
   }
   removeItem(item: OrderItem) {
     this.store.dispatch(new ShoppingListActions.RemoveProductFromCart(item.productId))
+    console.log(this.cart, "hello")
   }
   checkout() {
     this.store.dispatch(new ShoppingListActions.CartCheckout({items :this.cart,name: this.name, email: this.email, totalPrice : this.totalDiscountPrice, totalQuantity: this.totalQuantity, totalItems: this.totalItems}))

@@ -132,9 +132,8 @@ export class ProductListComponent implements OnInit {
       });
     }
     if (e.key === 'Backspace' || e.keyCode === 8) {
-      // console.log(this.searchStr, " Heloosdfasdfsafadf")
+      console.log(e)
       if (this.searchStr === '') {
-        console.log(this.searchStr, ' Heloosdfasdfsafadf');
         this.clear();
       }
     }

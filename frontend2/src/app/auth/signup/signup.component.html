@@ -115,16 +115,7 @@
                       ng-message="pattern"
                       *ngIf="!confirmPassword.valid && confirmPassword.touched"
                     >
-                      Password is required
-                    </span>
-                    <span
-                      class="text-danger"
-                      ng-message="pattern"
-                      *ngIf="confirmPassword.errors?.['pattern']"
-                    >
-                      Password must contain at least one number, one uppercase
-                      and a lowercase letter and at least 8 characters<br />Password
-                      cannot contain whitespace
+                      confirm password is required
                     </span>
                     <span
                       class="text-danger"

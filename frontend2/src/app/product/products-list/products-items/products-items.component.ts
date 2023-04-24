@@ -29,7 +29,6 @@ export class ProductsItemsComponent {
         this.admin = true;
       }
     });
-    this.store.select('shop').subscribe((shop) => console.log(shop))
   }
   onDetail() {
     this.router.navigate([`${this.productId}`], { relativeTo: this.route });

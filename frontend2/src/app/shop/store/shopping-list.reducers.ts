@@ -20,7 +20,7 @@ export function shoppingListReducer(
     case ShoppingCartActions.SAVE_USER_CART:
       return {
         ...state,
-        cart: [...state.cart, ...action.payload],
+        cart: [...action.payload],
       };
     case ShoppingCartActions.INCREMENT_CART_ITEM_QUANTITY:
       updatedCart = state.cart;

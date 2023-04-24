@@ -18,13 +18,14 @@ export class ShoppingCartEffects {
     return this.actions$.pipe(
       ofType(ShoppingListActions.ADD_PRODUCT_TO_CART),
       switchMap((shoppingListAction: ShoppingListActions.AddProductToCart) => {
-        return this.http.post<Products>(
+        return this.http.post<OrderItem[]>(
           'http://localhost:3000/api/v1/carts',
           shoppingListAction.payload
         );
       }),
-      map(resData=>{
+      map(cart=>{
          this.router.navigate(['/shop'])
+         return new ShoppingListActions.SaveUserCart(cart)
       })
     )
   },{dispatch:false});
