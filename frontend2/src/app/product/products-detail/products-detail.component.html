@@ -23,13 +23,9 @@
           <dt>Brand</dt>
           <dd class="text-capitalize">{{ product.brand }}</dd>
         </dl>
-        <dl class="param param-feature">
+        <dl class="param param-feature" style="margin-left: 10px">
           <dt>Category</dt>
           <dd>{{ product.category }}</dd>
-        </dl>
-        <dl class="param param-feature">
-          <dt>Total Stock</dt>
-          <dd>{{ product.totalStock }}</dd>
         </dl>
       </div>
       <div class="features-details">
@@ -37,12 +33,14 @@
           <dt>DiscountPrice</dt>
           <dd>{{ product.discountPrice }}</dd>
         </dl>
-        <dl class="param param-feature">
+        <dl class="param param-feature" style="margin-left: 10px">
           <dt>Stock</dt>
           <dd>{{ product.stock }}</dd>
         </dl>
       </div>
-      <div style="display: flex" width:10px>
+      <div *ngIf="product.inStock">
+      <div style="display: flex" width:10px >
+        
         <label>Quantity : </label>
         <button
           class="btn btn-outline-secondary"
@@ -56,7 +54,12 @@
           class="form-control text-center"
           style="width: 44px"
           [(ngModel)]="product.quantity"
-          readonly
+          pattern="[1-9][0-9]*"
+          min="1"
+          [max]="product.stock"
+          #quantityInput="ngModel"
+          (input)="onChange($event)"
+          required
         />
         <button
           class="btn btn-outline-secondary"
@@ -65,14 +68,28 @@
         >
           -
         </button>
+        <div class="text-danger" *ngIf="quantityInput.invalid && (quantityInput.dirty || quantityInput.touched)">
+          <div *ngIf="quantityInput.errors?.['required']">
+            Quantity is required.
+          </div>
+          <div *ngIf="quantityInput.errors?.['pattern']">
+            Quantity must be a positive number.
+          </div>
+        </div>
       </div>
       <hr />
+      <div>
       <button
         (click)="onAddProductToCart()"
-        class="btn btn-lg btn-outline-primary text-uppercase"
+        class="btn btn-success btn-outline-primary text-uppercase" [disabled]="quantityInput.invalid"
       >
         <i class="fa fa-shopping-cart"></i> Add to cart
       </button>
+      </div>
+    </div>
+      <div *ngIf="!product.inStock">
+        <h1 class="text-danger">Out of Stock</h1>
+    </div>
     </article>
   </div>
 </div>

@@ -50,6 +50,10 @@ export function shoppingListReducer(
 
     case ShoppingCartActions.REMOVE_PRODUCT_FROM_CART:
       updatedCart= state.cart.filter((item: any) => {
+        console.log(item)
+        // if(item.length === 0){
+        //   return null
+        // }
         return item.productId !== action.payload;
       });
       return {

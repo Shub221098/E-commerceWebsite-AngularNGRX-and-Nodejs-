@@ -2,9 +2,8 @@
   <div class="col-xs-12">
     <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
       <legend>PRODUCTS</legend>
-      <div formGroupName="productData">
         <div class="form-group">
-          <label class="col-md-4 control-label">PRODUCT NAME</label>
+          <label class="col-md-12 control-label">PRODUCT NAME</label>
           <div class="col-md-4">
             <input
               class="form-control"
@@ -13,11 +12,27 @@
               formControlName="name"
             />
           </div>
+          <div class="text-danger"
+            *ngIf="
+              !productForm.get('name')!.valid &&
+              (productForm.get('name')!.dirty ||
+                productForm.get('name')!.touched)
+            "
+          >
+            <div
+              *ngIf="
+                productForm.get('name');
+                $any: errors['required']
+              "
+            >
+              Name is required.
+            </div>
+          </div>
         </div>
 
         <div class="form-group">
-          <label class="col-md-4 control-label">PRODUCT DESCRIPTION</label>
-          <div class="col-md-4">
+          <label class="col-md-12 control-label">PRODUCT DESCRIPTION</label>
+          <div class="col-md-12">
             <input
               class="form-control"
               type="text"
@@ -25,26 +40,39 @@
               formControlName="description"
             />
           </div>
-        </div>
-
-        <div class="form-group">
-          <label class="col-md-4 control-label">PRODUCT CATEGORY</label>
-          <select id="category" formControlName="category">
-            <option value="">Select a category</option>
-            <option value="smartphones">SmartPhones</option>
-            <option value="laptops">Laptops</option>
-            <option value="skincare">SkinCare</option>
-          </select>
-          <div
+          <div class="text-danger"
             *ngIf="
-              !productForm.get('productData.category')!.valid &&
-              (productForm.get('productData.category')!.dirty ||
-                productForm.get('productData.category')!.touched)
+              !productForm.get('description')!.valid &&
+              (productForm.get('description')!.dirty ||
+                productForm.get('description')!.touched)
             "
           >
             <div
               *ngIf="
-                productForm.get('productData.category');
+                productForm.get('description');
+                $any: errors['required']
+              "
+            >
+              Description is required.
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-4 control-label">PRODUCT CATEGORY</label> 
+          <select id="category" style="display:flex; justify-content: space-between;" formControlName="category">
+            <option *ngFor="let category of categories" [value]="category">{{category}}</option>
+          </select>
+          <div class="text-danger"
+            *ngIf="
+              !productForm.get('category')!.valid &&
+              (productForm.get('category')!.dirty ||
+                productForm.get('category')!.touched)
+            "
+          >
+            <div
+              *ngIf="
+                productForm.get('category');
                 $any: errors['required']
               "
             >
@@ -55,23 +83,20 @@
 
         <div class="form-group">
           <label class="col-md-4 control-label">PRODUCT BRAND</label>
-          <select id="category" formControlName="category">
-            <option value="">Select a brand</option>
-            <option value="">Apple</option>
-            <option value="">Samsung</option>
-            <option value="">Oppo</option>
-            <option value="">Dermive</option>
+          <select id="brand" formControlName="brand">
+            <option value=""></option>
+            <option *ngFor="let brand of brands" [value]="brand">{{brand}}</option>
           </select>
-          <div
+          <div class="text-danger"
             *ngIf="
-              !productForm.get('productData.brand')!.valid &&
-              (productForm.get('productData.brand')!.dirty ||
-                productForm.get('productData.brand')!.touched)
+              !productForm.get('brand')!.valid &&
+              (productForm.get('brand')!.dirty ||
+                productForm.get('brand')!.touched)
             "
           >
             <div
               *ngIf="
-                productForm.get('productData.brand');
+                productForm.get('brand');
                 $any: errors['required']
               "
             >
@@ -85,21 +110,21 @@
           <div class="col-md-4">
             <input
               class="form-control"
-              type="number"
+              type="text"
               id="price"
               formControlName="price"
             />
           </div>
-          <div
+          <div class="text-danger"
             *ngIf="
-              !productForm.get('productData.price')!.valid &&
-              (productForm.get('productData.price')!.dirty ||
-                productForm.get('productData.price')!.touched)
+              !productForm.get('price')!.valid &&
+              (productForm.get('price')!.dirty ||
+                productForm.get('price')!.touched)
             "
           >
             <div
               *ngIf="
-                productForm.get('productData.price');
+                productForm.get('price');
                 $any: errors['required']
               "
             >
@@ -107,7 +132,7 @@
             </div>
             <div
               *ngIf="
-                productForm.get('productData.price');
+                productForm.get('price');
                 $any: errors['pattern']
               "
             >
@@ -121,29 +146,29 @@
           <div class="col-md-4">
             <input
               class="form-control"
-              type="number"
+              type="text"
               id="discountPrice"
               formControlName="discountPrice"
             />
           </div>
-          <div
+          <div class="text-danger"
             *ngIf="
-              !productForm.get('productData.discountPrice')!.valid &&
-              (productForm.get('productData.discountPrice')!.dirty ||
-                productForm.get('productData.discountPrice')!.touched)
+              !productForm.get('discountPrice')!.valid &&
+              (productForm.get('discountPrice')!.dirty ||
+                productForm.get('discountPrice')!.touched)
             "
           >
             <div
               *ngIf="
-                productForm.get('productData.discountPrice');
+                productForm.get('discountPrice');
                 $any: errors['required']
               "
             >
-              Price is required.
+              discountPrice is required.
             </div>
             <div
               *ngIf="
-                productForm.get('productData.discountPrice');
+                productForm.get('discountPrice');
                 $any: errors['pattern']
               "
             >
@@ -152,33 +177,33 @@
           </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" >
           <label class="col-md-4 control-label">STOCK</label>
           <div class="col-md-4">
             <input
               class="form-control"
-              type="number"
+              type="text"
               id="stock"
               formControlName="stock"
             />
           </div>
-          <div
+          <div class="text-danger"
             *ngIf="
-              !productForm.get('productData.stock')!.valid &&
-              (productForm.get('productData.stock')!.dirty ||
-                productForm.get('productData.stock')!.touched)
+              !productForm.get('stock')!.valid &&
+              (productForm.get('stock')!.dirty ||
+                productForm.get('stock')!.touched)
             "
           >
             <div
               *ngIf="
-                productForm.get('productData.stock');
+                productForm.get('stock');
                 $any: errors['required']
               "
             >
               Stock Quantity is required.
             </div>
             <div
-              *ngIf="productForm.get('productData.stock'); $any: errors['min']"
+              *ngIf="productForm.get('stock'); $any: errors['min']"
             >
               Stock Quantity must be greater than or equal to 0.
             </div>
@@ -188,29 +213,29 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
-              <label for="mainImage">MainImageURL</label>
+              <label for="mainImage">Image</label>
               <input
                 type="file"
-                accept="image/jpeg"
+                accept="image/jpg"
                 class="form-control"
                 formControlName="mainImage"
-                #mainImage
+                #image
               />
-              <div *ngIf="mainImage.value" class="mt-2">
-                <img [src]="mainImage.value" class="img-fluid" alt="Preview" />
+              <div *ngIf="image.value" class="mt-2">
+                <img [src]="image" class="img-fluid" alt="" />
               </div>
             </div>
-            <div
+            <div class="text-danger"
               *ngIf="
-                !productForm.get('productData.mainImage')!.valid &&
-                (productForm.get('productData.mainImage')!.dirty ||
-                  productForm.get('productData.mainImage')!.touched)
+                !productForm.get('mainImage')!.valid &&
+                (productForm.get('mainImage')!.dirty ||
+                  productForm.get('mainImage')!.touched)
               "
               class="invalid-feedback d-block"
             >
               <div
                 *ngIf="
-                  productForm.get('productData.mainImage');
+                  productForm.get('mainImage.value');
                   $any: errors['required']
                 "
               >
@@ -218,7 +243,7 @@
               </div>
               <div
                 *ngIf="
-                  productForm.get('productData.mainImage');
+                  productForm.get('mainImage.value');
                   $any: errors['invalidFileType']
                 "
               >
@@ -226,20 +251,13 @@
               </div>
               <div
                 *ngIf="
-                  productForm.get('productData.mainImage');
+                  productForm.get('mainImage.value');
                   $any: errors['invalidFileSize']
                 "
               >
                 File size should be less than 1 MB
               </div>
-              <div
-                *ngIf="
-                  productForm.get('productData.mainImage');
-                  $any: errors['invalidImageSize']
-                "
-              >
-                Image dimensions should be at least 300x300 pixels
-              </div>
+              
             </div>
           </div>
         </div>
@@ -253,13 +271,12 @@
             >
               Save
             </button>
-            > |
+             |
             <button type="button" class="btn btn-danger" (click)="onCancel()">
               Cancel
             </button>
           </div>
         </div>
-      </div>
     </form>
   </div>
 </div>

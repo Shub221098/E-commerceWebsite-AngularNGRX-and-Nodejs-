@@ -13,6 +13,7 @@ import { CoreModule } from '../core.module';
 // import { ProductSliderDotsComponent } from './products-slider-dots/products-slider-dots.component';
 import { ProductsItemsComponent } from './products-list/products-items/products-items.component';
 import { ProductRoutingModule } from './products.routing.module';
+import { ProductListingComponent } from './products-list/admin-product-listing.component.ts/product-listing.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { ProductRoutingModule } from './products.routing.module';
     ProductsItemsComponent,
     ProductEditComponent,
     ProductListComponent,
+    ProductListingComponent,
   ],
   imports: [
     CommonModule,

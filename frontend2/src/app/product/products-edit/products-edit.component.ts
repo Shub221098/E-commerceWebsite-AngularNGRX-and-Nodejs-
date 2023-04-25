@@ -11,6 +11,7 @@ import { Store } from '@ngrx/store';
 import { map, Subscription } from 'rxjs';
 import * as fromApp from '../../store/app.reducer';
 import * as ProductsActions from '../store/products.action';
+import { getBrand, getCategories } from '../store/products.selector';
 
 @Component({
   selector: 'app-products-edit',
@@ -20,7 +21,10 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   id: string;
   editMode = false;
   productForm: FormGroup;
+  categories : string[]
+  brands : string[]
   productImages = new FormArray<any>([]);
+  imageURL : string
   private storeSub: Subscription;
 
   constructor(
@@ -34,6 +38,13 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       this.editMode = params['id'] != null;
       this.inItForm();
     });
+    this.store.select(getCategories).subscribe((category) => {
+      this.categories = category
+      console.log(this.categories)
+    })
+    this.store.select(getBrand).subscribe((brand) => {
+      this.brands = brand
+    })
   }
 
   onCancel() {
@@ -95,7 +106,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       brand: new FormControl(productBrand, Validators.required),
       mainImage: new FormControl(mainImage, [
         Validators.required,
-        this.validateMainImage,
+        this.validateImage
       ]),
       price: new FormControl(productPrice, [
         Validators.required,
@@ -114,33 +125,34 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       this.storeSub.unsubscribe();
     }
   }
-  validateMainImage(control: FormControl) {
+  validateImage(control: FormControl) {
     const file = control.value;
     if (file) {
       const fileType = file.type;
-      if (fileType !== 'image/jpeg') {
+      if (fileType !== 'image/jpeg' || fileType !== 'image/jpg' || fileType !== 'image/png') {
         return { invalidFileType: true };
       }
       const fileSize = file.size;
       if (fileSize > 1 * 1024 * 1024) {
         return { invalidFileSize: true };
       }
-      const img = new Image();
-      img.src = window.URL.createObjectURL(file);
-      return new Promise((resolve) => {
-        img.onload = () => {
-          const width = img.naturalWidth;
-          const height = img.naturalHeight;
-          window.URL.revokeObjectURL(img.src);
-          if (width < 300 || height < 300) {
-            resolve({ invalidImageSize: true });
-          } else {
-            resolve(null);
-          }
-        };
-      });
-    } else {
-      return null;
     }
+    return null;
+  }
+  showPreview(event: any) {
+    const file = event.target?.files?.[0];
+    if (!file) {
+      return;
+    }
+    this.productForm.patchValue({
+      image: file
+    });
+    this.productForm.get('image')?.updateValueAndValidity();
+    // File Preview
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imageURL = reader.result as string;
+    };
+    reader.readAsDataURL(file);
   }
 }

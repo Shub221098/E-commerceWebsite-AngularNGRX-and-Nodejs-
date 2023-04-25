@@ -1,50 +1,41 @@
-<div class="card-product">
-  <a class="product__link" routerLink="[index]">
-    <img
-      src="https://images.pexels.com/photos/892760/pexels-photo-892760.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-      alt=""
-    />
+<div class="card-product" style="cursor:pointer" [routerLink]="products.id" [relativeTo]="route">
+  <a class="product__link">
+    <img [src]="products.mainImage" style="height:250px; width:248px" alt="" />
   </a>
-  
+
   <div class="card-body product__text">
     <h4 class="card-title product__title">
       <a>{{ products.name }}</a>
     </h4>
     <p class="card-text-paragraph">{{ products.description }}</p>
+    <div style="display: flex; justify-content: space-between">
+    <p style="color:	#4b0082">
+      {{ products.category }}
+    </p>
+    <p class="{{products.inStock ? 'text-success' : 'text-danger'}}">
+      {{products.inStock ? 'Available' : 'Out of Stock'}}
+    </p>
+  </div>
+    <div style="display:flex">
     <h5 class="product__price">
       {{ products.price | currency : "INR" : "symbol" : "1.2-2" }}
     </h5>
-    <h5 class="card-text">
+    <h5 class="card-text" style="padding-left: 5px">
       {{ products.discountPrice | currency : "INR" : "symbol" : "1.2-2" }}
     </h5>
+  </div>
     <div class="button-wrapper">
       <button
-        class="btn btn-info product__add-to-cart"
-        *ngIf="!admin"
+        class="btn btn-info product__add-to-cart" [disabled]="!products.inStock"
         (click)="onCart()"
       >
         Add to cart
       </button>
       <button
         class="btn btn-info product__add-to-cart"
-        *ngIf="!admin"
         (click)="onDetail()"
       >
         More Info
-      </button>
-      <button
-        class="btn btn-info product__add-to-cart"
-        *ngIf="admin"
-        (click)="onUpdate()"
-      >
-        Update
-      </button>
-      <button
-        class="btn btn-info product__add-to-cart"
-        *ngIf="admin"
-        (click)="onDelete()"
-      >
-        Delete
       </button>
     </div>
   </div>

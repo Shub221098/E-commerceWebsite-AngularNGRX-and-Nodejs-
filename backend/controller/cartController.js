@@ -15,13 +15,11 @@ exports.getUsersCart = catchAsync(async (req, res) => {
 exports.deleteCart = factory.deleteOne(Cart);
 
 exports.deleteQuantity = catchAsync(async (req, res) => {
-
   const updatedCart = await Cart.findOneAndUpdate(
     {
       "items.productId": req.params.id,
       userId: req.body.userId,
-      "items.totalProductQuantity": { $gt: 1 }
-
+      "items.totalProductQuantity": { $gt: 1 },
     },
     { $inc: { "items.$.totalProductQuantity": -1 } },
     { new: true }
@@ -29,31 +27,42 @@ exports.deleteQuantity = catchAsync(async (req, res) => {
 });
 
 exports.addQuantity = catchAsync(async (req, res) => {
-
   const updatedCart = await Cart.findOneAndUpdate(
     {
       "items.productId": req.params.id,
       userId: req.body.userId,
-      "items.totalProductQuantity": { $lt: 10 }
-
+      "items.totalProductQuantity": { $lt: 10 },
     },
     { $inc: { "items.$.totalProductQuantity": +1 } },
     { new: true }
   );
 });
-exports.removeProduct= catchAsync(async(req, res, next) => {
+exports.removeProduct = catchAsync(async (req, res, next) => {
   const updatedCart = await Cart.findOneAndUpdate(
     {
       "items.productId": req.params.id,
       userId: req.body.userId,
     },
-    {$pull : { items: { productId: req.params.id } }},
+    { $pull: { items: { productId: req.params.id } } },
     { new: true }
   );
-}) 
+});
 exports.addToCart = catchAsync(async (req, res, next) => {
   let carts = await Cart.findOne({ userId: req.body.userId });
-  if (carts) {
+  let product = await Cart.findOneAndUpdate(
+    { "items.productId": req.body.id, userId: req.body.userId },
+    { $inc: { "items.$.totalProductQuantity": req.body.quantity } },
+    { new: true }
+  );
+  if(product){
+    res.status(200).json({
+      status: "success",
+      data: {
+        data: carts,
+      },
+    });
+  }
+  if (!product && carts) {
     let cart = {
       productId: req.body.id,
       productName: req.body.name,

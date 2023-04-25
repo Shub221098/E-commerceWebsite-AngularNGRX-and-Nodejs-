@@ -12,3 +12,12 @@ export const getCategories = createSelector(selectState, (state) =>
     )
   )
 );
+export const getBrand = createSelector(selectState, (state) =>
+  Array.from(
+    new Set(
+      state.products.map((product) => {
+        return product.brand;
+      })
+    )
+  )
+);

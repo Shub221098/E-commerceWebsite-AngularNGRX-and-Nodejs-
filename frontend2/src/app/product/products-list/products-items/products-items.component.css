@@ -2,6 +2,7 @@
   width: 250px;
   border: 1px solid rgb(205 205 205 / 43%);
   box-shadow: 4px 4px 10px #e1e1e1;
+  margin-bottom : 30px
 }
 
 .card-product .product__link img {

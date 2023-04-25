@@ -17,18 +17,19 @@ export class ProductsItemsComponent {
   @Input() index: number;
   @Input() productId: string;
   @Input() category : string
-  admin: boolean = false;
+  message : string
   constructor(
     private store: Store<fromApp.AppState>,
     private router: Router,
-    private route: ActivatedRoute
+    public route: ActivatedRoute
   ) {}
   ngOnInit() {
-    this.store.select(getRole).subscribe((role) => {
-      if (role === 'admin') {
-        this.admin = true;
-      }
-    });
+    if(this.products.stock === 0){
+      this.message = 'Out of Stock'
+    }
+    else{
+      this.message = 'Active'
+    }
   }
   onDetail() {
     this.router.navigate([`${this.productId}`], { relativeTo: this.route });

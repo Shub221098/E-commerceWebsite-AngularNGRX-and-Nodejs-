@@ -1,0 +1,45 @@
+<div style="display: flex; justify-content: space-between">
+  <div><h1>All Products</h1></div>
+
+  <div class="row">
+    <button class="btn btn-success" routerLink="new">Add New Product</button>
+  </div>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Brand</th>
+      <th>Price</th>
+      <th>DiscountPrice</th>
+      <th>Qty</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of products">
+      <td>
+        <img
+          [src]="product.mainImage"
+          alt="{{ product.name }}"
+          style="height: 70px; width: 70px"
+        />
+      </td>
+      <td>{{ product.name }}</td>
+      <td>{{ product.category }}</td>
+      <td>{{ product.brand }}</td>
+      <td>{{ product.price }}</td>
+      <td>{{ product.discountPrice }}</td>
+      <td>{{ product.stock }}</td>
+      <td class="text-success" *ngIf="product.stock !== 0">Active</td>
+      <td class="text-danger" *ngIf="product.stock === 0">Out of Stock</td>
+      <td>
+        <button class="btn btn-primary" (click)="onUpdate()">Update</button> |
+        <button class="btn btn-danger" (click)="onDelete()">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

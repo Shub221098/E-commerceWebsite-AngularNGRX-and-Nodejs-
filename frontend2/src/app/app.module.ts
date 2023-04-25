@@ -18,10 +18,12 @@ import { environment } from 'src/environment/environment.prod';
 import { HomeComponent } from './home/home.component';
 import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [AppComponent, HeaderComponent, HomeComponent],
   imports: [
     BrowserModule.withServerTransition({ appId: 'my-app' }),
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     SharedModule,

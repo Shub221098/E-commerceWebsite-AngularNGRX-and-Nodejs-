@@ -18,7 +18,7 @@ export function productsReducer(
     const updated1 = state.products.map((item: any) => {
       if (item.id == action.payload) {
         let updatedItem = JSON.parse(JSON.stringify(item));
-        if (updatedItem.quantity < 10)
+        if (updatedItem.quantity < updatedItem.stock)
           updatedItem.quantity += 1;
         return updatedItem;
       }
@@ -40,11 +40,11 @@ export function productsReducer(
     return { ...state, products: updated2 };
 
 
-    case ProductActions.MAINTAIN_QUANTITY: 
+    case ProductActions.UPDATE_QUANTITY: 
     const updated3 = state.products.map((item: any) => {
-      if (item.id == action.payload) {
+      if (item.id == action.payload.id) {
         let updatedItem = JSON.parse(JSON.stringify(item));
-        updatedItem.quantity = 1
+        updatedItem.quantity = action.payload.quantity
         return updatedItem;
       }
       return item;

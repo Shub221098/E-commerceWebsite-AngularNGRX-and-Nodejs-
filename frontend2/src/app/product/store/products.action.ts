@@ -9,7 +9,7 @@ export const UPDATE_PRODUCT = '[Products] Update Product';
 export const STORE_PRODUCTS = '[Products] Store Products';
 export const ADD_QUANTITY = '[Products] Add Quantity';
 export const REMOVE_QUANTITY = '[Products] Remove Quantity';
-export const MAINTAIN_QUANTITY = '[Products] Maintain Quantity'
+export const UPDATE_QUANTITY = '[Products] Update Quantity'
 export class SaveNewProducts implements Action {
   readonly type = SAVE_NEW_PRODUCTS;
   constructor(public payload: Products[] | any) {
@@ -25,9 +25,9 @@ export class RemoveQuantity implements Action {
   constructor(public payload: string) {
   }
 }
-export class MaintainQuantity implements Action {
-  readonly type = MAINTAIN_QUANTITY;
-  constructor(public payload: string) {
+export class UpdateQuantity implements Action {
+  readonly type = UPDATE_QUANTITY;
+  constructor(public payload: {id: string, quantity: number}) {
   }
 }
 export class GetProducts implements Action {
@@ -49,7 +49,7 @@ export class StoreProducts implements Action {
   readonly type = STORE_PRODUCTS;
 }
 export type ProductActions =
-  AddQuantity| RemoveQuantity | MaintainQuantity
+  AddQuantity| RemoveQuantity | UpdateQuantity
   | SaveNewProducts
   | GetProducts
   | DeleteProducts
