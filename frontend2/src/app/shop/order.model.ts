@@ -1,5 +1,5 @@
 export interface Orders {
-    items: OrderItem[];
+    items: OrderItem[] | null;
     name: string;
     email: string;
     totalPrice :number;

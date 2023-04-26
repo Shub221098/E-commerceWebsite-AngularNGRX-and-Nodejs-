@@ -7,12 +7,18 @@ exports.setProductUserIds = (req, res, next) => {
   console.log(req.body.userId);
   next();
 };
-
+exports.updateCart = catchAsync(async (req, res) => {
+  const updatedCart = await Cart.findOneAndUpdate(
+    { userId: req.body.userId },
+    { $set: { items: [] } },
+    { new: true }
+  );
+  console.log(updatedCart)
+});
 exports.getUsersCart = catchAsync(async (req, res) => {
   const data = await Cart.findOne({ userId: req.params.userId });
   return res.json(data.items);
 });
-exports.deleteCart = factory.deleteOne(Cart);
 
 exports.deleteQuantity = catchAsync(async (req, res) => {
   const updatedCart = await Cart.findOneAndUpdate(
@@ -24,6 +30,7 @@ exports.deleteQuantity = catchAsync(async (req, res) => {
     { $inc: { "items.$.totalProductQuantity": -1 } },
     { new: true }
   );
+  
 });
 
 exports.addQuantity = catchAsync(async (req, res) => {
@@ -46,6 +53,12 @@ exports.removeProduct = catchAsync(async (req, res, next) => {
     { $pull: { items: { productId: req.params.id } } },
     { new: true }
   );
+  if (updatedCart.items.length === 0) {
+    res.status(200).json({
+      status: "success",
+      message: null,
+    });
+  }
 });
 exports.addToCart = catchAsync(async (req, res, next) => {
   let carts = await Cart.findOne({ userId: req.body.userId });
@@ -54,15 +67,15 @@ exports.addToCart = catchAsync(async (req, res, next) => {
     { $inc: { "items.$.totalProductQuantity": req.body.quantity } },
     { new: true }
   );
-  if(product){
+  console.log(product,  carts)
+  if (product) {
     res.status(200).json({
       status: "success",
       data: {
         data: carts,
       },
     });
-  }
-  if (!product && carts) {
+  } else if (!product && carts) {
     let cart = {
       productId: req.body.id,
       productName: req.body.name,

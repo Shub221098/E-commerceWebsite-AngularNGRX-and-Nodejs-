@@ -2,7 +2,7 @@ const catchAsync = require("../catchAsync");
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const User = require("../model/user.model");
-const AppError = require("../appError");
+const appError = require("../appError");
 const sendVerificationEmail = require("../email");
 const crypto = require("crypto");
 
@@ -26,7 +26,7 @@ const createSendToken = (user, statusCode, res) => {
 exports.signup = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
   if (user) {
-    return next(new AppError("This email is already registered.", 403));
+    return next(new appError("This email is already registered.", 403));
   }
   const newUser = await User.create(req.body);
   const token = signToken(newUser._id);
@@ -53,7 +53,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     newUser.passwordResetExpires = undefined;
     await newUser.save({ validateBeforeSave: false });
     return next(
-      new AppError(
+      new appError(
         "There was an error sending the email. Try again later!",
         500
       )
@@ -76,7 +76,7 @@ exports.verifyEmail = catchAsync(async (req, res, next) => {
   });
   // 2. If token has not expired, and there is a user , set a verifyUser
   if (!user) {
-    return next(new AppError("Token is invalid or has expired", 400));
+    return next(new appError("Token is invalid or has expired", 400));
   }
   user.active = true;
   user.passwordResetToken = undefined;
@@ -99,12 +99,12 @@ exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
   // 1. Check if email and password exist
   if (!email || !password) {
-    return next(new AppError("Please provide email and password!", 400));
+    return next(new appError("Please provide email and password!", 400));
   }
   // 2. Check if user exists && password is correct
   const user = await User.findOne({ email }).select("+password");
   if (!user || !(await user.correctPassword(password, user.password))) {
-    return next(new AppError("Incorrect Email or Password", 401));
+    return next(new appError("Incorrect Email or Password", 401));
   }
   if (!user.active) {
     return res.status(401).send({
@@ -125,7 +125,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   // 1. Get User based on Posted Email
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
-    return next(new AppError("There is no user with email address", 404));
+    return next(new appError("There is no user with email address", 404));
   }
   // 2. Generate the random reset token
   const newToken = user.createPasswordResetToken();
@@ -149,7 +149,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     });
   } catch (err) {
     return next(
-      new AppError(
+      new appError(
         "There was an error sending the email. Try again later!",
         401
       )
@@ -173,7 +173,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   if (!user) {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
-    return next(new AppError("Token is invalid or has expired", 400));
+    return next(new appError("Token is invalid or has expired", 400));
   }
   user.password = req.body.password;
   user.passwordConfirm = req.body.password;
@@ -192,7 +192,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   // 2. Checked if posted current password is correct
   if (req.body.password !== req.body.passwordConfirm) {
     return next(
-      new AppError(
+      new appError(
         "Your current password and confirm password does'nt match",
         401
       )
@@ -200,7 +200,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   }
   console.log("true");
   if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
-    return next(new AppError("Your current password is wrong", 401));
+    return next(new appError("Your current password is wrong", 401));
   }
   // 3. If so, update password
   user.password = req.body.password;
@@ -225,7 +225,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
   if (!token) {
     return next(
-      new AppError("You are not logged in. Please login to get access", 401)
+      new appError("You are not logged in. Please login to get access", 401)
     );
   }
   // 2. Verification token
@@ -235,7 +235,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   const currentUser = await User.findById(decoded.id);
   if (!currentUser) {
     return next(
-      new AppError("The user belonging to this token does not exist.", 401)
+      new appError("The user belonging to this token does not exist.", 401)
     );
   }
   req.user = currentUser;
@@ -246,7 +246,7 @@ exports.restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return next(
-        new AppError("You do not have permission to perform this action", 403)
+        new appError("You do not have permission to perform this action", 403)
       );
     }
     next();

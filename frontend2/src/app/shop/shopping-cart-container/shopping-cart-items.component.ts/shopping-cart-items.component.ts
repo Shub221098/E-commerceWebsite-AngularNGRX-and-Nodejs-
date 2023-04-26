@@ -13,12 +13,16 @@ import { OrderItem } from '../../shop.model';
   templateUrl: './shopping-cart-items.component.html',
 })
 export class ShoppingCartItemsComponent implements OnInit {
-  @Input() item : OrderItem
+  @Input() items : OrderItem[]|null
   constructor(private store: Store<fromApp.AppState>) {}
     ngOnInit(){
     }
 
   removeItem(id : string) {
+    if(this.items?.length ===1){
+      this.items = null
+      this.store.dispatch(new ShoppingListActions.UpdateCartAfterCheckout(this.items))
+    }
     this.store.dispatch(new ShoppingListActions.RemoveProductFromCart(id))
   }
   onIncrementCartItem(id: string) {
@@ -27,5 +31,8 @@ export class ShoppingCartItemsComponent implements OnInit {
   }
   onDecrementCartItem(id : string) {
     this.store.dispatch(new ShoppingListActions.DecrementItemQuantity(id))
+  }
+  onChange(event: any){
+
   }
 }

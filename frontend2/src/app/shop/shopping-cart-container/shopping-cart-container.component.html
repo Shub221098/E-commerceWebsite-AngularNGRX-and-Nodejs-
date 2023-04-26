@@ -1,37 +1,43 @@
-<div class="table-responsive" *ngIf="cart">
-  <h1 class="mb-3">Shopping Cart</h1>
-  <span><a href="/products" class="btn btn-primary">Continue Shopping</a></span>
-  <div class="row">
-    <div class="col-12" *ngFor="let items of cart; let i = index">
-        <app-shopping-cart-items [item]="items"></app-shopping-cart-items>
-    </div>
+<div class="responsive">
+  <div style="display: flex; justify-content: space-between">
+    <h2 class="mb-3">Shopping Cart</h2>
+    <span
+      ><a href="/products" class="btn btn-primary">Continue Shopping</a></span
+    >
   </div>
-  <div class="row mt-3">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Order Summary</h5>
-          <hr />
-          <p class="card-text">Total Items: {{ totalItems }}</p>
-          <p class="card-text">Total Quantity: {{ totalQuantity }}</p>
-          <p class="card-text">
-            Total MRP: {{ totalPrice | currency : "INR" : "symbol" : "1.2-2" }}
-          </p>
-          <p class="card-text">
-            Total Discount:
-            {{ discount | currency : "INR" : "symbol" : "1.2-2" }}
-          </p>
-          <p class="card-text">
-            Total Amount:
-            {{ totalDiscountPrice | currency : "INR" : "symbol" : "1.2-2" }}
-          </p>
+  <div *ngIf="cart">
+    <div class="row">
+      <div class="col-md-12">
+        <app-shopping-cart-items [items]="cart"></app-shopping-cart-items>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title">Order Summary</h3>
+            <p class="card-text">Total Items: {{ totalItems }}</p>
+            <p class="card-text">Total Quantity: {{ totalQuantity }}</p>
+            <p class="card-text">
+              Total MRP:
+              {{ totalPrice | currency : "INR" : "symbol" : "1.2-2" }}
+            </p>
+            <p class="card-text">
+              Total Discount:
+              {{ discount | currency : "INR" : "symbol" : "1.2-2" }}
+            </p>
+            <p class="card-text">
+              Total Amount:
+              {{ totalDiscountPrice | currency : "INR" : "symbol" : "1.2-2" }}
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="row mt-3">
-    <div class="col-md-6">
-      <button class="btn btn-primary" (click)="checkout()">Checkout</button>
+    <div class="row mt-3">
+      <div class="col-md-6">
+        <button class="btn btn-primary" (click)="checkout()">Checkout</button>
+      </div>
     </div>
   </div>
 </div>

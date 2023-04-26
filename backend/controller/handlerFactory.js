@@ -1,6 +1,6 @@
 const catchAsync = require("../catchAsync");
-const AppError = require("../appError");
-const APIFeatures = require("../Apifeatures");
+const appError = require("../appError");
+const apiFeatures = require("../apifeatures");
 
 exports.getAll = (Model) =>
   catchAsync(async (req, res) => {
@@ -8,7 +8,7 @@ exports.getAll = (Model) =>
     let filter = {};
     if (req.params.productId) filter = { product: req.params.productId };
     if (req.params.userId) filter = { userId: req.params.userId };
-    const features = new APIFeatures(Model.find(filter), req.query)
+    const features = new apiFeatures(Model.find(filter), req.query)
       .filter()
       .sort()
       .limitFields()
@@ -30,7 +30,7 @@ exports.getOne = (Model, popOptions) =>
     if (popOptions) query = query.populate(popOptions);
     const doc = await query;
     if (!doc) {
-      return next(new AppError("No document found with that Id", 404));
+      return next(new appError("No document found with that Id", 404));
     }
     res.status(200).json({
       status: "success",
@@ -45,7 +45,7 @@ exports.deleteOne = (Model) =>
     let id = req.params.id;
     const doc = await Model.findByIdAndDelete(id);
     if (!doc) {
-      return next(new AppError("No document found with that Id", 404));
+      return next(new appError("No document found with that Id", 404));
     }
     res.status(204).json({
       status: "success",
@@ -72,7 +72,7 @@ exports.updateOne = (Model) =>
       runValidators: true,
     });
     if (!doc) {
-      return next(new AppError("No document found with that Id", 404));
+      return next(new appError("No document found with that Id", 404));
     }
     res.status(200).json({
       status: "success",

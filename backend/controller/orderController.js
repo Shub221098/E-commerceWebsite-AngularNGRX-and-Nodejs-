@@ -161,6 +161,7 @@ exports.cancelOrder = factory.deleteOne(Order);
 
 // Create Order in Database And Sent An Invoice via Email.
 exports.createOrder = catchAsync(async (req, res, next) => {
+  console.log(req.body)
   const doc = await Order.create(req.body);
   console.log(doc)
   createInvoice(doc, "invoice.pdf");
@@ -179,7 +180,7 @@ exports.createOrder = catchAsync(async (req, res, next) => {
       from: "Shubham Pareta <paretashubham2210@gmail.com>",
       to: req.body.email,
       subject:
-        "Your Orders Detail Purchase from Flipkart. Thanks You Visit again",
+        "Your Orders Detail Purchase from Colafee. Thanks You Visit again",
       attachments: [
         {
           filename: `invoice.pdf`,
@@ -199,14 +200,8 @@ exports.createOrder = catchAsync(async (req, res, next) => {
     return next(
       new AppError(
         "There was an error sending the email. Try again later!",
-        500
+        401
       )
     );
   }
-  res.status(201).json({
-    status: "success",
-    data: {
-      data: doc,
-    },
-  });
 });

@@ -7,63 +7,30 @@
       <ul class="dropdown-menu" appDropdown>
         <li class="dropdown" style="list-style-type: none">
           <a style="cursor: pointer">Category &raquo;</a>
-          <ul class="dropdown-submenu" style="list-style-type: none">
+          <ul class="dropdown-submenu" style="list-style-type: none" *ngFor="let category of categories">
             <li class="dropdown-item">
               <a
                 style="cursor: pointer"
-                (click)="filterProductsByCategory('smartphones')"
-                >Smartphones</a
-              >
-            </li>
-            <li class="dropdown-item">
-              <a
-                style="cursor: pointer"
-                (click)="filterProductsByCategory('laptops')"
-                >Laptop</a
-              >
-            </li>
-            <li class="dropdown-item">
-              <a
-                style="cursor: pointer"
-                (click)="filterProductsByCategory('skincare')"
-                >SkinCare</a
+                (click)="filterProductsByCategory(category)"
+                >{{category}}</a
               >
             </li>
           </ul>
         </li>
         <li class="dropdown" style="list-style-type: none">
           <a style="cursor: pointer">Brand &raquo;</a>
-          <ul class="dropdown-submenu" style="list-style-type: none">
+          <ul class="dropdown-submenu" style="list-style-type: none" *ngFor="let brand of brands">
             <li class="dropdown-item">
               <a
                 style="cursor: pointer"
-                (click)="filterProductsByBrand('Apple')"
-                >Apple</a
-              >
-            </li>
-            <li class="dropdown-item">
-              <a
-                style="cursor: pointer"
-                (click)="filterProductsByBrand('Samsung')"
-                >Samsung</a
-              >
-            </li>
-            <li class="dropdown-item">
-              <a style="cursor: pointer" (click)="filterProductsByBrand('OPPO')"
-                >Oppo</a
-              >
-            </li>
-            <li class="dropdown-item">
-              <a
-                style="cursor: pointer"
-                (click)="filterProductsByBrand('Dermive')"
-                >Dermive</a
+                (click)="filterProductsByBrand(brand)"
+                >{{brand}}</a
               >
             </li>
           </ul>
         </li>
         <li>
-          <a style="cursor: pointer" (click)="clear()">Clear Filter</a>
+          <a style="cursor: pointer" (click)="clear()" *ngIf="clearFilter">Clear Filter</a>
         </li>
       </ul>
     </li>
@@ -94,15 +61,13 @@
       class="form-control"
       placeholder="Search Products by Category or Brand or Name"
       [(ngModel)]="searchStr"
-      (keyup)="onExist($event)"
-      required
     />
     |
     <button
       type="submit"
       class="btn btn-default"
       (click)="onSearch()"
-      [disabled]="!searchStr"
+      placeholder= "Search Products by category,name,brand"
     >
       Search
     </button>

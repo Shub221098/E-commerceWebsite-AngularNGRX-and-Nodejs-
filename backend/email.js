@@ -9,10 +9,17 @@ const transporter = nodemailer.createTransport({
   },
 });
 // 2. Define the email options
-const sendVerificationEmail = async (name, email, subject, token, action, action2) => {
-  console.log(email)
+const sendVerificationEmail = async (
+  name,
+  email,
+  subject,
+  token,
+  action,
+  action2
+) => {
+  console.log(email);
   const mailOptions = {
-    from: "Colafee <shubhampareta0@gmail.com>",
+    from: "Colafee <paretashubham2210@gmail.com>",
     to: email,
     subject: subject,
     html: `
@@ -34,5 +41,4 @@ const sendVerificationEmail = async (name, email, subject, token, action, action
 
   await transporter.sendMail(mailOptions).catch((err) => console.log(err));
 };
-
-module.exports = sendVerificationEmail;
+module.exports = sendVerificationEmail

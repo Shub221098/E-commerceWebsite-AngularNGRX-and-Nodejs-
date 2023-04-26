@@ -8,14 +8,15 @@ export const INCREMENT_CART_ITEM_QUANTITY = '[ShoppingCart] Increment item quant
 export const DECREMENT_CART_ITEM_QUANTITY = '[ShoppingCart] Decrement item quantity';
 export const GET_USER_CART = '[ShoppingCart] Get User Cart';
 export const SAVE_USER_CART = '[ShoppingCart] Save User Cart';
-export const Checkout = '[Orders] Checkout'
+export const CHECKOUT = '[Orders] Checkout'
+export const UPDATE_CART_AFTER_CHECKOUT = '[ShoppingCart] Update Cart'
 export class SaveUserCart implements Action {
   readonly type = SAVE_USER_CART
-  constructor(public payload: OrderItem[]) {
+  constructor(public payload: OrderItem[]|null) {
   }
 }
 export class CartCheckout implements Action {
-  readonly type = Checkout
+  readonly type = CHECKOUT
   constructor(public payload: Orders) {
   }
 }
@@ -37,6 +38,10 @@ export class RemoveProductFromCart implements Action{
   constructor(public payload: string) {
   }
 }
+export class UpdateCartAfterCheckout implements Action{
+  readonly type = UPDATE_CART_AFTER_CHECKOUT
+  constructor(public payload: string|null){}
+}
 
 export class IncrementItemQuantity implements Action{
   readonly type = INCREMENT_CART_ITEM_QUANTITY;
@@ -52,4 +57,4 @@ export class DecrementItemQuantity implements Action{
   }
 }
 
-export type ShoppingCartActions = CartCheckout | GetUserCart |SaveUserCart |AddProductToCart | RemoveProductFromCart | IncrementItemQuantity | DecrementItemQuantity;
+export type ShoppingCartActions = UpdateCartAfterCheckout |CartCheckout | GetUserCart |SaveUserCart |AddProductToCart | RemoveProductFromCart | IncrementItemQuantity | DecrementItemQuantity;

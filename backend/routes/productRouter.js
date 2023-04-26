@@ -21,7 +21,8 @@ router
 
 //User and Admin both access All Products
 // Admin can add Product
-console.log("Update")
+console.log("Update");
+router.get("/search", productController.searchProducts);
 router
   .route("/")
   .get(productController.getAllProducts)
@@ -31,7 +32,7 @@ router
     productController.uploadUserPhoto,
     productController.resizeUserPhoto,
     productController.createProduct
-  )
+  );
 
 // get product categories
 router.get("/categories", productController.getProductCategories);
@@ -48,16 +49,18 @@ router.get(
 router
   .route("/:id")
   .get(productController.getProduct)
-  
+
   .delete(
     authController.protect,
     authController.restrictTo("admin"),
     productController.deleteProduct
-  ).patch(
+  )
+  .patch(
     authController.protect,
     authController.restrictTo("admin"),
     productController.uploadUserPhoto,
     productController.resizeUserPhoto,
-    productController.updateProduct)
+    productController.updateProduct
+  );
 
 module.exports = router;

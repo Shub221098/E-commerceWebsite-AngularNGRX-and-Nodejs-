@@ -18,10 +18,19 @@ export function shoppingListReducer(
   let updatedCart;
   switch (action.type) {
     case ShoppingCartActions.SAVE_USER_CART:
+      if(action.payload === null){
+        console.log("hello")
+        return {
+          ...state,
+          cart : null
+        }
+      }
+      else{
       return {
         ...state,
         cart: [...action.payload],
       };
+    }
     case ShoppingCartActions.INCREMENT_CART_ITEM_QUANTITY:
       updatedCart = state.cart;
       let updated1 = updatedCart.map((item: any) => {
@@ -49,17 +58,14 @@ export function shoppingListReducer(
       return { ...state, cart: updated };
 
     case ShoppingCartActions.REMOVE_PRODUCT_FROM_CART:
+      console.log(action.payload)
       updatedCart= state.cart.filter((item: any) => {
-        console.log(item)
-        // if(item.length === 0){
-        //   return null
-        // }
         return item.productId !== action.payload;
       });
       return {
         ...state,
         cart: updatedCart,
-      };
+      };   
     default:
       return state;
   }

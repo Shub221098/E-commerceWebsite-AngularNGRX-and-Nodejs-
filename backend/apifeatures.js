@@ -3,21 +3,35 @@ class APIFeatures {
     (this.query = query), (this.queryString = queryString);
   }
 
+  // filter() {
+  //   // Build Query
+  //   //1A - Filtering
+  //   const queryObj = { ...this.queryString };
+  //   console.log(queryObj)
+  //   const excludedFields = ["page", "sort", "limit", "fields"];
+  //   excludedFields.forEach((el) => delete queryObj[el]);
+
+  //   //1B - Advanced Filtering
+  //   let queryStr = JSON.stringify(queryObj);
+  //   queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+  //   const product = this.query.find(JSON.parse(queryStr));
+  //   console.log(product);
+  //   // let query = Tour.find(JSON.parse(queryStr));
+  //   return this;
+  // }
   filter() {
     // Build Query
     //1A - Filtering
     const queryObj = { ...this.queryString };
+    console.log(queryObj);
     const excludedFields = ["page", "sort", "limit", "fields"];
     excludedFields.forEach((el) => delete queryObj[el]);
-
+  
     //1B - Advanced Filtering
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-    queryStr = queryStr.replace(/\b(eq|ne|regex)\b/g, (match) => `$${match}`);
-    queryStr = queryStr.replace(/\b(i?n)\b/g, (match) => `$${match}`);
     const product = this.query.find(JSON.parse(queryStr));
     console.log(product);
-    // let query = Tour.find(JSON.parse(queryStr));
     return this;
   }
   sort() {

@@ -9,10 +9,10 @@ router.use(authController.protect, authController.restrictTo("user"));
 router
   .route("/")
   .get(cartController.getUsersCart)
-  .post(cartController.setProductUserIds, cartController.addToCart);
+  .post(cartController.setProductUserIds, cartController.addToCart)
+  .patch(cartController.setProductUserIds, cartController.updateCart)
 router
   .route("/:id")
-  .delete(cartController.deleteCart);
 router.patch('/deleteQuantity/:id', cartController.setProductUserIds, cartController.deleteQuantity)
 router.patch('/addQuantity/:id', cartController.setProductUserIds, cartController.addQuantity)
 router.patch('/removeProduct/:id', cartController.setProductUserIds, cartController.removeProduct)

@@ -6,7 +6,7 @@ const productsRouter = require("./routes/productRouter");
 const reviewRouter = require("./routes/reviewRouter");
 const cartRouter = require("./routes/cartRouter");
 const orderRouter = require("./routes/orderRouter");
-const AppError = require("./appError");
+const appError = require("./appError");
 const globalErrorHandler = require("./controller/errorController");
 const app = express();
 
@@ -71,7 +71,7 @@ app.use("/api/v1/orders", orderRouter);
 
 // ERROR HANDLING FOR ALL NON EXIST END POINTS REQUEST BY ERROR HANDLING MIDDLEWARE
 app.all("*", (req, res, next) => {
-  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404)); // this will point to error middleware and not leave all middleware between this and error middleware.
+  next(new appError(`Can't find ${req.originalUrl} on this server!`, 404)); // this will point to error middleware and not leave all middleware between this and error middleware.
   // });
 });
 

@@ -1,40 +1,59 @@
-<table class="table table-bordered table-hover mx-auto">
+<table class="table table-bordered table-hover" style="width: 100%">
   <thead class="table-dark">
     <tr>
-      <th>Product Name</th>
-      <th>Quantity</th>
-      <th>Price</th>
-      <th>Discount</th>
-      <th>Total</th>
-      <th>Actions</th>
+      <th style="text-align: center">Product Name</th>
+      <th style="text-align: center">Quantity</th>
+      <th style="text-align: center">Price</th>
+      <th style="text-align: center">Discount</th>
+      <th style="text-align: center">Total</th>
+      <th style="text-align: center">Actions</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody style="text-align: center" *ngFor="let item of items">
     <tr>
       <td>{{ item.productName }}</td>
-      <td>
+      <td style="width: 50px">
         <div class="input-group" style="display: flex" width:10px>
           <button
             class="btn btn-outline-secondary"
             type="button"
             (click)="onDecrementCartItem(item.productId)"
           >
-            -
+            +
           </button>
           <input
             type="text"
             class="form-control text-center"
             style="width: 44px"
             [(ngModel)]="item.totalProductQuantity"
-            readonly
+            pattern="[1-9][0-9]*"
+            min="1"
+            [max]="item.totalAvailableStock"
+            #quantityInput="ngModel"
+            (input)="onChange($event)"
+            required
           />
           <button
             class="btn btn-outline-secondary"
             type="button"
             (click)="onIncrementCartItem(item.productId)"
           >
-            +
+            -
           </button>
+          <div
+            class="text-danger"
+            *ngIf="
+              quantityInput.invalid &&
+              (quantityInput.dirty || quantityInput.touched)
+            "
+          >
+            <div *ngIf="quantityInput.errors?.['required']">
+              Quantity is required.
+            </div>
+            <div *ngIf="quantityInput.errors?.['pattern']">
+              Quantity must be a positive number.
+            </div>
+          </div>
         </div>
       </td>
       <td>
