@@ -8,7 +8,10 @@ import * as AuthActions from "./../store/auth.actions"
     templateUrl: './forgotPassword.component.html',
   })
 export class ForgotPasswordComponent{
+  message: string
     constructor(private store: Store<fromApp.AuthState>){}
+    ngOnInit(){
+    }
     onSubmit(form: NgForm) {
         if (!form.valid) {
           return;

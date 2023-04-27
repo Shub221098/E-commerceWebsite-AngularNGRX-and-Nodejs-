@@ -29,11 +29,7 @@ export const handleAuthentication = (
   });
 };
 
-export const handleError = (errResp: any) => {
-  let errorMessage = 'An unknown error occurred while signing up';
-  // if (!errResp.error || !errResp.error.error) {
-  //   return of(new AuthActions.AuthenticateFail(errorMessage));
-  // }
+export const handleError = (errResp: string) => {
   // switch (errResp.error.error.message) {
   //   case 'EMAIL_EXISTS':
   //     errorMessage = 'Email already exists';
@@ -47,7 +43,6 @@ export const handleError = (errResp: any) => {
   // }
   return of(new AuthActions.AuthenticateFail(errResp));
 };
-
 @Injectable()
 export class AuthEffects {
   authSignup = createEffect(
@@ -57,21 +52,26 @@ export class AuthEffects {
         switchMap((signupAction: AuthActions.SignupStart) => {
           return this.http
             .post<{ status: string; message: string }>(
-              'http://localhost:3000/api/v1/users/signup',
+              '@baseUrl/users/signup',
               {
                 name: signupAction.payload.name,
                 email: signupAction.payload.email,
                 password: signupAction.payload.password,
                 passwordConfirm: signupAction.payload.passwordConfirm,
+                address: signupAction.payload.address,
+                city: signupAction.payload.city,
+                state: signupAction.payload.state,
+                postalCode: signupAction.payload.postalCode,
                 returnSecureToken: true,
               }
             )
             .pipe(
-              map((resData) => {
-                return resData;
-                // this.router.navigate(['/auth/signup']);
+              tap((resData) => {
+                this.showSuccess(resData.message)
+                this.router.navigate(['/']);
               }),
               catchError((errResp) => {
+                alert(errResp)
                 return handleError(errResp);
               })
             );
@@ -86,7 +86,7 @@ export class AuthEffects {
         ofType(AuthActions.VERIFY_EMAIL),
         switchMap((verifyAction: AuthActions.VerifyEmail) => {
           return this.http
-            .post<any>(`http://localhost:3000/api/v1/users/verify-account`, {
+            .post<any>(`@baseUrl/users/verify-account`, {
               token: verifyAction.payload,
             })
             .pipe(
@@ -115,7 +115,7 @@ export class AuthEffects {
       ofType(AuthActions.LOGIN_START),
       switchMap((authData: AuthActions.LoginStart) => {
         return this.http
-          .post<any>('http://localhost:3000/api/v1/users/login', {
+          .post<any>('@baseUrl/users/login', {
             email: authData.payload.email,
             password: authData.payload.password,
             returnSecureToken: true,
@@ -199,33 +199,40 @@ export class AuthEffects {
   //     this.router.navigate(['/auth/login']);
   //   })
   // );
-  authForgetPassword = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(AuthActions.FORGET_PASSWORD),
-      switchMap((authData: AuthActions.ForgetPassword) => {
-        return this.http
-          .post<any>('http://localhost:3000/api/v1/users/forgotPassword', {
-            email: authData.payload,
-          })
-          .pipe(
-            tap((resData) => {
-              alert(resData.message);
-              // this.router.navigate(['/auth/forgetPassword']);
-            }),
-            catchError((errResp) => {
-              return handleError(errResp);
-            })
-          );
-      })
-    );
-  });
+  authForgetPassword = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(AuthActions.FORGET_PASSWORD),
+        switchMap((authData: AuthActions.ForgetPassword) => {
+          return this.http
+            .post<{ status: string; message: string }>(
+              '@baseUrl/users/forgotPassword',
+              {
+                email: authData.payload,
+              }
+            )
+            .pipe(
+              tap((resData) => {
+                alert(resData.message);
+              }),
+              catchError((errResp) => {
+                console.log(errResp, "error")
+                this.showWarning(errResp);
+                return handleError(errResp);
+              })
+            );
+        })
+      );
+    },
+    { dispatch: false }
+  );
   authResetPassword = createEffect(
     () => {
       return this.actions$.pipe(
         ofType(AuthActions.RESET_PASSWORD),
         switchMap((resetPasswordAction: AuthActions.ResetPassword) => {
           return this.http
-            .patch<any>(`http://localhost:3000/api/v1/users/reset-password`, {
+            .patch<any>(`@baseUrl/users/reset-password`, {
               token: resetPasswordAction.payload.token,
               password: resetPasswordAction.payload.password,
             })
@@ -253,6 +260,12 @@ export class AuthEffects {
     },
     { dispatch: false }
   );
+  showWarning = (message: string) => {
+    this.toastr.warning(message);
+  };
+  showSuccess= (message: string) => {
+    this.toastr.success(message);
+  };
   constructor(
     private actions$: Actions,
     private http: HttpClient,

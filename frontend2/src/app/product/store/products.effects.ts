@@ -14,7 +14,7 @@ export class ProductsEffects {
       ofType(ProductActions.GET_PRODUCTS),
       switchMap(() => {
         return this.http.get<Products[]>(
-          'http://localhost:3000/api/v1/products'
+          '@baseUrl/products'
         );
       }),
 
@@ -29,7 +29,7 @@ export class ProductsEffects {
         ofType(ProductActions.ADD_PRODUCT),
         switchMap((productAction: ProductActions.AddProducts) => {
           return this.http.post<Products>(
-            'http://localhost:3000/api/v1/products',
+            '@baseUrl/products',
             productAction.payload
           );
         }),
@@ -45,7 +45,7 @@ export class ProductsEffects {
         ofType(ProductActions.UPDATE_PRODUCT),
         switchMap((productAction: ProductActions.UpdateProducts) => {
           return this.http.patch(
-            `http://localhost:3000/api/v1/products/${productAction.payload.index}`,
+            `@baseUrl/products/${productAction.payload.index}`,
             productAction.payload.newProduct
           );
         })
@@ -59,7 +59,7 @@ export class ProductsEffects {
         ofType(ProductActions.DELETE_PRODUCT),
         switchMap((productAction: ProductActions.DeleteProducts) => {
           return this.http.delete(
-            `http://localhost:3000/api/v1/products/${productAction.payload}`
+            `@baseUrl/products/${productAction.payload}`
           );
         })
       );

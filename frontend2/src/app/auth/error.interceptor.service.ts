@@ -23,9 +23,10 @@ export class ErrorInterceptorService implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((err) => {
-        if ([401, 403].includes(err.status)) {
+        if ([401].includes(err.status)) {
           // auto logout if 401 or 403 response returned from api
         //   alert('You are not logged in. Please login to get access');
+        alert(err.error.message)
           this.store.dispatch(new AuthActions.Logout());
           this.router.navigate(['/auth/login']);
         }

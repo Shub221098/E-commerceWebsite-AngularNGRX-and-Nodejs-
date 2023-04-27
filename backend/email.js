@@ -27,10 +27,10 @@ const sendVerificationEmail = async (
 
         <p>Please click on the button to ${action}:</p>
         
-        <a href="http://localhost:4200/auth/verifyEmail/${token}"><button>Click here</button></a>
+        <a href="http://localhost:4200/auth/${token}"><button>Click here</button></a>
         
         <p> Or Click the below given link ${action}:</p>
-        <a href="http://localhost:4200/auth/verifyEmail/${token}">Click here to ${action2}</a>
+        <a href="http://localhost:4200/auth/${token}">Click here to ${action2}</a>
 
         <p>Thank you,</p>
         <p>The Colafee Team</p>

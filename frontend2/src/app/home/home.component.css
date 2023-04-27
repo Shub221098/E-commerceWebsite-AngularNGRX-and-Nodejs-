@@ -3,10 +3,76 @@
   grid-template-columns: repeat(3, 1fr);
   column-gap: 20px;
 }
-
+.heading {
+  text-align: center;
+}
 .list h3 {
   padding: 20px 20px;
   background-color: #fbf9f9;
   box-shadow: 1px 2px 4px #d9d9d9;
   font-size: 20px;
 }
+.categories-category {
+  display: flex;
+  justify-content: space-between;
+}
+.product-category {
+  display: flex;
+  justify-content: space-between;
+  color: #4b0082;
+}
+.product-price {
+  display: flex;
+}
+::ng-deep .card-product {
+  width: 250px;
+  border: 1px solid rgb(205 205 205 / 43%);
+  box-shadow: 4px 4px 10px #e1e1e1;
+  margin-bottom: 30px;
+}
+
+.card-product .product__link img {
+  width: 100%;
+  /* height: 300px; */
+}
+.card-product .card-body {
+  padding: 10px;
+}
+
+.card-title a {
+  color: rgb(5, 5, 5);
+  font-size: 16px;
+  font-weight: 500;
+}
+.card-title a:hover {
+  color: #5bc0de;
+  text-decoration: none;
+}
+
+.button-wrapper {
+  display: flex;
+  column-gap: 20px;
+  justify-content: space-between;
+}
+
+.button-wrapper .btn {
+  width: 100%;
+}
+
+.product__price {
+  text-decoration: line-through;
+  color: #6c6c6c;
+  font-size: 12px;
+}
+.card-text-paragraph {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 60px;
+}
+.slick-slider {  
+  width: 90%;  
+  margin: auto;  
+} 

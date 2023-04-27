@@ -1,5 +1,9 @@
 import { OrderItem } from 'src/app/shop/shop.model';
-import { INCREMENT_CART_ITEM_QUANTITY, UpdateCartAfterCheckout, ShoppingCartActions } from './shopping-list.action';
+import {
+  INCREMENT_CART_ITEM_QUANTITY,
+  UpdateCartAfterCheckout,
+  ShoppingCartActions,
+} from './shopping-list.action';
 import {
   AddQuantity,
   ADD_QUANTITY,
@@ -23,17 +27,17 @@ export class ShoppingCartEffects {
         ofType(ShoppingListActions.ADD_PRODUCT_TO_CART),
         switchMap(
           (shoppingListAction: ShoppingListActions.AddProductToCart) => {
-            return this.http.post<OrderItem[]>(
-              'http://localhost:3000/api/v1/carts',
-              shoppingListAction.payload
-            );
+            return this.http
+              .post<OrderItem[]>('@baseUrl/carts', shoppingListAction.payload)
+              .pipe(
+                map((cart) => {
+                  console.log('readched here', cart);
+                  this.router.navigate(['/shop']);
+                  return new ShoppingListActions.SaveUserCart(cart);
+                }),
+              );
           }
-        ),
-        map((cart) => {
-          console.log("readched here", cart)
-          this.router.navigate(['/shop']);
-          return new ShoppingListActions.SaveUserCart(cart);
-        })
+        )
       );
     },
     { dispatch: false }
@@ -43,7 +47,7 @@ export class ShoppingCartEffects {
       ofType(ShoppingListActions.GET_USER_CART),
       switchMap((shoppingListAction: ShoppingListActions.GetUserCart) => {
         return this.http.get<OrderItem[]>(
-          `http://localhost:3000/api/v1/users/${shoppingListAction.payload}/carts`
+          `@baseUrl/users/${shoppingListAction.payload}/carts`
         );
       }),
       map((cart) => {
@@ -52,27 +56,25 @@ export class ShoppingCartEffects {
       })
     );
   });
-  checkout = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(ShoppingListActions.CHECKOUT),
-        switchMap((shoppingListAction: ShoppingListActions.CartCheckout) => {
-          return this.http.post<any>(
-            'http://localhost:3000/api/v1/orders',
-            shoppingListAction.payload
-          );
-        }),
-        map((resData) => {
-          const message =
-            resData.message + 'Continue Shopping with us. Thank you';
-          alert(message);
-          this.router.navigate(['/products']);
-          let cart = null
-          return new ShoppingListActions.UpdateCartAfterCheckout(cart)
-        })
-      );
-    },
-  );
+  checkout = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ShoppingListActions.CHECKOUT),
+      switchMap((shoppingListAction: ShoppingListActions.CartCheckout) => {
+        return this.http.post<any>(
+          '@baseUrl/orders',
+          shoppingListAction.payload
+        );
+      }),
+      map((resData) => {
+        const message =
+          resData.message + 'Continue Shopping with us. Thank you';
+        alert(message);
+        this.router.navigate(['/categories'])
+        let cart = null;
+        return new ShoppingListActions.UpdateCartAfterCheckout(cart);
+      })
+    );
+  });
 
   addQuantity = createEffect(
     () => {
@@ -81,7 +83,7 @@ export class ShoppingCartEffects {
         switchMap(
           (shoppingListAction: ShoppingListActions.IncrementItemQuantity) => {
             return this.http.patch<OrderItem[]>(
-              `http://localhost:3000/api/v1/carts/addQuantity/${shoppingListAction.payload}`,
+              `@baseUrl/carts/addQuantity/${shoppingListAction.payload}`,
               {}
             );
           }
@@ -98,7 +100,7 @@ export class ShoppingCartEffects {
         switchMap(
           (shoppingListAction: ShoppingListActions.DecrementItemQuantity) => {
             return this.http.patch<OrderItem[]>(
-              `http://localhost:3000/api/v1/carts/deleteQuantity/${shoppingListAction.payload}`,
+              `@baseUrl/carts/deleteQuantity/${shoppingListAction.payload}`,
               {}
             );
           }
@@ -113,28 +115,36 @@ export class ShoppingCartEffects {
         ofType(ShoppingListActions.REMOVE_PRODUCT_FROM_CART),
         switchMap(
           (shoppingListAction: ShoppingListActions.RemoveProductFromCart) => {
-            return this.http.patch<{status : string, message: string}>(
-              `http://localhost:3000/api/v1/carts/removeProduct/${shoppingListAction.payload}`,
+            return this.http.patch<{ status: string; message: string }>(
+              `@baseUrl/carts/removeProduct/${shoppingListAction.payload}`,
               {}
             );
           }
-        ),
+        )
       );
     },
     { dispatch: false }
   );
-  UpdateCartAfterCheckout = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(ShoppingListActions.UPDATE_CART_AFTER_CHECKOUT),
-      switchMap((shoppingListAction : ShoppingListActions.UpdateCartAfterCheckout) =>{
-        return this.http.patch<OrderItem[] | null>('http://localhost:3000/api/v1/carts', shoppingListAction.payload)
-      }),
-      map((cart) => {
-        console.log(cart);
-        return new ShoppingListActions.SaveUserCart(cart);
-      })
-    )
-  },{dispatch:false})
+  UpdateCartAfterCheckout = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(ShoppingListActions.UPDATE_CART_AFTER_CHECKOUT),
+        switchMap(
+          (shoppingListAction: ShoppingListActions.UpdateCartAfterCheckout) => {
+            return this.http.patch<OrderItem[] | null>(
+              '@baseUrl/carts',
+              shoppingListAction.payload
+            );
+          }
+        ),
+        map((cart) => {
+          console.log(cart);
+          return new ShoppingListActions.SaveUserCart(cart);
+        })
+      );
+    },
+    { dispatch: false }
+  );
   constructor(
     private actions$: Actions,
     private http: HttpClient,

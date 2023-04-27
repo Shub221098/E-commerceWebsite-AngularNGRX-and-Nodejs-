@@ -9,12 +9,12 @@ export class ProductsService {
   constructor(private http: HttpClient) {}
   searchProduct(order: string, search: string) {
     if (order) {
-      return this.http.get('http://localhost:3000/api/v1/products/search', {
+      return this.http.get('@baseUrl/products/search', {
         params: { sort: 'discountPrice:' + order, q: search },
       });
     }
     else{
-      return this.http.get('http://localhost:3000/api/v1/products/search', {
+      return this.http.get('@baseUrl/products/search', {
         params: { sort: '-createdAt:' + 1, q: search },
       });
     }

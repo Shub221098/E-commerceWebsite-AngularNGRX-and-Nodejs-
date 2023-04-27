@@ -28,6 +28,7 @@ export class ProductListComponent implements OnInit {
   categorySub: Subscription;
   brandSub: Subscription;
   admin: boolean;
+  filteredBy = '';
   constructor(
     private store: Store<fromApp.AppState>,
     private router: Router,
@@ -35,15 +36,9 @@ export class ProductListComponent implements OnInit {
     private productService: ProductsService,
     private toastr: ToastrService
   ) {}
-  filteredBy = '';
-  filteredType = '';
-  sortOrder = 1;
   ngOnInit() {
-    console.log('Calling ngOninit');
     this.searchStr = '';
     this.filteredBy = '';
-    this.filteredType = '';
-    this.sortOrder = 1;
     (this.userSub = this.store.select(getRole).subscribe((role) => {
       if (role === 'admin') {
         console.log(role);
@@ -126,22 +121,7 @@ export class ProductListComponent implements OnInit {
       this.showWarning("Search product by category, name or brand")
     }
   }
-  // onExist(e: any) {
-  //   this.search = this.search + e.key.toLowerCase();
-  //   this.search = this.search.replaceAll(' ', '');
-  //   if (e.key) {
-  //     this.products = this.products.filter((product) => {
-  //       const name = product.name.toLowerCase().replaceAll(' ', '');
-  //       return name.startsWith(this.search) && product;
-  //     });
-  //   }
-  //   if (e.key === 'Backspace' || e.keyCode === 8) {
-  //     console.log(e);
-  //     if (this.searchStr === '') {
-  //       this.clear();
-  //     }
-  //   }
-  // }
+
   clear() {
     this.clearFilter = false;
     this.ngOnInit();

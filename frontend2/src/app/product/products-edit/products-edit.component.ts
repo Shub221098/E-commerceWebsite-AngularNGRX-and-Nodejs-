@@ -25,7 +25,9 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   brands : string[]
   productImages = new FormArray<any>([]);
   imageURL : string
-  private storeSub: Subscription;
+  catSub : Subscription;
+  brandSub : Subscription;
+  storeSub: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,11 +40,11 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       this.editMode = params['id'] != null;
       this.inItForm();
     });
-    this.store.select(getCategories).subscribe((category) => {
+    this.catSub = this.store.select(getCategories).subscribe((category) => {
       this.categories = category
       console.log(this.categories)
     })
-    this.store.select(getBrand).subscribe((brand) => {
+    this.brandSub = this.store.select(getBrand).subscribe((brand) => {
       this.brands = brand
     })
   }
@@ -120,11 +122,6 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    if (this.storeSub) {
-      this.storeSub.unsubscribe();
-    }
-  }
   validateImage(control: FormControl) {
     const file = control.value;
     if (file) {
@@ -154,5 +151,12 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       this.imageURL = reader.result as string;
     };
     reader.readAsDataURL(file);
+  }
+  ngOnDestroy() {
+    if (this.storeSub) {
+      this.storeSub.unsubscribe();
+      this.catSub.unsubscribe();
+      this.brandSub.unsubscribe();
+    }
   }
 }

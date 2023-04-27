@@ -1,5 +1,72 @@
-<div class="categories-wrapper">
-  <div class="list" *ngFor="let category of categories" (categorySel)="category">
-    <h3 ><a style="cursor: pointer" [routerLink]="['/products']" [queryParams]="{ category: category }">{{ category }}</a></h3>
+<hr style="background-color: black" />
+<div class="row">
+  <div class="col-12">
+    <ngx-slick-carousel
+      class="carousel"
+      #slickModal="slick-carousel"
+      [config]="slideConfig"
+    >
+      <div
+        ngxSlickItem
+        *ngFor="let image of images"
+        class="slide"
+        style="height: 400px"
+      >
+        <img src="{{ image.img }}" width="100%;" />
+      </div>
+    </ngx-slick-carousel>
   </div>
 </div>
+<hr style="background-color: black" />
+<section
+  class="categories"
+  *ngFor="let arrayOfProducts of arrangedProducts; let i = index"
+>
+  <h3>{{ arrayOfProducts[0].category }}</h3>
+  <button
+    class="btn btn-primary"
+    [routerLink]="['/products']"
+    [queryParams]="{ category: arrayOfProducts[0].category }"
+  >
+    View All
+  </button>
+  <div class="categories-category">
+    <div
+      class="card-product"
+      style="cursor: pointer"
+      *ngFor="let product of arrangedProducts[i].slice(0, 5)"
+      routerLink="/products/{{ product.id }}"
+    >
+      <a class="product__link">
+        <img
+          [src]="product.mainImage"
+          style="height: 191px; width: 248px"
+          alt=""
+        />
+      </a>
+
+      <div class="card-body product__text">
+        <h4 class="card-title product__title">
+          <a>{{ product.name }}</a>
+        </h4>
+        <p class="card-text-paragraph">{{ product.description }}</p>
+        <div class="product-category">
+          <p>
+            {{ product.category }}
+          </p>
+          <p class="{{ product.inStock ? 'text-success' : 'text-danger' }}">
+            {{ product.inStock ? "Available" : "Out of Stock" }}
+          </p>
+        </div>
+        <div style="display: flex">
+          <h5 class="product__price">
+            {{ product.price | currency : "INR" : "symbol" : "1.2-2" }}
+          </h5>
+          <h5 class="card-text" style="padding-left: 5px">
+            {{ product.discountPrice | currency : "INR" : "symbol" : "1.2-2" }}
+          </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

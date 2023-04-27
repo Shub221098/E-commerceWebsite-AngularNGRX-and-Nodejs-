@@ -30,7 +30,8 @@ export class AuthenticateSuccess implements Action {
 }
 export class AuthenticateFail implements Action {
   readonly type = AUTHENTICATE_FAIL;
-  constructor(public payload: string) {}
+  constructor(public payload: string) {
+  }
 }
 export class ForgetPassword implements Action {
   readonly type = FORGET_PASSWORD;
@@ -48,6 +49,10 @@ export class SignupStart implements Action {
       email: string;
       password: string;
       passwordConfirm: string;
+      address: string;
+      city: string;
+      state: string;
+      postalCode: number
     }
   ) {}
 }

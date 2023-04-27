@@ -4,7 +4,7 @@ import { Component, createNgModule, Input, OnInit } from '@angular/core';
 import { Products } from '../products.model';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
-import { map, switchMap } from 'rxjs';
+import { map, switchMap, Subscription } from 'rxjs';
 import * as ShoppingListActions from 'src/app/shop/store/shopping-list.action';
 import { OrderItem } from 'src/app/shop/shop.model';
 import { FormGroup } from '@angular/forms';
@@ -20,17 +20,19 @@ export class ProductDetailComponent implements OnInit {
   id: string;
   outOfStock: boolean;
   cart: OrderItem[];
+  productSub: Subscription;
+  shopSub: Subscription;
   quantityForm: FormGroup;
 
   constructor(
     private store: Store<fromApp.AppState>,
     private router: Router,
     private route: ActivatedRoute,
-    private toastr : ToastrService
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
-    this.route.params
+    this.productSub = this.route.params
       .pipe(
         map((params) => {
           return params['id'];
@@ -48,10 +50,9 @@ export class ProductDetailComponent implements OnInit {
       .subscribe((product) => {
         if (product !== undefined) {
           this.product = product;
-          console.log(this.product);
         }
       });
-    this.store
+    this.shopSub = this.store
       .select('shop')
       .pipe(map((shopState) => shopState))
       .subscribe((cart) => console.log(cart));
@@ -68,11 +69,17 @@ export class ProductDetailComponent implements OnInit {
 
   onChange(event: any) {
     if (+event.target.value > +event?.target.max) {
-      this.showWarning(`Quantity must not be greater than ${this.product.stock}`);
-      event.target.value = 1
+      this.showWarning(
+        `Quantity must not be greater than ${this.product.stock}`
+      );
+      event.target.value = 1;
     }
   }
-  showWarning(message : string) {
+  showWarning(message: string) {
     this.toastr.warning(message);
+  }
+  ngOnDestroy(){
+    this.productSub.unsubscribe()
+    this.shopSub.unsubscribe()
   }
 }

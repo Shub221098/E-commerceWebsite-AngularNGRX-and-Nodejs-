@@ -17,7 +17,7 @@
           <button
             class="btn btn-outline-secondary"
             type="button"
-            (click)="onDecrementCartItem(item.productId)"
+            (click)="onIncrementCartItem(item.productId)"
           >
             +
           </button>
@@ -25,35 +25,20 @@
             type="text"
             class="form-control text-center"
             style="width: 44px"
-            [(ngModel)]="item.totalProductQuantity"
+            value="{{item.totalProductQuantity}}"
             pattern="[1-9][0-9]*"
             min="1"
             [max]="item.totalAvailableStock"
-            #quantityInput="ngModel"
             (input)="onChange($event)"
             required
           />
           <button
             class="btn btn-outline-secondary"
             type="button"
-            (click)="onIncrementCartItem(item.productId)"
+            (click)="onDecrementCartItem(item.productId)"
           >
             -
           </button>
-          <div
-            class="text-danger"
-            *ngIf="
-              quantityInput.invalid &&
-              (quantityInput.dirty || quantityInput.touched)
-            "
-          >
-            <div *ngIf="quantityInput.errors?.['required']">
-              Quantity is required.
-            </div>
-            <div *ngIf="quantityInput.errors?.['pattern']">
-              Quantity must be a positive number.
-            </div>
-          </div>
         </div>
       </td>
       <td>

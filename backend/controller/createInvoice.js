@@ -1,11 +1,11 @@
 const fs = require("fs");
 const PDFDocument = require("pdfkit");
 
-function createInvoice(invoice, path){
+function createInvoice(invoice, user, path){
   let doc = new PDFDocument({ margin: 50 });
 
 generateHeader(doc); // Invoke `generateHeader` function.
-generateCustomerInformation(doc, invoice); // Invoke `generateCustomerInformation` function.
+generateCustomerInformation(doc, invoice, user); // Invoke `generateCustomerInformation` function.
 generateFooter(doc); // Invoke `generateFooter` function.
 
   doc.end();
@@ -33,18 +33,16 @@ function generateFooter(doc) {
       { align: "center", width: 500 }
     );
 }
-function generateCustomerInformation(doc, invoice) {
-  const shipping = invoice.shippingAddress;
-
+function generateCustomerInformation(doc, invoice, user) {
   doc
   .text(`Invoice Number: ${invoice._id}`, 50, 200)
   .text(`Invoice Date: ${new Date()}`, 50, 215)
-  .text(`Contact No: ${invoice.phone}`, 50, 230)
-  .text(`Name : ${invoice.name}`, 50, 215)
-  .text(`${shipping.address}`, 50, 250)
-  .text(`${shipping.city}`, 50, 265)
-  .text(`${shipping.postalCode}`, 50, 280)
-  .text(`${shipping.country}`, 50, 295)
+  .text(`Contact No: ${user.phone}`, 50, 230)
+  .text(`Name : ${user.name}`, 50, 215)
+  .text(`${user.address}`, 50, 250)
+  .text(`${user.city}`, 50, 265)
+  .text(`${user.state}`, 50, 295)
+  .text(`${user.postalCode}`, 50, 280)
     .moveDown();
   generateInvoiceTable(doc, invoice);
 

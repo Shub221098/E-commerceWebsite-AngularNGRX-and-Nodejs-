@@ -5,19 +5,20 @@ import { Products } from '../../product/products.model';
 import { Subscription } from 'rxjs';
 import {
   Component,
+  OnDestroy,
   OnInit,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 // import * as ShoppingCartActions from '../store/shopping-list.action';
 // import * as fromShoppingList from '../store/shopping-list.reducers';
 import * as fromApp from '../../store/app.reducer';
-import { Shop } from '../shop.model';
 import { getEmail, getName } from 'src/app/auth/store/auth.selector';
+import { Input } from 'postcss';
 @Component({
   selector: 'app-shopping-cart-container',
   templateUrl: './shopping-cart-container.component.html',
 })
-export class ShoppingCartContainerComponent implements OnInit {
+export class ShoppingCartContainerComponent implements OnInit, OnDestroy {
   cart: OrderItem[] | null;
   userSub: Subscription;
   totalPrice: number =0;
@@ -28,10 +29,11 @@ export class ShoppingCartContainerComponent implements OnInit {
   itemsId :string
   email : string
   name: string
+  shopSub  :Subscription;
   constructor(private store: Store<fromApp.AppState>) {}
 
   ngOnInit() {
-    this.store.select('shop').subscribe((shop) => {
+    this.shopSub = this.store.select('shop').subscribe((shop) => {
       this.cart = shop.cart;
       if(this.cart.length === 0){
         this.cart = null
@@ -40,16 +42,6 @@ export class ShoppingCartContainerComponent implements OnInit {
       this.calculateTotals()
       }
     });
-    this.store.select(getEmail).subscribe((email) => {
-      if(email){
-      this.email = email
-      }
-    })
-    this.store.select(getName).subscribe((name) => {
-      if(name){
-      this.name = name
-      }
-    })
   }
   calculateTotals() {
     this.totalPrice = 0;
@@ -70,6 +62,11 @@ export class ShoppingCartContainerComponent implements OnInit {
     this.store.dispatch(new ShoppingCartActions.RemoveProductFromCart(item.productId))
   }
   checkout() {
-    this.store.dispatch(new ShoppingCartActions.CartCheckout({items :this.cart,name: this.name, email: this.email, totalPrice : this.totalDiscountPrice, totalQuantity: this.totalQuantity, totalItems: this.totalItems}))
+    if(this.cart){
+    this.store.dispatch(new ShoppingCartActions.CartCheckout({items :this.cart, totalPrice : this.totalDiscountPrice, totalQuantity: this.totalQuantity, totalItems: this.totalItems}))
+    }
+  }
+  ngOnDestroy(){
+    this.shopSub.unsubscribe();
   }
 }

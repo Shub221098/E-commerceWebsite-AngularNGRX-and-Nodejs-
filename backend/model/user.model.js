@@ -23,18 +23,17 @@ const userSchema = new mongoose.Schema(
       select: false, // Hide this field when fetch data from database
       validate: {
         validator: function (e) {
-            const exp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
-            const pwd = e.match(exp)
-            const ans = JSON.parse((JSON.stringify(pwd.input)).replaceAll(" ", ''))
-            return ans
+          const exp =
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+          const pwd = e.match(exp);
+          const ans = JSON.parse(JSON.stringify(pwd.input).replaceAll(" ", ""));
+          return ans;
         },
-        message: "Minimum eight characters, at least one letter, one number and one special character and not allow space between character"
-    }
+        message:
+          "Minimum eight characters, at least one letter, one number and one special character and not allow space between character",
+      },
     },
-    role: {
-      type: String,
-      default: "user",
-    },
+
     passwordConfirm: {
       type: String,
       required: [true, "Please confirm your password"],
@@ -45,15 +44,36 @@ const userSchema = new mongoose.Schema(
         message: "Wrong Password. Please try again",
       },
     },
-    // token: String,
-    // tokenExpiresIn : Number,
-    //   passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
     active: {
       type: Boolean,
       default: false,
     },
+    role: {
+      type: String,
+      default: "user",
+    },
+    address:{
+      type:String,
+      required: [true, "Please tell us your address"]
+    },
+    state:{
+      type:String,
+      required: [true, "Please tell us your state"]
+    },
+    city:{
+      type:String,
+      required: [true, "Please tell us your city"]
+    },
+    postalCode:{
+      type:Number,
+      required: [true, "Please tell us your postalCode"]
+    },
+    phone:{
+      type:Number,
+      default: 9602650160
+    }
   },
   {
     toJSON: { virtuals: true },

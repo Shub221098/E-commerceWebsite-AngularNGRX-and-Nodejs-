@@ -1,3 +1,4 @@
+import { getMessage } from './../store/auth.selector';
 import { Observable, Subscription } from 'rxjs';
 import {
   Component,
@@ -18,30 +19,36 @@ import { AlertComponent } from 'src/app/shared/alert/alert.component';
 })
 export class SignupComponent {
   isLoading = false;
-  success: string | any
+  success: string | any;
   closeSub: Subscription;
   message: string | null;
-validateEqual: any;
+  validateEqual: any;
   passwordsMatching: boolean;
   confirmPasswordClass: string;
   isConfirmPasswordDirty: boolean;
   constructor(
-    private store: Store<fromApp.AppState>,private componentFactoryResolver : ComponentFactoryResolver
-) {}
+    private store: Store<fromApp.AppState>,
+    private componentFactoryResolver: ComponentFactoryResolver
+  ) {}
   onSubmit(form: NgForm) {
     if (!form.valid) {
       return;
     }
-    this.success = "Token Sent to Email Successfully.Check Your Email and Activate your Account"
     this.store.dispatch(
       new AuthActions.SignupStart({
         name: form.value.name,
         email: form.value.email,
         password: form.value.password,
         passwordConfirm: form.value.confirmPassword,
+        address: form.value.address,
+        city: form.value.city,
+        state: form.value.state,
+        postalCode: form.value.postalCode,
       })
     );
     form.reset();
+    this.store.select(getMessage).subscribe((message) => this.message = message)
+    console.log(this.message)
   }
   onChange(pw: string, cpw: string) {
     this.isConfirmPasswordDirty = true;
@@ -53,7 +60,7 @@ validateEqual: any;
       this.confirmPasswordClass = 'form-control is-invalid';
     }
   }
-  onHandlingError(){
+  onHandlingError() {
     this.success = null;
   }
 }

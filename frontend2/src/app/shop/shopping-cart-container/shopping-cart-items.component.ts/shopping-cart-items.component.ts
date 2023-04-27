@@ -1,8 +1,11 @@
+import { ToastrService } from 'ngx-toastr';
 import * as ShoppingListActions from 'src/app/shop/store/shopping-list.action';
 import {
   Component,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
 } from '@angular/core';
 import * as fromApp from '../../../store/app.reducer'
 import { Store } from '@ngrx/store';
@@ -14,7 +17,8 @@ import { OrderItem } from '../../shop.model';
 })
 export class ShoppingCartItemsComponent implements OnInit {
   @Input() items : OrderItem[]|null
-  constructor(private store: Store<fromApp.AppState>) {}
+  valid : boolean = true
+  constructor(private store: Store<fromApp.AppState>, private toastr : ToastrService) {}
     ngOnInit(){
     }
 
@@ -33,6 +37,24 @@ export class ShoppingCartItemsComponent implements OnInit {
     this.store.dispatch(new ShoppingListActions.DecrementItemQuantity(id))
   }
   onChange(event: any){
-
+    if (+event.target.value > +event?.target.max) {
+      this.showWarning(
+        `Quantity must not be greater than ${event?.target.max}`
+      );
+      event.target.value = 1;
+    }
+    if(event.target.value === ''){
+      this.valid = false
+      this.showWarning('Quantity must be required')
+    }
+    const regex="[1-9][0-9]*"
+    if(!regex.includes(event.target.value)){
+      this.valid = false
+      this.showWarning('Quantity must be a positive number')
+    }
   }
+  showWarning(message: string) {
+    this.toastr.warning(message);
+  }
+
 }

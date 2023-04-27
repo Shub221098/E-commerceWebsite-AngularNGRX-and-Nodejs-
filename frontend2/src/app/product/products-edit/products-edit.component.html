@@ -14,9 +14,9 @@
           </div>
           <div class="text-danger"
             *ngIf="
-              !productForm.get('name')!.valid &&
-              (productForm.get('name')!.dirty ||
-                productForm.get('name')!.touched)
+              !productForm.get('name')?.valid &&
+              (productForm.get('name')?.dirty ||
+                productForm.get('name')?.touched)
             "
           >
             <div
@@ -42,9 +42,9 @@
           </div>
           <div class="text-danger"
             *ngIf="
-              !productForm.get('description')!.valid &&
-              (productForm.get('description')!.dirty ||
-                productForm.get('description')!.touched)
+              !productForm.get('description')?.valid &&
+              (productForm.get('description')?.dirty ||
+                productForm.get('description')?.touched)
             "
           >
             <div
@@ -65,9 +65,9 @@
           </select>
           <div class="text-danger"
             *ngIf="
-              !productForm.get('category')!.valid &&
-              (productForm.get('category')!.dirty ||
-                productForm.get('category')!.touched)
+              !productForm.get('category')?.valid &&
+              (productForm.get('category')?.dirty ||
+                productForm.get('category')?.touched)
             "
           >
             <div
@@ -89,9 +89,9 @@
           </select>
           <div class="text-danger"
             *ngIf="
-              !productForm.get('brand')!.valid &&
-              (productForm.get('brand')!.dirty ||
-                productForm.get('brand')!.touched)
+              !productForm.get('brand')?.valid &&
+              (productForm.get('brand')?.dirty ||
+                productForm.get('brand')?.touched)
             "
           >
             <div
@@ -117,9 +117,9 @@
           </div>
           <div class="text-danger"
             *ngIf="
-              !productForm.get('price')!.valid &&
-              (productForm.get('price')!.dirty ||
-                productForm.get('price')!.touched)
+              !productForm.get('price')?.valid &&
+              (productForm.get('price')?.dirty ||
+                productForm.get('price')?.touched)
             "
           >
             <div
@@ -153,9 +153,9 @@
           </div>
           <div class="text-danger"
             *ngIf="
-              !productForm.get('discountPrice')!.valid &&
-              (productForm.get('discountPrice')!.dirty ||
-                productForm.get('discountPrice')!.touched)
+              !productForm.get('discountPrice')?.valid &&
+              (productForm.get('discountPrice')?.dirty ||
+                productForm.get('discountPrice')?.touched)
             "
           >
             <div
@@ -189,9 +189,9 @@
           </div>
           <div class="text-danger"
             *ngIf="
-              !productForm.get('stock')!.valid &&
-              (productForm.get('stock')!.dirty ||
-                productForm.get('stock')!.touched)
+              !productForm.get('stock')?.valid &&
+              (productForm.get('stock')?.dirty ||
+                productForm.get('stock')?.touched)
             "
           >
             <div
@@ -227,9 +227,9 @@
             </div>
             <div class="text-danger"
               *ngIf="
-                !productForm.get('mainImage')!.valid &&
-                (productForm.get('mainImage')!.dirty ||
-                  productForm.get('mainImage')!.touched)
+                !productForm.get('mainImage')?.valid &&
+                (productForm.get('mainImage')?.dirty ||
+                  productForm.get('mainImage')?.touched)
               "
               class="invalid-feedback d-block"
             >

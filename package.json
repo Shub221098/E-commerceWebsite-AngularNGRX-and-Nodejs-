@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "postcss": "^8.4.22"
+    "ngx-slick-carousel": "^15.0.0",
+    "postcss": "^8.4.22",
+    "slick-carousel": "^1.8.1"
   }
 }

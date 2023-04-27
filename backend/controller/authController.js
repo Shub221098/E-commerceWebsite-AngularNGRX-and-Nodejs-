@@ -41,12 +41,13 @@ exports.signup = catchAsync(async (req, res, next) => {
   const subject = "Verification Mail from Colafee"
   const action = "verify your account"
   const action2 = "Login"
+  const newToken = `/verifyEmail/${token}`
   try {
-    await sendVerificationEmail(name, email, subject, token, action, action2);
+    await sendVerificationEmail(name, email, subject, newToken, action, action2);
     res.status(200).json({
       status: "success",
       message:
-        "Token send to email. Verify your account on clicking this link.You will redirect to login page!",
+        "You have registered successfully.Check your email to verify your account.",
     });
   } catch (err) {
     newUser.passwordResetToken = undefined;
@@ -125,7 +126,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   // 1. Get User based on Posted Email
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
-    return next(new appError("There is no user with email address", 404));
+    return next(new appError("This email does not exist", 404));
   }
   // 2. Generate the random reset token
   const newToken = user.createPasswordResetToken();
@@ -141,8 +142,9 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   const action = "reset your password"
   const subject = "Reset Password Mail from Colafee"
   const action2 = "Change Password"
+  const newReToken = `resetPassword/${newToken}`
   try {
-    await sendVerificationEmail(name, email, subject, newToken, action, action2)
+    await sendVerificationEmail(name, email, subject, newReToken, action, action2)
     res.status(200).json({
       status: "success",
       message: "Reset Password Link send to registered email.Click the link and Enter new Password!",

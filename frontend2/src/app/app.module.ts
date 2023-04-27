@@ -19,6 +19,7 @@ import { HomeComponent } from './home/home.component';
 import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 @NgModule({
   declarations: [AppComponent, HeaderComponent, HomeComponent],
   imports: [
@@ -28,6 +29,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     SharedModule,
     CoreModule,
+    SlickCarouselModule,
     FormsModule,
     ToastrModule.forRoot(),
     StoreModule.forRoot(fromApp.appReducer),

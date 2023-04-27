@@ -1,13 +1,15 @@
 const nodemailer = require("nodemailer");
 const Order = require("../model/order.model");
+const Product = require("../model/product.model");
 const factory = require("./handlerFactory");
 const catchAsync = require("../catchAsync");
 const { createInvoice } = require("./createInvoice");
+const User = require('../model/user.model')
 
 exports.setProductUserIds = (req, res, next) => {
   // nested routes
   if (!req.body.product) req.body.product = req.params.productId;
-  if (!req.body.user) req.body.user = req.user.id;
+  if (!req.body.user) req.body.userId = req.user.id;
   next();
 };
 
@@ -161,10 +163,23 @@ exports.cancelOrder = factory.deleteOne(Order);
 
 // Create Order in Database And Sent An Invoice via Email.
 exports.createOrder = catchAsync(async (req, res, next) => {
-  console.log(req.body)
+  const cartProducts = req.body.items;
+  // Loop through each product in the cart
+  for (const cartProduct of cartProducts) {
+    // Get the product details from the Product model using the productId
+    const product = await Product.findById(cartProduct.productId);
+    
+    // Update the stock of the product in the Product model
+    product.stock -= cartProduct.totalProductQuantity;
+    
+    // Save the updated product details in the Product model
+    await product.save();
+  }
+  const user = await User.findOne({_id: req.body.userId})
+  console.log(user, "from here")
   const doc = await Order.create(req.body);
-  console.log(doc)
-  createInvoice(doc, "invoice.pdf");
+  
+  createInvoice(doc, user, "invoice.pdf");
 
   // 1. Create a transporter
   try {
@@ -177,8 +192,8 @@ exports.createOrder = catchAsync(async (req, res, next) => {
       },
     });
     const message = {
-      from: "Shubham Pareta <paretashubham2210@gmail.com>",
-      to: req.body.email,
+      from: "Colafee <paretashubham2210@gmail.com>",
+      to: user.email,
       subject:
         "Your Orders Detail Purchase from Colafee. Thanks You Visit again",
       attachments: [

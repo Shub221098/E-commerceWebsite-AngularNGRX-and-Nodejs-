@@ -3,14 +3,16 @@ import * as AuthActions from './auth.actions';
 export interface AuthState {
   user: User | null;
   authError: string | null;
-  isAuthenticated : boolean;
+  isAuthenticated: boolean;
   loading: boolean;
+  message: string | null;
 }
 const intialState: AuthState = {
   user: null,
   authError: null,
   isAuthenticated: false,
   loading: false,
+  message: null,
 };
 export function authReducer(
   state = intialState,
@@ -24,7 +26,7 @@ export function authReducer(
         action.payload.name,
         action.payload.role,
         action.payload.active,
-        action.payload.token,
+        action.payload.token
       );
       return {
         ...state,
@@ -33,11 +35,13 @@ export function authReducer(
         isAuthenticated: true,
         loading: false,
       };
-    case AuthActions.LOGOUT:
+    case AuthActions.AUTHENTICATE_FAIL:
       return {
         ...state,
         user: null,
-        isAuthenticated : false,
+        authError: action.payload,
+        loading: false,
+        message: action.payload
       };
     case AuthActions.LOGIN_START:
     case AuthActions.SIGNUP_START:
@@ -46,17 +50,16 @@ export function authReducer(
         authError: null,
         loading: true,
       };
-    case AuthActions.AUTHENTICATE_FAIL:
-      return {
-        ...state,
-        user: null,
-        authError: action.payload,
-        loading: false,
-      };
     case AuthActions.CLEAR_ERROR:
       return {
         ...state,
         authError: null,
+      };
+    case AuthActions.LOGOUT:
+      return {
+        ...state,
+        user: null,
+        isAuthenticated: false,
       };
     default:
       return state;
