@@ -18,7 +18,6 @@ import { Products } from 'src/app/product/products.model';
 import * as fromApp from '../../store/app.reducer';
 import * as ShoppingListActions from './../store/shopping-list.action';
 import { Router } from '@angular/router';
-import { Orders } from '../order.model';
 @Injectable()
 export class ShoppingCartEffects {
   addProducttoCart = createEffect(

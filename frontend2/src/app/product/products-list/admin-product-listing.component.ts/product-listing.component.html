@@ -37,8 +37,8 @@
       <td class="text-success" *ngIf="product.stock !== 0">Active</td>
       <td class="text-danger" *ngIf="product.stock === 0">Out of Stock</td>
       <td>
-        <button class="btn btn-primary" (click)="onUpdate()">Update</button> |
-        <button class="btn btn-danger" (click)="onDelete()">Delete</button>
+        <button class="btn btn-primary" (click)="onUpdate(product.id)">Update</button> |
+        <button class="btn btn-danger" (click)="onDelete(product.id)">Delete</button>
       </td>
     </tr>
   </tbody>

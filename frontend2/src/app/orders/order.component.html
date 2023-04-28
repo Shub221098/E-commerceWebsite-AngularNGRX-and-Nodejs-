@@ -1,0 +1,28 @@
+<div style="display: flex; justify-content: space-between">
+    <div><h1>All Orders</h1></div>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th style="text-align:center">Sr No.</th>
+        <th style="text-align:center">User</th>
+        <th style="text-align:center">TotalProducts</th>
+        <th style="text-align:center">TotalQuantity</th>
+        <th style="text-align:center">Order Date</th>
+        <th style="text-align:center">Price</th>
+        <th style="text-align:center">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders; let i=index" style="text-align:center">
+        <td>{{i+1}}</td>
+        <td>{{order.userId }}</td>
+        <td>{{order.totalItems }}</td>
+        <td>{{ order.totalQuantity }}</td>
+        <td>{{ order.createdAt | date : 'fullDate'}}</td>
+        <td>{{ order.totalPrice }}</td>
+        <td class="text-success">{{order.status}}</td>
+      </tr>
+    </tbody>
+  </table>
+  

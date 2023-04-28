@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ɵresetCompiledComponents } from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -21,14 +21,14 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   id: string;
   editMode = false;
   productForm: FormGroup;
-  categories : string[]
-  brands : string[]
+  categories: string[];
+  brands: string[];
   productImages = new FormArray<any>([]);
-  imageURL : string
-  catSub : Subscription;
-  brandSub : Subscription;
+  imageURL: any;
+  catSub: Subscription;
+  brandSub: Subscription;
   storeSub: Subscription;
-
+  file : any
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -41,16 +41,17 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       this.inItForm();
     });
     this.catSub = this.store.select(getCategories).subscribe((category) => {
-      this.categories = category
-      console.log(this.categories)
-    })
+      this.categories = category;
+      console.log(this.categories);
+    });
     this.brandSub = this.store.select(getBrand).subscribe((brand) => {
-      this.brands = brand
-    })
+      this.brands = brand;
+    });
   }
 
   onCancel() {
     this.router.navigate(['../../'], { relativeTo: this.route });
+      // window.location.reload();
   }
   onSubmit() {
     if (this.editMode) {
@@ -61,9 +62,10 @@ export class ProductEditComponent implements OnInit, OnDestroy {
         })
       );
     } else {
-      this.store.dispatch(
-        new ProductsActions.AddProducts(this.productForm.value)
-      );
+      console.log(this.productForm.value);
+      // this.store.dispatch(
+      //   new ProductsActions.AddProducts(this.productForm.value)
+      // );
     }
     this.onCancel();
   }
@@ -75,9 +77,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     let mainImage = '';
     let productPrice;
     let productDiscountPrice;
-    let productRating;
     let productStock;
-    let productTotalStock;
     if (this.editMode) {
       this.storeSub = this.store
         .select('products')
@@ -94,21 +94,21 @@ export class ProductEditComponent implements OnInit, OnDestroy {
             productDesc = product.description;
             productCategory = product.category;
             productBrand = product.brand;
-            mainImage = product.mainImage;
+            mainImage = product.mainImage
             productPrice = product.price;
             productDiscountPrice = product.discountPrice;
             productStock = product.stock;
           }
         });
     }
+    
     this.productForm = new FormGroup({
       name: new FormControl(productName, Validators.required),
       description: new FormControl(productDesc, Validators.required),
       category: new FormControl(productCategory, Validators.required),
       brand: new FormControl(productBrand, Validators.required),
       mainImage: new FormControl(mainImage, [
-        Validators.required,
-        this.validateImage
+        Validators.required
       ]),
       price: new FormControl(productPrice, [
         Validators.required,
@@ -118,37 +118,34 @@ export class ProductEditComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.pattern(/^\d+(\.\d{1,2})?$/),
       ]),
-      stock: new FormControl(productStock, [Validators.required, Validators.min(0)]),
+      stock: new FormControl(productStock, [
+        Validators.required,
+        Validators.min(0),
+      ]),
     });
   }
-
-  validateImage(control: FormControl) {
-    const file = control.value;
-    if (file) {
-      const fileType = file.type;
-      if (fileType !== 'image/jpeg' || fileType !== 'image/jpg' || fileType !== 'image/png') {
-        return { invalidFileType: true };
-      }
-      const fileSize = file.size;
-      if (fileSize > 1 * 1024 * 1024) {
-        return { invalidFileSize: true };
-      }
-    }
-    return null;
-  }
-  showPreview(event: any) {
-    const file = event.target?.files?.[0];
-    if (!file) {
+  onImageSelect(event: any) {
+    console.log(event)
+    const file = event.target.files[0];
+    if (!file) return;
+    // Check file type
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    if (!allowedTypes.includes(file.type)) {
+      this.productForm.get('mainImage')?.setErrors({ invalidFileType: true });
       return;
     }
-    this.productForm.patchValue({
-      image: file
-    });
-    this.productForm.get('image')?.updateValueAndValidity();
-    // File Preview
+
+    // Check file size
+    const maxSize = 1024 * 1024; // 1MB
+    if (file.size > maxSize) {
+      this.productForm.get('mainImage')?.setErrors({ maxFileSize: true });
+      return;
+    }
+    // Show preview
     const reader = new FileReader();
     reader.onload = () => {
-      this.imageURL = reader.result as string;
+      console.log(reader.result)
+      this.imageURL = reader.result;
     };
     reader.readAsDataURL(file);
   }

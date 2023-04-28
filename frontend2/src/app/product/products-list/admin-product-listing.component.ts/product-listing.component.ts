@@ -21,13 +21,13 @@ export class ProductListingComponent {
     private route: ActivatedRoute
   ) {}
   ngOnInit() {}
-  onDelete() {
+  onDelete(productId : string) {
     if (confirm('Are you sure?')) {
-      this.store.dispatch(new ProductActions.DeleteProducts(this.productId));
+      this.store.dispatch(new ProductActions.DeleteProducts(productId));
     }
   }
-  onUpdate() {
-    this.router.navigate([`${this.productId}/edit`], {
+  onUpdate(productId: string) {
+    this.router.navigate([`${productId}/edit`], {
       relativeTo: this.route,
     });
   }
