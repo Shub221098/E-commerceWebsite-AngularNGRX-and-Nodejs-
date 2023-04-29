@@ -7,13 +7,12 @@ import { Orders } from './order.model';
 @Component({
   selector: 'app-products-listing',
   templateUrl: './order.component.html',
+  styleUrls: ['./order.component.css'],
 })
 export class OrdersComponent {
   orders: any;
   constructor(private orderService: OrdersService) {}
   ngOnInit() {
-    this.orderService
-      .getOrders()
-      .subscribe((order) => this.orders = order);
+    this.orderService.getOrders().subscribe((order) => (this.orders = order));
   }
 }

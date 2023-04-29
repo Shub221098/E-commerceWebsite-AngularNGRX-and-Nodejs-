@@ -26,7 +26,7 @@ const createSendToken = (user, statusCode, res) => {
 exports.signup = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
   if (user) {
-    return next(new appError("This email is already registered.", 403));
+    return next(new appError("This email is already registered.", 400));
   }
   const newUser = await User.create(req.body);
   const token = signToken(newUser._id);
@@ -77,7 +77,7 @@ exports.verifyEmail = catchAsync(async (req, res, next) => {
   });
   // 2. If token has not expired, and there is a user , set a verifyUser
   if (!user) {
-    return next(new appError("Token is invalid or has expired", 400));
+    return next(new appError("Token is invalid or has expired", 401));
   }
   user.active = true;
   user.passwordResetToken = undefined;
@@ -105,10 +105,10 @@ exports.login = catchAsync(async (req, res, next) => {
   // 2. Check if user exists && password is correct
   const user = await User.findOne({ email }).select("+password");
   if (!user || !(await user.correctPassword(password, user.password))) {
-    return next(new appError("Incorrect Email or Password", 401));
+    return next(new appError("Incorrect Email or Password", 400));
   }
   if (!user.active) {
-    return res.status(401).send({
+    return res.status(400).send({
       message: "Pending Account. Please Verify Your Email!",
     });
   }
@@ -126,7 +126,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   // 1. Get User based on Posted Email
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
-    return next(new appError("This email does not exist", 404));
+    return next(new appError("This email does not exist", 400));
   }
   // 2. Generate the random reset token
   const newToken = user.createPasswordResetToken();
@@ -195,14 +195,14 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   if (req.body.password !== req.body.passwordConfirm) {
     return next(
       new appError(
-        "Your current password and confirm password does'nt match",
-        401
+        "Your password and confirm password does'nt match",
+        400
       )
     );
   }
   console.log("true");
   if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
-    return next(new appError("Your current password is wrong", 401));
+    return next(new appError("Your current password is wrong", 400));
   }
   // 3. If so, update password
   user.password = req.body.password;
@@ -248,7 +248,7 @@ exports.restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return next(
-        new appError("You do not have permission to perform this action", 403)
+        new appError("You do not have permission to perform this action", 400)
       );
     }
     next();

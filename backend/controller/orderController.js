@@ -215,7 +215,7 @@ exports.createOrder = catchAsync(async (req, res, next) => {
     return next(
       new AppError(
         "There was an error sending the email. Try again later!",
-        401
+        500
       )
     );
   }

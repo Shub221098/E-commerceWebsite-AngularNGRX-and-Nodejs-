@@ -13,13 +13,24 @@
   font-size: 20px;
 }
 .categories-category {
-  display: flex;
-  justify-content: space-between;
+  padding: 30px 30px 0px 30px;
+  box-shadow: 2px 2px 11px 2px #e1e1e1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-radius: 12px;
 }
 .product-category {
   display: flex;
   justify-content: space-between;
   color: #4b0082;
+}
+.categories-product h3 {
+  margin: 0px;
+  padding: 20px 0px;
+  color: rgb(121, 25, 121);
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: capitalize;
 }
 .product-price {
   display: flex;
@@ -72,7 +83,9 @@
   text-overflow: ellipsis;
   height: 60px;
 }
-.slick-slider {  
-  width: 90%;  
-  margin: auto;  
-} 
+.slick-slider {
+  width: 90%;
+  margin: auto;
+}
+
+

@@ -14,12 +14,7 @@ exports.getAll = (Model) =>
       .limitFields()
       .paginate();
     const doc = await features.query;
-    console.log(doc)
-    // const doc = await features.query.explain();
     res.status(200).json(
-      // status: "success",
-      // requestedAt: req.requestTime,
-      // results: doc.length,
       doc
     );
   });

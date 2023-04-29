@@ -23,7 +23,7 @@ export class ProductListComponent implements OnInit {
   category: string;
   categories: string[];
   brands: string[];
-  clearFilter : boolean = false;
+  clearFilter: boolean = false;
   productSub: Subscription;
   categorySub: Subscription;
   brandSub: Subscription;
@@ -68,7 +68,7 @@ export class ProductListComponent implements OnInit {
         .subscribe((product) => {
           console.log(product);
           if (product !== undefined) {
-            this.products = product;
+            this.products = product
           }
         });
     this.categorySub = this.store
@@ -103,22 +103,21 @@ export class ProductListComponent implements OnInit {
       .subscribe((product: any) => (this.products = product));
   }
   filterProductsByBrand(search: string) {
-    this.clearFilter = true
+    this.clearFilter = true;
     this.filteredBy = search;
     this.productService
-      .searchProduct('',this.filteredBy)
+      .searchProduct('', this.filteredBy)
       .subscribe((product: any) => (this.products = product));
   }
   onSearch() {
-    const search = this.searchStr.toLowerCase().replaceAll(" ", '')
-    this.filteredBy = search
-    if(this.searchStr !== ''){
-    this.productService
-      .searchProduct('', search)
-      .subscribe((product: any) => (this.products = product));
-    }
-    else{
-      this.showWarning("Search product by category, name or brand")
+    const search = this.searchStr.toLowerCase().replaceAll(' ', '');
+    this.filteredBy = search;
+    if (this.searchStr !== '') {
+      this.productService
+        .searchProduct('', search)
+        .subscribe((product: any) => (this.products = product));
+    } else {
+      this.showWarning('Search product by category, name or brand');
     }
   }
 
@@ -126,9 +125,9 @@ export class ProductListComponent implements OnInit {
     this.clearFilter = false;
     this.ngOnInit();
   }
-  showWarning(message:string){
-    this.toastr.warning(message)
-}
+  showWarning(message: string) {
+    this.toastr.warning(message);
+  }
   ngOnDestroy() {
     this.categorySub.unsubscribe();
     this.brandSub.unsubscribe();

@@ -1,7 +1,7 @@
 const catchAsync = require("../catchAsync");
 const factory = require("./handlerFactory");
 const Product = require("../model/product.model");
-
+const path = require("path");
 const sharp = require("sharp");
 const multer = require("multer");
 const multerStorage = multer.memoryStorage();
@@ -19,25 +19,90 @@ const upload = multer({
   fileFilter: multerFilter,
 });
 
-exports.uploadUserPhoto = upload.single("photo");
+exports.uploadUserPhoto = upload.single("file");
 
 exports.resizeUserPhoto = (req, res, next) => {
   if (!req.file) return next();
-  req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
+  req.file.tempfilename = Date.now() + "_" + req.file.originalname;
+  req.file.filename = `http://localhost:6002/api/v1/products/images/${req.file.tempfilename}`;
   sharp(req.file.buffer)
     .resize(500, 500)
     .toFormat("jpeg")
     .jpeg({ quality: 90 })
-    .toFile(`public/img/users/${req.file.filename}`);
+    .toFile(`public/img/products/${req.file.tempfilename}`);
   next();
 };
+exports.getImages = catchAsync(async (req, res) => {
+  const options = path.join(__dirname, "..", "public", "img", "products");
 
-// final Separation
+  const fileName = req.params.id;
+  res.sendFile(options + "/" + fileName);
+});
 exports.getAllProducts = factory.getAll(Product);
 exports.getProduct = factory.getOne(Product, { path: "reviews" });
-exports.createProduct = factory.createOne(Product);
+exports.createProduct = catchAsync(async (req, res) => {
+  const product = {
+    name: req.body.name,
+    description: req.body.description,
+    category: req.body.category,
+    brand: req.body.brand,
+    price: req.body.price,
+    discountPrice: req.body.discountPrice,
+    stock: req.body.stock,
+    mainImage: req.file.filename,
+  };
+  console.log(product);
+  const doc = await Product.create(product);
+  console.log(doc);
+  res.status(201).json({
+    status: "success",
+    data: {
+      data: doc,
+    },
+  });
+});
 exports.deleteProduct = factory.deleteOne(Product);
-exports.updateProduct = factory.updateOne(Product);
+exports.updateProduct = catchAsync(async (req, res) => {
+  let product;
+  if (req.file) {
+    product = {
+      name: req.body.name,
+      description: req.body.description,
+      category: req.body.category,
+      brand: req.body.brand,
+      price: req.body.price,
+      discountPrice: req.body.discountPrice,
+      stock: req.body.stock,
+      mainImage: req.file.filename,
+    };
+  } 
+  const doc = await Product.findOneAndUpdate({ _id: req.params.id }, product, {
+    new: true,
+    runValidators: true,
+  });
+  // product = {
+  //   _id : doc.get('id'),
+  //   name : doc.get('name'),
+  //   description : doc.get('description'),
+  //   category : doc.get('category'),
+  //   brand : doc.get('brand'),
+  //   price : doc.get('price'),
+  //   discountPrice : doc.get('discountPrice'),
+  //   stock : doc.get('stock'),
+  //   mainImage : doc.get('mainImage'),
+  //   quantity : doc.get('quantity'),
+  //   active: doc.get('active'),
+  //   ratingsAverage : doc.get('ratingsAverage'),
+  //   inStock : doc.get('inStock'),
+  //   numberofReviews : doc.get('numberofReviews'),
+  //   rating: doc.get('rating'),
+  //   createdAt : doc.get('createdAt'),
+  // }
+  console.log("bybyby", product)
+  res.status(200).json({
+    product
+  });
+});
 
 exports.getProductCategories = catchAsync(async (req, res) => {
   const product = await Product.find();
@@ -119,5 +184,5 @@ exports.searchProducts = catchAsync(async (req, res) => {
   }
 
   const products = await Product.find(filter).sort(sortQuery);
-    res.json(products);
+  res.json(products);
 });

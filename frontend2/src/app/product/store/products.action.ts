@@ -35,11 +35,11 @@ export class GetProducts implements Action {
 }
 export class AddProducts implements Action {
   readonly type = ADD_PRODUCT;
-  constructor(public payload: Products) {}
+  constructor(public payload: FormData) {}
 }
 export class UpdateProducts implements Action {
   readonly type = UPDATE_PRODUCT;
-  constructor(public payload: { index: string; newProduct: Products }) {}
+  constructor(public payload: { index: string; newProduct: FormData }) {}
 }
 export class DeleteProducts implements Action {
   readonly type = DELETE_PRODUCT;

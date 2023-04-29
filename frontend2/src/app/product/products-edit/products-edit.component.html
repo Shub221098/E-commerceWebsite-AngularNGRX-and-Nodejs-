@@ -1,10 +1,10 @@
 <div class="row">
-  <div class="col-xs-12">
+  <div class="col-md-12">
     <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
       <legend>PRODUCTS</legend>
       <div class="form-group">
-        <label class="col-md-12 control-label">PRODUCT NAME</label>
-        <div class="col-md-4">
+        <label class="control-label">PRODUCT NAME</label>
+        <div class="">
           <input
             class="form-control"
             type="text"
@@ -25,8 +25,8 @@
       </div>
 
       <div class="form-group">
-        <label class="col-md-12 control-label">PRODUCT DESCRIPTION</label>
-        <div class="col-md-12">
+        <label class="control-label">PRODUCT DESCRIPTION</label>
+        <div class="">
           <input
             class="form-control"
             type="text"
@@ -38,8 +38,7 @@
           class="text-danger"
           *ngIf="
             !productForm.get('description')?.valid &&
-            (productForm.get('description')?.dirty ||
-              productForm.get('description')?.touched)
+              productForm.get('description')?.touched
           "
         >
           <div *ngIf="productForm.get('description'); $any: errors['required']">
@@ -48,55 +47,57 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <label class="col-md-4 control-label">PRODUCT CATEGORY</label>
-        <select
-          id="category"
-          style="display: flex; justify-content: space-between"
-          formControlName="category"
-        >
-          <option *ngFor="let category of categories" [value]="category">
-            {{ category }}
-          </option>
-        </select>
-        <div
-          class="text-danger"
-          *ngIf="
-            !productForm.get('category')?.valid &&
-            (productForm.get('category')?.dirty ||
-              productForm.get('category')?.touched)
-          "
-        >
-          <div *ngIf="productForm.get('category'); $any: errors['required']">
-            Category is required.
+      <div class="form-group-box">
+        <div class="form-group">
+          <label class="control-label">PRODUCT CATEGORY</label>
+          <select
+            id="category"
+            style="display: flex; justify-content: space-between"
+            formControlName="category"
+          >
+            <option *ngFor="let category of categories" [value]="category">
+              {{ category }}
+            </option>
+          </select>
+          <div
+            class="text-danger"
+            *ngIf="
+              !productForm.get('category')?.valid &&
+                productForm.get('category')?.touched
+            "
+          >
+            <div *ngIf="productForm.get('category'); $any: errors['required']">
+              Category is required.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group-box">
+        <div class="form-group">
+          <label class="control-label">PRODUCT BRAND</label>
+          <select id="brand" formControlName="brand">
+            <option *ngFor="let brand of brands" [value]="brand">
+              {{ brand }}
+            </option>
+          </select>
+          <div
+            class="text-danger"
+            *ngIf="
+              !productForm.get('brand')?.valid &&
+                productForm.get('brand')?.touched
+            "
+          >
+            <div *ngIf="productForm.get('brand'); $any: errors['required']">
+              Brand is required.
+            </div>
           </div>
         </div>
       </div>
 
       <div class="form-group">
-        <label class="col-md-4 control-label">PRODUCT BRAND</label>
-        <select id="brand" formControlName="brand">
-          <option *ngFor="let brand of brands" [value]="brand">
-            {{ brand }}
-          </option>
-        </select>
-        <div
-          class="text-danger"
-          *ngIf="
-            !productForm.get('brand')?.valid &&
-            (productForm.get('brand')?.dirty ||
-              productForm.get('brand')?.touched)
-          "
-        >
-          <div *ngIf="productForm.get('brand'); $any: errors['required']">
-            Brand is required.
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="col-md-4 control-label">PRODUCT PRICE</label>
-        <div class="col-md-4">
+        <label class="control-label">PRODUCT PRICE</label>
+        <div class="">
           <input
             class="form-control"
             type="text"
@@ -122,8 +123,8 @@
       </div>
 
       <div class="form-group">
-        <label class="col-md-4 control-label">DISCOUNT PRICE</label>
-        <div class="col-md-4">
+        <label class="control-label">DISCOUNT PRICE</label>
+        <div class="">
           <input
             class="form-control"
             type="text"
@@ -135,8 +136,7 @@
           class="text-danger"
           *ngIf="
             !productForm.get('discountPrice')?.valid &&
-            (productForm.get('discountPrice')?.dirty ||
-              productForm.get('discountPrice')?.touched)
+              productForm.get('discountPrice')?.touched
           "
         >
           <div
@@ -153,8 +153,8 @@
       </div>
 
       <div class="form-group">
-        <label class="col-md-4 control-label">STOCK</label>
-        <div class="col-md-4">
+        <label class="control-label">STOCK</label>
+        <div class="">
           <input
             class="form-control"
             type="text"
@@ -166,8 +166,7 @@
           class="text-danger"
           *ngIf="
             !productForm.get('stock')?.valid &&
-            (productForm.get('stock')?.dirty ||
-              productForm.get('stock')?.touched)
+              productForm.get('stock')?.touched
           "
         >
           <div *ngIf="productForm.get('stock'); $any: errors['required']">
@@ -179,32 +178,92 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-xs-12">
+      <div class="row" *ngIf="!editMode">
+        <div class="col-md-12">
           <div class="form-group">
             <label for="mainImage">Image</label>
             <input
               type="file"
               (change)="onImageSelect($event)"
               class="form-control"
-              placeholder = "Image of type jpeg/jpg/png and size 1 MB is allowed"
+              placeholder="Image of type jpeg/jpg/png and size 1 MB is allowed"
               formControlName="mainImage"
-              
             />
+
             <img
               *ngIf="imageURL"
               [src]="imageURL"
               style="height: 150px; width: 150px"
               alt="Image Preview"
             />
-            <div *ngIf="productForm.get('mainImage')?.errors && productForm.get('mainImage')?.touched">
-              <p class="text-danger" *ngIf="productForm.get('mainImage')?.errors?.['required']">Image is required</p>
-              <p class="text-danger"
+            <div
+              *ngIf="
+                productForm.get('mainImage')?.errors &&
+                productForm.get('mainImage')?.touched
+              "
+            >
+              <p
+                class="text-danger"
+                *ngIf="productForm.get('mainImage')?.errors?.['required']"
+              >
+                Image is required
+              </p>
+              <p
+                class="text-danger"
                 *ngIf="productForm.get('mainImage')?.errors?.['invalidFileType']"
               >
                 Invalid file type
               </p>
-              <p  class="text-danger" *ngIf="productForm.get('mainImage')?.errors?.['maxFileSize']">
+              <p
+                class="text-danger"
+                *ngIf="productForm.get('mainImage')?.errors?.['maxFileSize']"
+              >
+                File size too large
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="editMode">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="mainImage">Image</label>
+            <input
+              type="file"
+              (change)="onImageSelect($event)"
+              class="form-control"
+              placeholder="Image of type jpeg/jpg/png and size 1 MB is allowed"
+              formControlName="mainImage"
+            />
+
+            <img
+              *ngIf="imageURL"
+              [src]="imageURL"
+              style="height: 150px; width: 150px"
+              alt="Image Preview"
+            />
+            <div
+              *ngIf="
+                productForm.get('mainImage')?.errors &&
+                productForm.get('mainImage')?.touched
+              "
+            >
+              <p
+                class="text-danger"
+                *ngIf="productForm.get('mainImage')?.errors?.['required']"
+              >
+                Image is required
+              </p>
+              <p
+                class="text-danger"
+                *ngIf="productForm.get('mainImage')?.errors?.['invalidFileType']"
+              >
+                Invalid file type
+              </p>
+              <p
+                class="text-danger"
+                *ngIf="productForm.get('mainImage')?.errors?.['maxFileSize']"
+              >
                 File size too large
               </p>
             </div>
@@ -213,11 +272,11 @@
       </div>
 
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-md-12">
           <button
             type="submit"
             class="btn btn-success"
-            [disabled]="productForm.invalid"
+            [disabled]="productForm.invalid && !editMode"
           >
             Save
           </button>

@@ -13,7 +13,8 @@ export class Products {
   public ratingsAverage: number;
   public inStock: boolean;
   public active: boolean;
-  quantity: any;
+  public createdAt : Date;
+  public quantity: number
 
   constructor(
     id: string,
@@ -29,7 +30,9 @@ export class Products {
     totalStock: number,
     ratingsAverage: number,
     inStock: boolean,
-    active: boolean
+    active: boolean,
+    createdAt : Date,
+    quantity: number
   ) {
     this.id = id;
     this.name = name;
@@ -45,5 +48,7 @@ export class Products {
     this.ratingsAverage = ratingsAverage;
     this.inStock = inStock;
     this.active = active;
+    this.createdAt = createdAt
+    this.quantity = quantity
   }
 }

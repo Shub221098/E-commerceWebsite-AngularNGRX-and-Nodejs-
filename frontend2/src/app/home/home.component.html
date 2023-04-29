@@ -22,15 +22,21 @@
   class="categories"
   *ngFor="let arrayOfProducts of arrangedProducts; let i = index"
 >
-  <h3>{{ arrayOfProducts[0].category }}</h3>
-  <button
-    class="btn btn-primary"
-    [routerLink]="['/products']"
-    [queryParams]="{ category: arrayOfProducts[0].category }"
+  <div class="categories-product"
+    style="display: flex; justify-content: space-between; align-items: center"
   >
-    View All
-  </button>
-  <div class="categories-category">
+    <h3 style="font-size: 25px">{{ arrayOfProducts[0].category }}</h3>
+    <button
+      class="btn btn-primary"
+      [routerLink]="['/products']"
+      [queryParams]="{ category: arrayOfProducts[0].category }"
+    >
+      View All
+    </button>
+  </div>
+  <div
+    class="categories-category"
+  >
     <div
       class="card-product"
       style="cursor: pointer"

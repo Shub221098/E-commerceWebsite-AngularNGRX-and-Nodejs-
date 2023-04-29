@@ -59,19 +59,40 @@ export function productsReducer(
         isLoading: true,
       };
     case ProductActions.ADD_PRODUCT:
+      const product = {
+          _id : action.payload.get('id'),
+          name : action.payload.get('name'),
+          description : action.payload.get('description'),
+          category : action.payload.get('category'),
+          brand : action.payload.get('brand'),
+          price : action.payload.get('price'),
+          discountPrice : action.payload.get('discountPrice'),
+          stock : action.payload.get('stock'),
+          mainImage : action.payload.get('mainImage'),
+          quantity : action.payload.get('quantity'),
+          active: action.payload.get('active'),
+          ratingsAverage : action.payload.get('ratingsAverage'),
+          inStock : action.payload.get('inStock'),
+          numberofReviews : action.payload.get('numberofReviews'),
+          rating: action.payload.get('rating'),
+          createdAt : action.payload.get('createdAt'),
+        }
+      console.log(product)
       return {
         ...state,
         products: [...state.products, action.payload],
       };
     case ProductActions.UPDATE_PRODUCT:
+      console.log(action.payload)
       let updatedProduct = state.products.map((product: any) => {
         return product.id === action.payload.index
           ? action.payload.newProduct
           : product;
       });
+      console.log(updatedProduct)
       return {
         ...state,
-        products: updatedProduct,
+        products: [...updatedProduct],
       };
     case ProductActions.DELETE_PRODUCT:
       const updatedProducts = state.products.filter((product: any) => {

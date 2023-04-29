@@ -13,7 +13,7 @@
     "numberofReviews": 6,
     "active": true,
     "inStock": true,
-    "mainImage": "https://i.dummyjson.com/data/products/1/thumbnail.jpg",
+    "mainImage": "http://localhost:6002/api/v1/products/images/thumbnail3.jpg",
     "images": [
       "https://i.dummyjson.com/data/products/1/1.jpg",
       "https://i.dummyjson.com/data/products/1/2.jpg",
@@ -36,7 +36,7 @@
     "numberofReviews": 9,
     "active": true,
     "inStock": true,
-    "mainImage": "https://i.dummyjson.com/data/products/2/thumbnail.jpg",
+    "mainImage": "http://localhost:6002/api/v1/products/images/thumbnail4.jpg",
     "images": [
       "https://i.dummyjson.com/data/products/2/1.jpg",
       "https://i.dummyjson.com/data/products/2/2.jpg",
@@ -58,7 +58,7 @@
     "numberofReviews": 6,
     "active": true,
     "inStock": true,
-    "mainImage": "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+    "mainImage": "http://localhost:6002/api/v1/products/images/thumbnail5.jpg",
     "images": ["https://i.dummyjson.com/data/products/3/1.jpg"]
   },
   {
@@ -75,7 +75,7 @@
     "numberofReviews": 7,
     "active": true,
     "inStock": true,
-    "mainImage": "https://i.dummyjson.com/data/products/4/thumbnail.jpg",
+    "mainImage": "http://localhost:6002/api/v1/products/images/thumbnail7.jpg",
     "images": [
       "https://i.dummyjson.com/data/products/4/1.jpg",
       "https://i.dummyjson.com/data/products/4/2.jpg",
@@ -98,7 +98,7 @@
     "numberofReviews": 5,
     "active": true,
     "inStock": true,
-    "mainImage": "https://i.dummyjson.com/data/products/6/thumbnail.png",
+    "mainImage": "http://localhost:6002/api/v1/products/images/thumbnail6.png",
     "images": [
       "https://i.dummyjson.com/data/products/6/1.png",
       "https://i.dummyjson.com/data/products/6/2.jpg",
@@ -120,7 +120,7 @@
     "numberofReviews": 7,
     "active": true,
     "inStock": true,
-    "mainImage": "https://i.dummyjson.com/data/products/7/thumbnail.jpg",
+    "mainImage": "http://localhost:6002/api/v1/products/images/thumbnail2.jpg",
     "images": [
       "https://i.dummyjson.com/data/products/7/1.jpg",
       "https://i.dummyjson.com/data/products/7/2.jpg",
@@ -142,7 +142,7 @@
     "numberofReviews": 6,
     "active": true,
     "inStock": true,
-    "mainImage": "https://i.dummyjson.com/data/products/9/thumbnail.jpg",
+    "mainImage": "http://localhost:6002/api/v1/products/images/thumbnail9.jpg",
     "images": [
       "https://i.dummyjson.com/data/products/9/1.jpg",
       "https://i.dummyjson.com/data/products/9/2.png",
@@ -165,7 +165,7 @@
     "numberofReviews": 7,
     "active": true,
     "inStock": true,
-    "mainImage": "https://i.dummyjson.com/data/products/16/thumbnail.jpg",
+    "mainImage": "http://localhost:6002/api/v1/products/images/thumbnail10.jpg",
     "images": [
       "https://i.dummyjson.com/data/products/16/1.png",
       "https://i.dummyjson.com/data/products/16/2.webp",
@@ -188,7 +188,7 @@
     "numberofReviews": 7,
     "active": true,
     "inStock": true,
-    "mainImage": "https://i.dummyjson.com/data/products/17/thumbnail.jpg",
+    "mainImage": "http://localhost:6002/api/v1/products/images/thumbnail8.jpg",
     "images": [
       "https://i.dummyjson.com/data/products/17/1.jpg",
       "https://i.dummyjson.com/data/products/17/2.jpg",
@@ -210,7 +210,7 @@
     "numberofReviews": 6,
     "active": true,
     "inStock": true,
-    "mainImage": "https://i.dummyjson.com/data/products/18/thumbnail.jpg",
+    "mainImage": "http://localhost:6002/api/v1/products/images/thumbnail1.jpg",
     "images": [
       "https://i.dummyjson.com/data/products/18/1.jpg",
       "https://i.dummyjson.com/data/products/18/2.jpg",

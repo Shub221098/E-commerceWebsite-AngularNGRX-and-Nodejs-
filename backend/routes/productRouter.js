@@ -18,7 +18,7 @@ router
     authController.restrictTo("admin"),
     productController.getProductsHaveMostSell
   );
-
+router.get('/images/:id', productController.getImages)
 //User and Admin both access All Products
 // Admin can add Product
 console.log("Update");

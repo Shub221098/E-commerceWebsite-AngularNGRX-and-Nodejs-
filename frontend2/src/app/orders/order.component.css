@@ -1,0 +1,19 @@
+table {
+  border: 1px solid #bfbfbf;
+  border-radius: 10px;
+}
+
+table tr th {
+  border-right: 1px solid #bfbfbf;
+}
+
+table tr td {
+  border-right: 1px solid #bfbfbf;
+  color: gray;
+}
+/* table tr td:nth-child(even) {
+  background-color: red;
+} */
+table tr td:last-child {
+  color: rgb(5, 151, 49);
+}

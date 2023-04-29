@@ -41,6 +41,7 @@ export class HomeComponent implements OnInit {
     slidesToScroll: 1,
     dots: true,
     infinite: true,
+    autoplay: true,
   };
   constructor(
     private store: Store<fromApp.AppState>,

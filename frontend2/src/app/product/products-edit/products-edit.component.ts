@@ -1,4 +1,10 @@
-import { Component, Input, OnDestroy, OnInit, ɵresetCompiledComponents } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ɵresetCompiledComponents,
+} from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -16,6 +22,7 @@ import { getBrand, getCategories } from '../store/products.selector';
 @Component({
   selector: 'app-products-edit',
   templateUrl: './products-edit.component.html',
+  styleUrls: ['./products-edit.component.css'],
 })
 export class ProductEditComponent implements OnInit, OnDestroy {
   id: string;
@@ -28,7 +35,8 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   catSub: Subscription;
   brandSub: Subscription;
   storeSub: Subscription;
-  file : any
+  file: any;
+  //isme esa ho rha h ki usko req.file.filename nai mil rha hoga
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -48,24 +56,46 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       this.brands = brand;
     });
   }
-
+//ni 
   onCancel() {
     this.router.navigate(['../../'], { relativeTo: this.route });
-      // window.location.reload();
+    // window.location.reload();
   }
   onSubmit() {
     if (this.editMode) {
+      let formData = new FormData();
+      formData.set('name', this.productForm.get('name')?.value);
+      formData.set('description', this.productForm.get('description')?.value);
+      formData.set('category', this.productForm.get('category')?.value);
+      formData.set('brand', this.productForm.get('brand')?.value);
+      formData.set('price', this.productForm.get('price')?.value);
+      formData.set(
+        'discountPrice',
+        this.productForm.get('discountPrice')?.value
+      );
+      formData.set('stock', this.productForm.get('stock')?.value);
+      formData.append('file', this.file);
+      console.log(formData.get('file'))
       this.store.dispatch(
         new ProductsActions.UpdateProducts({
           index: this.id,
-          newProduct: this.productForm.value,
+          newProduct: formData,
         })
       );
     } else {
-      console.log(this.productForm.value);
-      // this.store.dispatch(
-      //   new ProductsActions.AddProducts(this.productForm.value)
-      // );
+      let formData = new FormData();
+      formData.set('name', this.productForm.get('name')?.value);
+      formData.set('description', this.productForm.get('description')?.value);
+      formData.set('category', this.productForm.get('category')?.value);
+      formData.set('brand', this.productForm.get('brand')?.value);
+      formData.set('price', this.productForm.get('price')?.value);
+      formData.set(
+        'discountPrice',
+        this.productForm.get('discountPrice')?.value
+      );
+      formData.set('stock', this.productForm.get('stock')?.value);
+      formData.append('file', this.file);
+      this.store.dispatch(new ProductsActions.AddProducts(formData));
     }
     this.onCancel();
   }
@@ -90,26 +120,24 @@ export class ProductEditComponent implements OnInit, OnDestroy {
         )
         .subscribe((product) => {
           if (product !== undefined) {
+            this.imageURL = product.mainImage
             productName = product.name;
             productDesc = product.description;
             productCategory = product.category;
             productBrand = product.brand;
-            mainImage = product.mainImage
             productPrice = product.price;
             productDiscountPrice = product.discountPrice;
             productStock = product.stock;
           }
         });
     }
-    
+
     this.productForm = new FormGroup({
       name: new FormControl(productName, Validators.required),
       description: new FormControl(productDesc, Validators.required),
       category: new FormControl(productCategory, Validators.required),
       brand: new FormControl(productBrand, Validators.required),
-      mainImage: new FormControl(mainImage, [
-        Validators.required
-      ]),
+      mainImage: new FormControl(mainImage, [Validators.required]),
       price: new FormControl(productPrice, [
         Validators.required,
         Validators.pattern(/^\d+(\.\d{1,2})?$/),
@@ -125,29 +153,28 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     });
   }
   onImageSelect(event: any) {
-    console.log(event)
-    const file = event.target.files[0];
-    if (!file) return;
+    console.log(event);
+    this.file = event.target.files[0];
+    if (!this.file) return;
     // Check file type
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-    if (!allowedTypes.includes(file.type)) {
+    if (!allowedTypes.includes(this.file.type)) {
       this.productForm.get('mainImage')?.setErrors({ invalidFileType: true });
       return;
     }
-
     // Check file size
     const maxSize = 1024 * 1024; // 1MB
-    if (file.size > maxSize) {
+    if (this.file.size > maxSize) {
       this.productForm.get('mainImage')?.setErrors({ maxFileSize: true });
       return;
     }
     // Show preview
     const reader = new FileReader();
     reader.onload = () => {
-      console.log(reader.result)
+      console.log(reader.result);
       this.imageURL = reader.result;
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(this.file);
   }
   ngOnDestroy() {
     if (this.storeSub) {

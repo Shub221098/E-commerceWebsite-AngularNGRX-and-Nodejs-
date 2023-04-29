@@ -1,0 +1,5 @@
+.form-group-box .form-group {
+  display: flex;
+  column-gap: 20px;
+  align-items: center;
+}

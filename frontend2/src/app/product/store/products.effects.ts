@@ -13,9 +13,7 @@ export class ProductsEffects {
     return this.actions$.pipe(
       ofType(ProductActions.GET_PRODUCTS),
       switchMap(() => {
-        return this.http.get<Products[]>(
-          '@baseUrl/products'
-        );
+        return this.http.get<Products[]>('@baseUrl/products');
       }),
 
       map((product) => {
@@ -23,22 +21,17 @@ export class ProductsEffects {
       })
     );
   });
-  addProducts = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(ProductActions.ADD_PRODUCT),
-        switchMap((productAction: ProductActions.AddProducts) => {
-          return this.http.post<Products>(
-            '@baseUrl/products',
-            productAction.payload
-          );
-        }),
-        map((product) => {
-          return new ProductActions.SaveNewProducts(product);
-        })
-      );
-    },
-  );
+  addProducts = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ProductActions.ADD_PRODUCT),
+      switchMap((productAction: ProductActions.AddProducts) => {
+        return this.http.post<Products>(
+          '@baseUrl/products',
+          productAction.payload
+        );
+      }),
+    );
+  },{dispatch:false});
   updateProducts = createEffect(
     () => {
       return this.actions$.pipe(
@@ -48,6 +41,8 @@ export class ProductsEffects {
             `@baseUrl/products/${productAction.payload.index}`,
             productAction.payload.newProduct
           );
+        }),map((response) => {
+          return response
         })
       );
     },
@@ -58,9 +53,7 @@ export class ProductsEffects {
       return this.actions$.pipe(
         ofType(ProductActions.DELETE_PRODUCT),
         switchMap((productAction: ProductActions.DeleteProducts) => {
-          return this.http.delete(
-            `@baseUrl/products/${productAction.payload}`
-          );
+          return this.http.delete(`@baseUrl/products/${productAction.payload}`);
         })
       );
     },
