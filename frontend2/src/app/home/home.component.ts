@@ -56,6 +56,8 @@ export class HomeComponent implements OnInit {
       .select('products')
       .subscribe((productState) => {
         this.products = productState.products;
+
+        console.log('products', this.products)
         this.products.forEach((p: any) => {
           if (!this.arrangedProducts || !this.arrangedProducts[p.category]) {
             console.log(this.arrangedProducts[p.category]);

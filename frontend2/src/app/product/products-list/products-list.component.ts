@@ -69,6 +69,7 @@ export class ProductListComponent implements OnInit {
           console.log(product);
           if (product !== undefined) {
             this.products = product
+            this.products
           }
         });
     this.categorySub = this.store

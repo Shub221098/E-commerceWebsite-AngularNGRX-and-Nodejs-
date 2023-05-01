@@ -28,12 +28,12 @@ export class AuthGuard implements CanActivate {
       // take(1),
       map((authState) => authState.user),
       map((user) => {
-        console.log(user)
+        console.log(user);
         const isAuth = !!user;
         if (isAuth) {
           return true;
         }
-        alert("You are not logged in.Please Login First")
+        alert('You are not logged in.Please Login First');
         return this.router.createUrlTree(['/auth/login']);
       })
     );

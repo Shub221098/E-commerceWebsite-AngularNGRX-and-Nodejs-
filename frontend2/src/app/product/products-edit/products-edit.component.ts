@@ -56,10 +56,9 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       this.brands = brand;
     });
   }
-//ni 
+  //ni
   onCancel() {
     this.router.navigate(['../../'], { relativeTo: this.route });
-    // window.location.reload();
   }
   onSubmit() {
     if (this.editMode) {
@@ -74,8 +73,10 @@ export class ProductEditComponent implements OnInit, OnDestroy {
         this.productForm.get('discountPrice')?.value
       );
       formData.set('stock', this.productForm.get('stock')?.value);
+      console.log(this.file)
+      if(this.file){
       formData.append('file', this.file);
-      console.log(formData.get('file'))
+      }
       this.store.dispatch(
         new ProductsActions.UpdateProducts({
           index: this.id,
@@ -95,6 +96,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       );
       formData.set('stock', this.productForm.get('stock')?.value);
       formData.append('file', this.file);
+      console.log(formData);
       this.store.dispatch(new ProductsActions.AddProducts(formData));
     }
     this.onCancel();
@@ -119,8 +121,9 @@ export class ProductEditComponent implements OnInit, OnDestroy {
           })
         )
         .subscribe((product) => {
+          console.log(product)
           if (product !== undefined) {
-            this.imageURL = product.mainImage
+            this.imageURL = product.mainImage;
             productName = product.name;
             productDesc = product.description;
             productCategory = product.category;
@@ -128,6 +131,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
             productPrice = product.price;
             productDiscountPrice = product.discountPrice;
             productStock = product.stock;
+            // mainImage = product.mainImage
           }
         });
     }
@@ -137,7 +141,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       description: new FormControl(productDesc, Validators.required),
       category: new FormControl(productCategory, Validators.required),
       brand: new FormControl(productBrand, Validators.required),
-      mainImage: new FormControl(mainImage, [Validators.required]),
+      mainImage: new FormControl( [Validators.required]),
       price: new FormControl(productPrice, [
         Validators.required,
         Validators.pattern(/^\d+(\.\d{1,2})?$/),
@@ -153,7 +157,6 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     });
   }
   onImageSelect(event: any) {
-    console.log(event);
     this.file = event.target.files[0];
     if (!this.file) return;
     // Check file type

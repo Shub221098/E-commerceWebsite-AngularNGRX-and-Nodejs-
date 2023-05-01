@@ -10,6 +10,8 @@ export const STORE_PRODUCTS = '[Products] Store Products';
 export const ADD_QUANTITY = '[Products] Add Quantity';
 export const REMOVE_QUANTITY = '[Products] Remove Quantity';
 export const UPDATE_QUANTITY = '[Products] Update Quantity'
+export const ADD_PRODUCT_IN_STORE = '[Products] Add Product in Store'
+export const UPDATE_PRODUCT_IN_STORE = '[Products] Update Product in Store'
 export class SaveNewProducts implements Action {
   readonly type = SAVE_NEW_PRODUCTS;
   constructor(public payload: Products[] | any) {
@@ -41,6 +43,14 @@ export class UpdateProducts implements Action {
   readonly type = UPDATE_PRODUCT;
   constructor(public payload: { index: string; newProduct: FormData }) {}
 }
+export class AddProductsInStore implements Action {
+  readonly type = ADD_PRODUCT_IN_STORE;
+  constructor(public payload: Products) {}
+}
+export class UpdateProductInStore implements Action {
+  readonly type = UPDATE_PRODUCT_IN_STORE;
+  constructor(public payload: Products) {}
+}
 export class DeleteProducts implements Action {
   readonly type = DELETE_PRODUCT;
   constructor(public payload: string) {}
@@ -50,6 +60,8 @@ export class StoreProducts implements Action {
 }
 export type ProductActions =
   AddQuantity| RemoveQuantity | UpdateQuantity
+  | AddProductsInStore
+  | UpdateProductInStore
   | SaveNewProducts
   | GetProducts
   | DeleteProducts

@@ -67,11 +67,11 @@ export class AuthEffects {
             )
             .pipe(
               tap((resData) => {
-                this.showSuccess(resData.message)
+                this.showSuccess(resData.message);
                 this.router.navigate(['/']);
               }),
               catchError((errResp) => {
-                alert(errResp)
+                alert(errResp);
                 return handleError(errResp);
               })
             );
@@ -122,6 +122,8 @@ export class AuthEffects {
           })
           .pipe(
             map((resData) => {
+              console.log('navigating to dashboard');
+              this.router.navigate(['dashboard']);
               return handleAuthentication(
                 resData.user.id,
                 resData.user.email,
@@ -216,7 +218,6 @@ export class AuthEffects {
                 alert(resData.message);
               }),
               catchError((errResp) => {
-                console.log(errResp, "error")
                 this.showWarning(errResp);
                 return handleError(errResp);
               })
@@ -263,7 +264,7 @@ export class AuthEffects {
   showWarning = (message: string) => {
     this.toastr.warning(message);
   };
-  showSuccess= (message: string) => {
+  showSuccess = (message: string) => {
     this.toastr.success(message);
   };
   constructor(

@@ -41,9 +41,9 @@ exports.signup = catchAsync(async (req, res, next) => {
   const subject = "Verification Mail from Colafee"
   const action = "verify your account"
   const action2 = "Login"
-  const newToken = `/verifyEmail/${token}`
+  const method = 'verifyEmail'
   try {
-    await sendVerificationEmail(name, email, subject, newToken, action, action2);
+    await sendVerificationEmail(name, email, subject, method, token, action, action2);
     res.status(200).json({
       status: "success",
       message:
@@ -142,9 +142,9 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   const action = "reset your password"
   const subject = "Reset Password Mail from Colafee"
   const action2 = "Change Password"
-  const newReToken = `resetPassword/${newToken}`
+  const method = 'resetPassword'
   try {
-    await sendVerificationEmail(name, email, subject, newReToken, action, action2)
+    await sendVerificationEmail(name, email, subject,method, newToken, action, action2)
     res.status(200).json({
       status: "success",
       message: "Reset Password Link send to registered email.Click the link and Enter new Password!",

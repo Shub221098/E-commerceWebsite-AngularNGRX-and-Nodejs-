@@ -1,0 +1,119 @@
+<section class="home-section">
+  <div class="home-content">
+    <div class="overview-boxes">
+      <div class="box">
+        <div class="right-side">
+          <div class="box-topic">Total Orders</div>
+          <div class="number">{{totalOrders}}</div>
+          <div class="indicator">
+            <i class="bx bx-up-arrow-alt"></i>
+            <span class="text">Uptil Today</span>
+          </div>
+        </div>
+        <i class="bx bx-cart-alt cart"></i>
+      </div>
+      <div class="box">
+        <div class="right-side">
+          <div class="box-topic">Total Sales Today</div>
+          <div class="number">{{ totalDailySales }}</div>
+          <div class="indicator">
+            <i class="bx bx-up-arrow-alt"></i>
+            <span class="text">Up from yesterday</span>
+          </div>
+        </div>
+        <i class="bx bxs-cart-add cart two"></i>
+      </div>
+      <div class="box">
+        <div class="right-side">
+          <div class="box-topic">Total Monthly Sales</div>
+          <div class="number">{{ totalMonthlySales }}</div>
+          <div class="indicator">
+            <i class="bx bx-up-arrow-alt"></i>
+            <span class="text">Up from this month</span>
+          </div>
+        </div>
+        <i class="bx bxs-cart-add cart two"></i>
+      </div>
+      <div class="box">
+        <div class="right-side">
+          <div class="box-topic">Total Yearly Today</div>
+          <div class="number">{{ totalYearlySales }}</div>
+          <div class="indicator">
+            <i class="bx bx-up-arrow-alt"></i>
+            <span class="text">Up from this year</span>
+          </div>
+        </div>
+        <i class="bx bxs-cart-add cart two"></i>
+      </div>
+    </div>
+
+    <div class="sales-boxes">
+      <div class="recent-sales box">
+        <div class="title">Top 5 Sell Products</div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th style="text-align: center">Sr No.</th>
+              <th style="text-align: center">ProductName</th>
+              <th style="text-align: center">Total Sell Quantity</th>
+              <th style="text-align: center">ProductPrice</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let product of mostSellProducts; let i = index"
+              style="text-align: center"
+            >
+              <td>{{ i + 1 }}</td>
+              <td>{{ product.productName }}</td>
+              <td>{{ product.totalQuantity }}</td>
+              <td>
+                {{
+                  product.totalProductPrice
+                    | currency : "INR" : "symbol" : "1.2-2"
+                }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="top-sales box">
+        <div class="title">Top Selling Users</div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th style="text-align: center">Sr No.</th>
+              <th style="text-align: center">User</th>
+              <th style="text-align: center">BuyProducts</th>
+              <th style="text-align: center">TotalAmount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let user of users; let i = index"
+              style="text-align: center"
+            >
+              <td>{{ i + 1 }}</td>
+              <td>{{ user.user.name }}</td>
+              <td>{{ user.buyProduct }}</td>
+              <td>
+                {{ user.totalPrice | currency : "INR" : "symbol" : "1.2-2" }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  let sidebar = document.querySelector(".sidebar");
+  let sidebarBtn = document.querySelector(".sidebarBtn");
+  sidebarBtn.onclick = function () {
+    sidebar.classList.toggle("active");
+    if (sidebar.classList.contains("active")) {
+      sidebarBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+    } else sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+  };
+</script>

@@ -13,32 +13,54 @@ const sendVerificationEmail = async (
   name,
   email,
   subject,
+  method,
   token,
   action,
   action2
 ) => {
-  console.log(email);
-  const mailOptions = {
-    from: "Colafee <paretashubham2210@gmail.com>",
-    to: email,
-    subject: subject,
-    html: `
+  console.log(method);
+  if (method === "verifyEmail") {
+    console.log(method);
+    const mailOptions = {
+      from: "Colafee <paretashubham2210@gmail.com>",
+      to: email,
+      subject: subject,
+      html: `
         <p>Hello ${name},</p>
 
         <p>Please click on the button to ${action}:</p>
-        
-        <a href="http://localhost:4200/auth/${token}"><button>Click here</button></a>
+        <a href="http://localhost:4200/auth/verifyEmail/${token}"><button>Click here</button></a>
         
         <p> Or Click the below given link ${action}:</p>
-        <a href="http://localhost:4200/auth/${token}">Click here to ${action2}</a>
+        <a href="http://localhost:4200/auth/verifyEmail/${token}">Click here to ${action2}</a>
 
         <p>Thank you,</p>
         <p>The Colafee Team</p>
         `,
-  };
+    };
 
-  // 3. Actually send the email
+    await transporter.sendMail(mailOptions).catch((err) => console.log(err));
+  } else if (method === 'resetPassword') {
+    console.log(method)
+    const mailOptions = {
+      from: "Colafee <paretashubham2210@gmail.com>",
+      to: email,
+      subject: subject,
+      html: `
+        <p>Hello ${name},</p>
 
-  await transporter.sendMail(mailOptions).catch((err) => console.log(err));
+        <p>Please click on the button to ${action}:</p>
+        <a href="http://localhost:4200/auth/resetPassword/${token}"><button>Click here</button></a>
+        
+        <p> Or Click the below given link ${action}:</p>
+        <a href="http://localhost:4200/auth/resetPassword/${token}">Click here to ${action2}</a>
+
+        <p>Thank you,</p>
+        <p>The Colafee Team</p>
+        `,
+    };
+
+    await transporter.sendMail(mailOptions).catch((err) => console.log(err));
+  }
 };
-module.exports = sendVerificationEmail
+module.exports = sendVerificationEmail;

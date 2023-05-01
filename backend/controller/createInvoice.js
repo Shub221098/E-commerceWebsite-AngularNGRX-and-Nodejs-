@@ -1,15 +1,15 @@
 const fs = require("fs");
 const PDFDocument = require("pdfkit");
 
-function createInvoice(invoice, user, path){
+function createInvoice(invoice, user, path) {
   let doc = new PDFDocument({ margin: 50 });
 
-generateHeader(doc); // Invoke `generateHeader` function.
-generateCustomerInformation(doc, invoice, user); // Invoke `generateCustomerInformation` function.
-generateFooter(doc); // Invoke `generateFooter` function.
+  generateHeader(doc); // Invoke `generateHeader` function.
+  generateCustomerInformation(doc, invoice, user); // Invoke `generateCustomerInformation` function.
+  generateFooter(doc); // Invoke `generateFooter` function.
 
   doc.end();
-doc.pipe(fs.createWriteStream(path));
+  doc.pipe(fs.createWriteStream(path));
 }
 
 function generateHeader(doc) {
@@ -35,16 +35,24 @@ function generateFooter(doc) {
 }
 function generateCustomerInformation(doc, invoice, user) {
   doc
-  .text(`Invoice Number: ${invoice._id}`, 50, 200)
-  .text(`Invoice Date: ${new Date()}`, 50, 215)
-  .text(`Contact No: ${user.phone}`, 50, 230)
-  .text(`Name : ${user.name}`, 50, 215)
-  .text(`${user.address}`, 50, 250)
-  .text(`${user.city}`, 50, 265)
-  .text(`${user.state}`, 50, 295)
-  .text(`${user.postalCode}`, 50, 280)
+    .text(`Invoice Number: ${invoice._id}`, 50, 200)
+    .text(`Invoice Date: ${new Date()}`, 190, 215)
+    .text(`Contact No: ${user.phone}`, 50, 230)
+    .moveDown()
+    .text(`Name : ${user.name}`, 50, 215)
+    .text(`${user.address}`, 50, 250)
+    .text(`${user.city}`, 50, 265)
+    .text(`${user.state}`, 50, 295)
+    .text(`${user.postalCode}`, 50, 280)
     .moveDown();
-  generateInvoiceTable(doc, invoice);
+
+  const tableHeaders = ["Product", "Price", "Quantity"];
+  const tableRows = invoice.items.map((item) => [
+    item.productName,
+    item.totalProductDiscountPrice,
+    item.totalProductQuantity,
+  ]);
+  generateInvoiceTable(doc, tableHeaders, tableRows);
 
   doc.moveDown();
   doc.text(`Total: ${invoice.totalPrice}`);
@@ -53,25 +61,21 @@ function generateTableRow(doc, y, c1, c2, c3) {
   doc
     .fontSize(10)
     .text(c1, 50, y)
-    .text(c2, 370, y, { width: 90, align: "right" })
-    .text(c3, 0, y, { align: "right" });
+    .text(c2, 250, y, { width: 90, align: "right" })
+    .text(c3, 370, y, { width: 90, align: "right" });
 }
-function generateInvoiceTable(doc, invoice) {
+function generateInvoiceTable(doc, headers, rows) {
   let i,
     invoiceTableTop = 330;
 
-  for (i = 0; i < invoice.items.length; i++) {
-    const item = invoice.items[i];
+  generateTableRow(doc, invoiceTableTop, ...headers);
+
+  for (i = 0; i < rows.length; i++) {
+    const row = rows[i];
     const position = invoiceTableTop + (i + 1) * 30;
-    generateTableRow(
-      doc,
-      position,
-      item.productName,
-      item.totalProductQuantity,
-      item.totalProductPrice
-    );
+    generateTableRow(doc, position, ...row);
   }
 }
 module.exports = {
-	createInvoice,
+  createInvoice,
 };

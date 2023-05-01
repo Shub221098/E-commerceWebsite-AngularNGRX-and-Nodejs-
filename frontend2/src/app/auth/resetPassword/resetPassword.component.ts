@@ -5,7 +5,7 @@ import { NgForm } from "@angular/forms";
 import { Store } from "@ngrx/store";
 import * as AuthActions from "./../store/auth.actions"
 @Component({
-    selector: 'app-signup',
+    selector: 'app-resetPassword',
     templateUrl: './resetPassword.component.html',
   })
 export class ResetPasswordComponent{

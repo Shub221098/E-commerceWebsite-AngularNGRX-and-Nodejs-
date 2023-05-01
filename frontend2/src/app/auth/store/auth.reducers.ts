@@ -5,14 +5,12 @@ export interface AuthState {
   authError: string | null;
   isAuthenticated: boolean;
   loading: boolean;
-  message: string | null;
 }
 const intialState: AuthState = {
   user: null,
   authError: null,
   isAuthenticated: false,
   loading: false,
-  message: null,
 };
 export function authReducer(
   state = intialState,
@@ -41,7 +39,6 @@ export function authReducer(
         user: null,
         authError: action.payload,
         loading: false,
-        message: action.payload
       };
     case AuthActions.LOGIN_START:
     case AuthActions.SIGNUP_START:

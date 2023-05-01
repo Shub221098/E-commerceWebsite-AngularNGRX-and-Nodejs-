@@ -2,10 +2,10 @@ import { OrdersService } from './order.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as fromApp from '../store/app.reducer';
+import * as fromApp from '.././store/app.reducer';
 import { Orders } from './order.model';
 @Component({
-  selector: 'app-products-listing',
+  selector: 'app-orders',
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.css'],
 })

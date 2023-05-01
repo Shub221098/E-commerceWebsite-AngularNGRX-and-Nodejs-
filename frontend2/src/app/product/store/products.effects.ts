@@ -1,3 +1,4 @@
+import { getName } from 'src/app/auth/store/auth.selector';
 import * as fromApp from './../../store/app.reducer';
 import { HttpClient } from '@angular/common/http';
 import * as ProductActions from './products.action';
@@ -21,32 +22,39 @@ export class ProductsEffects {
       })
     );
   });
-  addProducts = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(ProductActions.ADD_PRODUCT),
-      switchMap((productAction: ProductActions.AddProducts) => {
-        return this.http.post<Products>(
-          '@baseUrl/products',
-          productAction.payload
-        );
-      }),
-    );
-  },{dispatch:false});
+  addProducts = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(ProductActions.ADD_PRODUCT),
+        switchMap((productAction: ProductActions.AddProducts) => {
+          return this.http.post<Products>(
+            '@baseUrl/products',
+            productAction.payload
+          );
+        }),
+        map((data) => {
+          console.log(data)
+          return new ProductActions.AddProductsInStore(data)
+        })
+      );
+    },
+  );
   updateProducts = createEffect(
     () => {
       return this.actions$.pipe(
         ofType(ProductActions.UPDATE_PRODUCT),
         switchMap((productAction: ProductActions.UpdateProducts) => {
-          return this.http.patch(
+          return this.http.patch<Products>(
             `@baseUrl/products/${productAction.payload.index}`,
             productAction.payload.newProduct
           );
-        }),map((response) => {
-          return response
+        }),
+        map((data) => {
+          console.log(data)
+          return new ProductActions.UpdateProductInStore(data)
         })
       );
     },
-    { dispatch: false }
   );
   deleteProducts = createEffect(
     () => {

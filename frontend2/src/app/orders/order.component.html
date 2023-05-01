@@ -24,7 +24,7 @@
       <td>{{ order.totalItems }}</td>
       <td>{{ order.totalQuantity }}</td>
       <td>{{ order.createdAt | date : "fullDate" }}</td>
-      <td>{{ order.totalPrice }}</td>
+      <td>{{ order.totalPrice | currency : "INR" : "symbol" : "1.2-2"}}</td>
       <td class="text-success">{{ order.status }}</td>
     </tr>
   </tbody>

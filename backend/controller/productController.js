@@ -1,6 +1,7 @@
 const catchAsync = require("../catchAsync");
 const factory = require("./handlerFactory");
 const Product = require("../model/product.model");
+const Order = require("../model/order.model");
 const path = require("path");
 const sharp = require("sharp");
 const multer = require("multer");
@@ -51,20 +52,13 @@ exports.createProduct = catchAsync(async (req, res) => {
     stock: req.body.stock,
     mainImage: req.file.filename,
   };
-  console.log(product);
   const doc = await Product.create(product);
   console.log(doc);
-  res.status(201).json({
-    status: "success",
-    data: {
-      data: doc,
-    },
-  });
+  res.status(201).json(doc);
 });
 exports.deleteProduct = factory.deleteOne(Product);
 exports.updateProduct = catchAsync(async (req, res) => {
   let product;
-  if (req.file) {
     product = {
       name: req.body.name,
       description: req.body.description,
@@ -73,35 +67,15 @@ exports.updateProduct = catchAsync(async (req, res) => {
       price: req.body.price,
       discountPrice: req.body.discountPrice,
       stock: req.body.stock,
-      mainImage: req.file.filename,
     };
-  } 
+    if(req.file?.filename) {
+      product.mainImage = req.file.filename
+    }
   const doc = await Product.findOneAndUpdate({ _id: req.params.id }, product, {
     new: true,
     runValidators: true,
   });
-  // product = {
-  //   _id : doc.get('id'),
-  //   name : doc.get('name'),
-  //   description : doc.get('description'),
-  //   category : doc.get('category'),
-  //   brand : doc.get('brand'),
-  //   price : doc.get('price'),
-  //   discountPrice : doc.get('discountPrice'),
-  //   stock : doc.get('stock'),
-  //   mainImage : doc.get('mainImage'),
-  //   quantity : doc.get('quantity'),
-  //   active: doc.get('active'),
-  //   ratingsAverage : doc.get('ratingsAverage'),
-  //   inStock : doc.get('inStock'),
-  //   numberofReviews : doc.get('numberofReviews'),
-  //   rating: doc.get('rating'),
-  //   createdAt : doc.get('createdAt'),
-  // }
-  console.log("bybyby", product)
-  res.status(200).json({
-    product
-  });
+  res.status(200).json(doc);
 });
 
 exports.getProductCategories = catchAsync(async (req, res) => {
@@ -124,45 +98,6 @@ exports.getProductByCategoryName = catchAsync(async (req, res) => {
     data: {
       data: categories,
     },
-  });
-});
-exports.getProductsHaveMostSell = catchAsync(async (req, res) => {
-  const productMostSell = await Product.aggregate([
-    {
-      $addFields: {
-        highestSell: {
-          $multiply: [{ $divide: ["$stock", "$totalStock"] }, 100],
-        },
-      },
-    },
-    {
-      $sort: {
-        highestSell: -1,
-      },
-    },
-    {
-      $limit: 5,
-    },
-  ]);
-  res.status(200).json({
-    type: "success",
-    productMostSell,
-  });
-});
-exports.getProductHaveLessQuantity = catchAsync(async (req, res) => {
-  const quantity = 100;
-  const lessQunatityProduct = await Product.aggregate([
-    {
-      $match: {
-        stock: {
-          $lte: quantity,
-        },
-      },
-    },
-  ]);
-  res.status(200).json({
-    type: "success",
-    lessQunatityProduct,
   });
 });
 

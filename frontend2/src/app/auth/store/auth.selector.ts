@@ -9,4 +9,4 @@ export const getAuthenticate = createSelector(selectState, state => state.isAuth
 export const getId = createSelector(selectState, state => state.user?.id)
 export const getEmail = createSelector(selectState, state => state.user?.email)
 export const getName = createSelector(selectState, state => state.user?.name)
-export const getMessage = createSelector(selectState, state => state.message)
+export const getMessage = createSelector(selectState, state => state.authError)

@@ -10,6 +10,7 @@ export const AUTO_LOGIN = '[Auth] Auto Login';
 export const VERIFY_EMAIL = '[Auth] Verify Email';
 export const FORGET_PASSWORD = '[Auth] Forget Password'
 export const RESET_PASSWORD = '[Auth] Reset Password'
+export const AUTH_MESSAGE = '[Auth] Auth Message';
 export class LoginStart implements Action {
   readonly type = LOGIN_START;
   constructor(public payload: { email: string; password: string }) {}
@@ -32,6 +33,10 @@ export class AuthenticateFail implements Action {
   readonly type = AUTHENTICATE_FAIL;
   constructor(public payload: string) {
   }
+}
+export class AuthMessage implements Action {
+  readonly type = AUTH_MESSAGE
+  constructor(public payload : string){}
 }
 export class ForgetPassword implements Action {
   readonly type = FORGET_PASSWORD;
@@ -72,6 +77,7 @@ export class AutoLogin implements Action {
 }
 export type AuthActions =
   | AuthenticateSuccess
+  | AuthMessage
   | Logout
   | LoginStart
   | AuthenticateFail

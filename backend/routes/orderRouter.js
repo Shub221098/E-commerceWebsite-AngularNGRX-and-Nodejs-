@@ -6,10 +6,16 @@ const router = express.Router({ mergeParams: true });
 router.use(authController.protect);
 router
   .route("/getMostSellUsers")
+  .get(authController.restrictTo("admin"), orderController.getMostSellUser);
+router
+  .route("/getProductHaveMostSell")
   .get(
     authController.restrictTo("admin"),
-    orderController.getMostSellUser
+    orderController.getProductsHaveMostSell
   );
+  router
+  .route("/getTotalOrders")
+  .get(authController.restrictTo("admin"), orderController.getTotalOrders);
 // Admin Routes Only
 router
   .route("/getDailyIncome")

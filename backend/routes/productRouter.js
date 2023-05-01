@@ -4,20 +4,6 @@ const productController = require("../controller/productController");
 const authController = require("../controller/authController");
 const reviewRouter = require("./reviewRouter");
 
-router
-  .route("/getProductHaveLessQuantity")
-  .get(
-    authController.protect,
-    authController.restrictTo("admin"),
-    productController.getProductHaveLessQuantity
-  );
-router
-  .route("/getProductHaveMostSell")
-  .get(
-    authController.protect,
-    authController.restrictTo("admin"),
-    productController.getProductsHaveMostSell
-  );
 router.get('/images/:id', productController.getImages)
 //User and Admin both access All Products
 // Admin can add Product
