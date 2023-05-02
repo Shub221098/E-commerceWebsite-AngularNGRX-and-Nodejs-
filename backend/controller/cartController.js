@@ -1,8 +1,9 @@
 const Cart = require("../model/cart.model");
 const factory = require("./handlerFactory");
 const catchAsync = require("../catchAsync");
-const { ObjectId } = require("mongodb");
-exports.setProductUserIds = (req, res, next) => {
+
+// ******************************************** SET USER ID *****************************************
+exports.setUserIds = (req, res, next) => {
   if (!req.body.user) req.body.userId = req.user.id;
   console.log(req.body.userId);
   next();
@@ -20,6 +21,7 @@ exports.getUsersCart = catchAsync(async (req, res) => {
   return res.json(data.items);
 });
 
+// **************************************** UPDATE QUANITY ON CART **********************************
 exports.deleteQuantity = catchAsync(async (req, res) => {
   const updatedCart = await Cart.findOneAndUpdate(
     {
@@ -30,9 +32,10 @@ exports.deleteQuantity = catchAsync(async (req, res) => {
     { $inc: { "items.$.totalProductQuantity": -1 } },
     { new: true }
   );
-  
 });
 
+
+// ****************************************** ADD QUANTITY ******************************************
 exports.addQuantity = catchAsync(async (req, res) => {
   const updatedCart = await Cart.findOneAndUpdate(
     {
@@ -44,6 +47,8 @@ exports.addQuantity = catchAsync(async (req, res) => {
     { new: true }
   );
 });
+
+// *************************************** REMOVE PRODUCT FROM CART ************************************
 exports.removeProduct = catchAsync(async (req, res, next) => {
   const updatedCart = await Cart.findOneAndUpdate(
     {
@@ -60,6 +65,9 @@ exports.removeProduct = catchAsync(async (req, res, next) => {
     });
   }
 });
+
+
+// ************************************* PRODUCTS ADDED TO CART **************************************
 exports.addToCart = catchAsync(async (req, res, next) => {
   let carts = await Cart.findOne({ userId: req.body.userId });
   let product = await Cart.findOneAndUpdate(
@@ -67,8 +75,7 @@ exports.addToCart = catchAsync(async (req, res, next) => {
     { $inc: { "items.$.totalProductQuantity": req.body.quantity } },
     { new: true }
   );
-  console.log(product,  carts)
-  if (product) {
+  if (product && carts) {
     res.status(200).json({
       status: "success",
       data: {

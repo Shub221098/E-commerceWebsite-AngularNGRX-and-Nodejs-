@@ -6,11 +6,14 @@ const appError = require("../appError");
 const sendVerificationEmail = require("../email");
 const crypto = require("crypto");
 
+
+// *************************************** GENERATE TOKEN ******************************************
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
+
 
 // **************************************** SENDING RESPONSE ***************************************
 const createSendToken = (user, statusCode, res) => {
@@ -21,6 +24,7 @@ const createSendToken = (user, statusCode, res) => {
     user,
   });
 };
+
 
 // ***************************************** SIGN UP USER *********************************************
 exports.signup = catchAsync(async (req, res, next) => {
@@ -121,7 +125,7 @@ exports.login = catchAsync(async (req, res, next) => {
   });
 });
 
-// ***************************************** FORGOT PASSWORD ROUTE*************************************8
+// ***************************************** FORGOT PASSWORD *****************************************
 exports.forgotPassword = catchAsync(async (req, res, next) => {
   // 1. Get User based on Posted Email
   const user = await User.findOne({ email: req.body.email });
@@ -159,7 +163,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   }
 });
 
-// **************************************** RESET PASSWORD ROUTE************************************
+// **************************************** RESET PASSWORD ********************************************
 exports.resetPassword = catchAsync(async (req, res, next) => {
   // 1. Get user based on the token
   const hashedToken = crypto
@@ -185,7 +189,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, res);
 });
 
-// ***************************************** UPDATE PASSWORD ROUTE*******************************************
+// ***************************************** UPDATE PASSWORD *******************************************
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
   // 1. Get User from collection
@@ -243,7 +247,9 @@ exports.protect = catchAsync(async (req, res, next) => {
   req.user = currentUser;
   next();
 });
-// *************************************** ROLE MANAGE ROUTE******************************************
+
+
+// *************************************** ROLE MANAGE ************************************************
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {

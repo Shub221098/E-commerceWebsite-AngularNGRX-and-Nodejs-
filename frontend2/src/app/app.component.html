@@ -10,18 +10,16 @@
   <div class="row">
     <div class="col-md-12">
       <div>
-        <!-- <app-header (featureSelected)="onNavigate($event)"></app-header> -->
         <app-header></app-header>
+        <app-loading-spinner *ngIf="showLoading | async"></app-loading-spinner>
       </div>
     </div>
   </div>
 </div>
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
+    <div>
       <router-outlet></router-outlet>
-      <!-- <app-recipes *ngIf="featureLoaded === 'recipe'"></app-recipes>
-      <app-shopping-list *ngIf="featureLoaded !== 'recipe'"></app-shopping-list> -->
     </div>
   </div>
 </div>

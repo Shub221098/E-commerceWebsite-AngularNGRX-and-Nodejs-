@@ -1,0 +1,9 @@
+.child-outlet {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 45px 60px;
+  /* border: 1px solid #918f8f; */
+  border-radius: 20px;
+  /* border-top: 2px solid #73a8ce00; */
+  box-shadow: 1px 1px 8px 2px #d3d3d3;
+}

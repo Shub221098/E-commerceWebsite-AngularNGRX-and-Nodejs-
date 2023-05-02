@@ -20,6 +20,7 @@ import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { UsersEffects } from './users/store/user.effects';
 @NgModule({
   declarations: [AppComponent, HeaderComponent, HomeComponent],
   imports: [
@@ -34,7 +35,7 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
     ToastrModule.forRoot(),
     StoreModule.forRoot(fromApp.appReducer),
     StoreDevtoolsModule.instrument({ logOnly: environment.production }),
-    EffectsModule.forRoot([AuthEffects, ProductsEffects, ShoppingCartEffects]),
+    EffectsModule.forRoot([AuthEffects, ProductsEffects, ShoppingCartEffects,UsersEffects]),
     StoreRouterConnectingModule.forRoot(),
   ],
   bootstrap: [AppComponent],

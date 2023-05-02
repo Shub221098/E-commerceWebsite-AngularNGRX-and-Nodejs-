@@ -21,6 +21,6 @@ router.route("/").get(userController.getAllUsers);
 
 router.patch("/toggleActive/:id", userController.activeDeactiveAccount);
 
-router.get("/:id", userController.getUser);
+router.route("/:id").get(userController.getUser)
 
 module.exports = router;

@@ -4,6 +4,7 @@ import { Component } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { Store } from "@ngrx/store";
 import * as AuthActions from "./../store/auth.actions"
+import { setLoadingSpinner } from 'src/app/shared/store/shared.action';
 @Component({
     selector: 'app-resetPassword',
     templateUrl: './resetPassword.component.html',
@@ -20,6 +21,7 @@ export class ResetPasswordComponent{
             return;
         }
         this.route.params.subscribe(params => this.token = params['token']);
+        this.store.dispatch(setLoadingSpinner({status : true}))
         this.store.dispatch(
           new AuthActions.ResetPassword({token: this.token, password :form.value.password})
         );

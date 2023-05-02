@@ -43,6 +43,5 @@ router
 router
   .route("/:id")
   .get(authController.restrictTo("user"), orderController.getOrder)
-  .delete(authController.restrictTo("user"), orderController.cancelOrder);
 
 module.exports = router;

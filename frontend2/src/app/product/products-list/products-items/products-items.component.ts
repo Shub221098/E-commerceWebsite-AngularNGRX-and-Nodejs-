@@ -6,7 +6,8 @@ import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { getRole } from 'src/app/auth/store/auth.selector';
 import * as ProductActions from '../../store/products.action';
-import * as ShoppingCartActions from '../../../shop/store/shopping-list.action'
+import * as ShoppingCartActions from '../../../shop/store/shopping-list.action';
+import { setLoadingSpinner } from 'src/app/shared/store/shared.action';
 @Component({
   selector: 'app-products-items',
   templateUrl: './products-items.component.html',
@@ -16,30 +17,34 @@ export class ProductsItemsComponent {
   @Input() products: Products;
   @Input() index: number;
   @Input() productId: string;
-  @Input() category : string
-  message : string
+  @Input() category: string;
+  message: string;
   constructor(
     private store: Store<fromApp.AppState>,
     private router: Router,
     public route: ActivatedRoute
   ) {}
   ngOnInit() {
-    if(this.products.stock === 0){
-      this.message = 'Out of Stock'
-    }
-    else{
-      this.message = 'Active'
+    if (this.products.stock === 0) {
+      this.message = 'Out of Stock';
+    } else {
+      this.message = 'Active';
     }
   }
   onDetail() {
     this.router.navigate([`${this.productId}`], { relativeTo: this.route });
   }
   onCart() {
-    if(!this.products.active){
-      alert("This product is not available for purchasing")
-    }
-     else{
-    this.store.dispatch(new ShoppingCartActions.AddProductToCart(this.products));
+    if (!this.products.active) {
+      alert('This product is not available for purchasing');
+    } else {
+      const user = localStorage.getItem('userData')
+      if(user){
+      this.store.dispatch(setLoadingSpinner({ status: true }));
+      }
+      this.store.dispatch(
+        new ShoppingCartActions.AddProductToCart(this.products)
+      );
     }
   }
   onDelete() {
@@ -48,6 +53,8 @@ export class ProductsItemsComponent {
     }
   }
   onUpdate() {
-    this.router.navigate([`${this.productId}/edit`], { relativeTo: this.route });
+    this.router.navigate([`${this.productId}/edit`], {
+      relativeTo: this.route,
+    });
   }
 }

@@ -1,3 +1,4 @@
+import { setLoadingSpinner } from './../../shared/store/shared.action';
 import * as AuthActions from './../store/auth.actions';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,13 +18,8 @@ export class VerifyEmailComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
   ngOnInit() {
-    // this.route.queryParams.subscribe((params) => {
-    //   if (params['user']) {
-    //     this.user = JSON.parse(params['user']);
-    //     handleAuthentication(this.user.id, this.user.email, this.user.name, this.user.role, this.user.active, this.user.token, this.user.tokenExpiresIn)
-    //   }
-    // });
     this.route.params.subscribe(params => this.token = params['token'])
+    this.store.dispatch(setLoadingSpinner({status: true}))
     this.store.dispatch(new AuthActions.VerifyEmail(this.token))
   }
   onLogin() {

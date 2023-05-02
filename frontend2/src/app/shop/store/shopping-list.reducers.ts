@@ -1,6 +1,4 @@
-import { catchError } from 'rxjs';
 import { OrderItem, Shop } from './../shop.model';
-// import { Products } from '../../product/products.model';
 import * as ShoppingCartActions from './shopping-list.action';
 
 export interface ShopState {

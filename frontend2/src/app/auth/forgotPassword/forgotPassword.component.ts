@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as AuthActions from './../store/auth.actions';
 import { getMessage } from '../store/auth.selector';
+import { setLoadingSpinner } from 'src/app/shared/store/shared.action';
 @Component({
   selector: 'app-signup',
   templateUrl: './forgotPassword.component.html',
@@ -16,6 +17,7 @@ export class ForgotPasswordComponent {
     if (!form.valid) {
       return;
     }
+    this.store.dispatch(setLoadingSpinner({status : true}))
     this.store.dispatch(new AuthActions.ForgetPassword(form.value.email));
     form.reset();
   }

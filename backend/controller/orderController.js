@@ -6,6 +6,7 @@ const catchAsync = require("../catchAsync");
 const { createInvoice } = require("./createInvoice");
 const User = require("../model/user.model");
 
+// ************************************** SETPRODUCT/USER ID *****************************************
 exports.setProductUserIds = (req, res, next) => {
   // nested routes
   if (!req.body.product) req.body.product = req.params.productId;
@@ -13,6 +14,8 @@ exports.setProductUserIds = (req, res, next) => {
   next();
 };
 
+
+// *********************************** GET USERS WHO ARE BUYING HIGHER *******************************
 exports.getMostSellUser = catchAsync(async (req, res) => {
   const mostSellUser = await Order.aggregate([
     {
@@ -49,10 +52,13 @@ exports.getMostSellUser = catchAsync(async (req, res) => {
     {
       $sort: { buyProduct: -1 },
     },
+    { $limit: 10 },
   ]);
   res.status(200).json(mostSellUser);
 });
 
+
+// *********************************** GET MOST SELL PRODUCT *****************************************
 exports.getProductsHaveMostSell = catchAsync(async (req, res) => {
   const productMostSell = await Order.aggregate([
     { $unwind: "$items" },
@@ -75,7 +81,9 @@ exports.getProductsHaveMostSell = catchAsync(async (req, res) => {
   ]);
   res.status(200).json(productMostSell);
 });
-/*(only admin)*/
+
+// ***************************************** GET YEARLY SALES TOTAL ***********************************
+
 exports.getYearlyIncome = catchAsync(async (req, res) => {
   const date = new Date();
   const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
@@ -106,6 +114,7 @@ exports.getYearlyIncome = catchAsync(async (req, res) => {
   res.status(200).json(income);
 });
 
+// ************************************ GET MONTHLY SALES TOTAL ******************************************
 exports.getMonthlyIncome = catchAsync(async (req, res) => {
   const date = new Date();
   const lastMonth = new Date(date.setMonth(date.getMonth()));
@@ -132,18 +141,11 @@ exports.getMonthlyIncome = catchAsync(async (req, res) => {
       },
     },
   ]);
-  console.log("MOnthly", income);
   res.status(200).json(income);
 });
-exports.getTotalOrders = catchAsync(async (req, res) => {
-  const totalOrder = await Order.aggregate([
-    {
-      $count: "totalOrders",
-    },
-  ]);
-  console.log(totalOrder)
-  res.status(200).json(totalOrder)
-});
+
+// ******************************************* GET DAILY INCOME ***************************************
+
 exports.getDailyIncome = catchAsync(async (req, res) => {
   const todayDate = new Date();
   const yesterdayDate = new Date(todayDate.setDate(todayDate.getDate()));
@@ -176,12 +178,25 @@ exports.getDailyIncome = catchAsync(async (req, res) => {
   res.status(200).json(income);
 });
 
-// *****************************************************************************************************
+// ************************************** GET ORDERS COUNT ********************************************
+exports.getTotalOrders = catchAsync(async (req, res) => {
+  const totalOrder = await Order.aggregate([
+    {
+      $count: "totalOrders",
+    },
+  ]);
+  console.log(totalOrder)
+  res.status(200).json(totalOrder)
+});
+
+// ***************************************** GET ALL ORDERS  *****************************************
 
 exports.getAllOrder = factory.getAll(Order);
-exports.getOrder = factory.getOne(Order);
-exports.cancelOrder = factory.deleteOne(Order);
 
+// ******************************************* GET ORDERS **********************************************
+exports.getOrder = factory.getOne(Order);
+
+// ******************************************* CREATE ORDER ********************************************
 // Create Order in Database And Sent An Invoice via Email.
 exports.createOrder = catchAsync(async (req, res, next) => {
   const cartProducts = req.body.items;

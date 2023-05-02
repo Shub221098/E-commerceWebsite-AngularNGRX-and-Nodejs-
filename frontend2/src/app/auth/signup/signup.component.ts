@@ -6,14 +6,12 @@ import {
   OnInit,
   OnDestroy,
   ComponentFactoryResolver,
-  ViewChild,
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
 import * as AuthActions from './../store/auth.actions';
-import { PlaceHolderDirective } from 'src/app/shared/placeHolderDirective/placeholder.Directive';
-import { AlertComponent } from 'src/app/shared/alert/alert.component';
+import { setLoadingSpinner } from 'src/app/shared/store/shared.action';
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -35,6 +33,7 @@ export class SignupComponent {
     if (!form.valid) {
       return;
     }
+    this.store.dispatch(setLoadingSpinner({status : true}))
     this.store.dispatch(
       new AuthActions.SignupStart({
         name: form.value.name,

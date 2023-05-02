@@ -1,3 +1,4 @@
+import { setLoadingSpinner } from './../../shared/store/shared.action';
 import * as ShoppingCartActions from 'src/app/shop/store/shopping-list.action';
 import { OrderItem } from './../shop.model';
 import { Products } from '../../product/products.model';
@@ -63,6 +64,7 @@ export class ShoppingCartContainerComponent implements OnInit, OnDestroy {
   }
   checkout() {
     if(this.cart){
+    this.store.dispatch(setLoadingSpinner({status: true}))
     this.store.dispatch(new ShoppingCartActions.CartCheckout({items :this.cart, totalPrice : this.totalDiscountPrice, totalQuantity: this.totalQuantity, totalItems: this.totalItems}))
     }
   }

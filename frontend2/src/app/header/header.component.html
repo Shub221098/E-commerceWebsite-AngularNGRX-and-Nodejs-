@@ -4,10 +4,15 @@
       <a href="#" class="navbar-brand">Colabee</a>
     </div>
     <ul class="nav navbar-nav">
-      <li routerLinkActive="'active"><a routerLink="/">Home</a></li>
-      <li routerLinkActive="'active"><a routerLink="/products">Products</a></li>
+      <li routerLinkActive="'active" *ngIf="!admin">
+        <a routerLink="/">Home</a>
+      </li>
       <li routerLinkActive="'active" *ngIf="isAuthenticated && admin">
         <a routerLink="/dashboard">Dashboard</a>
+      </li>
+      <li routerLinkActive="'active"><a routerLink="/products">Products</a></li>
+      <li routerLinkActive="'active" *ngIf="isAuthenticated && admin">
+        <a routerLink="/users">Users</a>
       </li>
       <li routerLinkActive="'active" *ngIf="isAuthenticated && admin">
         <a routerLink="/orders">Orders</a>

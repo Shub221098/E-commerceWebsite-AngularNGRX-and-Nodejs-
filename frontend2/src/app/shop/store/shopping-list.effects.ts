@@ -1,23 +1,14 @@
+import { setLoadingSpinner } from './../../shared/store/shared.action';
 import { OrderItem } from 'src/app/shop/shop.model';
-import {
-  INCREMENT_CART_ITEM_QUANTITY,
-  UpdateCartAfterCheckout,
-  ShoppingCartActions,
-} from './shopping-list.action';
-import {
-  AddQuantity,
-  ADD_QUANTITY,
-} from './../../product/store/products.action';
-import { Shop } from './../shop.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
-import { Products } from 'src/app/product/products.model';
+import { catchError, map, switchMap, tap } from 'rxjs';
 import * as fromApp from '../../store/app.reducer';
 import * as ShoppingListActions from './../store/shopping-list.action';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 @Injectable()
 export class ShoppingCartEffects {
   addProducttoCart = createEffect(
@@ -30,10 +21,10 @@ export class ShoppingCartEffects {
               .post<OrderItem[]>('@baseUrl/carts', shoppingListAction.payload)
               .pipe(
                 map((cart) => {
-                  console.log('readched here', cart);
+                  this.store.dispatch(setLoadingSpinner({ status: false }));
                   this.router.navigate(['/shop']);
                   return new ShoppingListActions.SaveUserCart(cart);
-                }),
+                })
               );
           }
         )
@@ -67,8 +58,9 @@ export class ShoppingCartEffects {
       map((resData) => {
         const message =
           resData.message + 'Continue Shopping with us. Thank you';
-        alert(message);
-        this.router.navigate(['/categories'])
+        this.toastr.success(message);
+        this.store.dispatch(setLoadingSpinner({ status: false }));
+        this.router.navigate(['/categories']);
         let cart = null;
         return new ShoppingListActions.UpdateCartAfterCheckout(cart);
       })
@@ -148,6 +140,7 @@ export class ShoppingCartEffects {
     private actions$: Actions,
     private http: HttpClient,
     private router: Router,
+    private toastr: ToastrService,
     private store: Store<fromApp.AppState>
   ) {}
 }

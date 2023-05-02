@@ -9,6 +9,7 @@ import * as ShoppingListActions from 'src/app/shop/store/shopping-list.action';
 import { OrderItem } from 'src/app/shop/shop.model';
 import { FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { setLoadingSpinner } from 'src/app/shared/store/shared.action';
 
 @Component({
   selector: 'app-products-detail',
@@ -64,6 +65,10 @@ export class ProductDetailComponent implements OnInit {
     this.store.dispatch(new ProductActions.AddQuantity(this.product.id));
   }
   onAddProductToCart(): void {
+    const user = localStorage.getItem('userData');
+    if (user) {
+      this.store.dispatch(setLoadingSpinner({ status: true }));
+    }
     this.store.dispatch(new ShoppingListActions.AddProductToCart(this.product));
   }
 
@@ -78,8 +83,8 @@ export class ProductDetailComponent implements OnInit {
   showWarning(message: string) {
     this.toastr.warning(message);
   }
-  ngOnDestroy(){
-    this.productSub.unsubscribe()
-    this.shopSub.unsubscribe()
+  ngOnDestroy() {
+    this.productSub.unsubscribe();
+    this.shopSub.unsubscribe();
   }
 }

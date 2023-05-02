@@ -1,11 +1,14 @@
+import { getRole } from 'src/app/auth/store/auth.selector';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import * as AuthActions from '../../auth/store/auth.actions';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '../user.model';
 import { ToastrService } from 'ngx-toastr';
+import { Store } from '@ngrx/store';
+import { setLoadingSpinner } from 'src/app/shared/store/shared.action';
 
 export const handleAuthentication = (
   userId: string,
@@ -66,12 +69,13 @@ export class AuthEffects {
               }
             )
             .pipe(
-              tap((resData) => {
+              map((resData) => {
                 this.showSuccess(resData.message);
+                this.store.dispatch(setLoadingSpinner({ status: false }));
                 this.router.navigate(['/']);
               }),
               catchError((errResp) => {
-                alert(errResp);
+                this.store.dispatch(setLoadingSpinner({ status: false }));
                 return handleError(errResp);
               })
             );
@@ -91,6 +95,7 @@ export class AuthEffects {
             })
             .pipe(
               map((resData) => {
+                this.store.dispatch(setLoadingSpinner({ status: false }));
                 return handleAuthentication(
                   resData.user.id,
                   resData.user.email,
@@ -101,7 +106,7 @@ export class AuthEffects {
                 );
               }),
               catchError((errResp) => {
-                console.log(errResp);
+                this.store.dispatch(setLoadingSpinner({ status: false }));
                 return handleError(errResp);
               })
             );
@@ -122,8 +127,7 @@ export class AuthEffects {
           })
           .pipe(
             map((resData) => {
-              console.log('navigating to dashboard');
-              this.router.navigate(['dashboard']);
+              this.store.dispatch(setLoadingSpinner({ status: false }));
               return handleAuthentication(
                 resData.user.id,
                 resData.user.email,
@@ -134,7 +138,7 @@ export class AuthEffects {
               );
             }),
             catchError((errResp) => {
-              console.log(errResp);
+              this.store.dispatch(setLoadingSpinner({ status: false }));
               return handleError(errResp);
             })
           );
@@ -148,7 +152,11 @@ export class AuthEffects {
         ofType(AuthActions.AUTHENTICATE_SUCCESS),
         tap((authSuccessAction: AuthActions.AuthenticateSuccess) => {
           if (authSuccessAction.payload.redirect) {
-            this.router.navigate(['/']);
+            if (authSuccessAction.payload.role === 'admin') {
+              this.router.navigate(['/dashboard']);
+            } else {
+              this.router.navigate(['/']);
+            }
           }
         })
       ),
@@ -215,10 +223,13 @@ export class AuthEffects {
             )
             .pipe(
               tap((resData) => {
-                alert(resData.message);
+                this.showSuccess(resData.message);
+                this.store.dispatch(setLoadingSpinner({ status: false }));
+                this.router.navigate(['/']);
               }),
               catchError((errResp) => {
                 this.showWarning(errResp);
+                this.store.dispatch(setLoadingSpinner({ status: false }));
                 return handleError(errResp);
               })
             );
@@ -239,6 +250,7 @@ export class AuthEffects {
             })
             .pipe(
               map((resData) => {
+                this.store.dispatch(setLoadingSpinner({ status: false }));
                 return handleAuthentication(
                   resData.user.id,
                   resData.user.email,
@@ -253,6 +265,7 @@ export class AuthEffects {
                 this.router.navigate(['/auth/login']);
               }),
               catchError((errResp) => {
+                this.store.dispatch(setLoadingSpinner({ status: false }));
                 return handleError(errResp);
               })
             );
@@ -270,6 +283,7 @@ export class AuthEffects {
   constructor(
     private actions$: Actions,
     private http: HttpClient,
+    private store: Store,
     private router: Router,
     private toastr: ToastrService
   ) {}

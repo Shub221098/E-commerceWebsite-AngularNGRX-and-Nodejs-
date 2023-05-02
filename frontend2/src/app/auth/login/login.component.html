@@ -1,7 +1,6 @@
+<app-alert [message]="error" *ngIf="error" (close)="onHandlingError()"></app-alert>
 <div class="row">
-  <div class="col-xs-12">
-    <app-alert [message]="error" *ngIf="error" (close)="onHandlingError()"></app-alert>
-  <div class="col-md-6 offset-md-3">
+  <div>
     <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" *ngIf="!isLoading">
       <div class="form-group">
         <label for="email">E-mail</label>
@@ -58,6 +57,5 @@
       </div>
       </div>
     </form>
-  </div>
   </div>
 </div>

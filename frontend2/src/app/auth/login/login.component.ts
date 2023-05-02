@@ -1,3 +1,4 @@
+import { setLoadingSpinner } from './../../shared/store/shared.action';
 import * as ProductActions from './../../product/store/products.action';
 import {
   Component,
@@ -12,7 +13,7 @@ import * as fromApp from '../../store/app.reducer';
 import * as AuthActions from './../store/auth.actions';
 import { Subscription } from 'rxjs';
 @Component({
-  selector: 'app-signup',
+  selector: 'app-login',
   templateUrl: './login.component.html',
 })
 export class LoginComponent implements OnInit, OnDestroy {
@@ -32,6 +33,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (!form.valid) {
       return;
     }
+    this.store.dispatch(setLoadingSpinner({status : true}))
     this.store.dispatch(
       new AuthActions.LoginStart({
         email: form.value.email,
@@ -45,6 +47,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.error = null
     if (this.storeSub) {
       this.storeSub.unsubscribe();
     }

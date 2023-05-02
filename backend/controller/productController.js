@@ -7,6 +7,8 @@ const sharp = require("sharp");
 const multer = require("multer");
 const multerStorage = multer.memoryStorage();
 
+
+// ******************************************** MULTER **********************************************
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
     cb(null, true);
@@ -22,6 +24,8 @@ const upload = multer({
 
 exports.uploadUserPhoto = upload.single("file");
 
+
+// ******************************************** SHARP ***********************************************
 exports.resizeUserPhoto = (req, res, next) => {
   if (!req.file) return next();
   req.file.tempfilename = Date.now() + "_" + req.file.originalname;
@@ -33,14 +37,25 @@ exports.resizeUserPhoto = (req, res, next) => {
     .toFile(`public/img/products/${req.file.tempfilename}`);
   next();
 };
+
+// *************************************** IMAGE API ************************************************
 exports.getImages = catchAsync(async (req, res) => {
   const options = path.join(__dirname, "..", "public", "img", "products");
-
+  
   const fileName = req.params.id;
   res.sendFile(options + "/" + fileName);
 });
+
+// ***************************************** GET ALL PRODUCT ****************************************
 exports.getAllProducts = factory.getAll(Product);
+
+// *************************************** GET ONE PRODUCT ******************************************
 exports.getProduct = factory.getOne(Product, { path: "reviews" });
+
+// ****************************************** DELETE PRODUCT ****************************************
+exports.deleteProduct = factory.deleteOne(Product);
+
+// **************************************** CREATE PRODUCT ******************************************
 exports.createProduct = catchAsync(async (req, res) => {
   const product = {
     name: req.body.name,
@@ -56,7 +71,9 @@ exports.createProduct = catchAsync(async (req, res) => {
   console.log(doc);
   res.status(201).json(doc);
 });
-exports.deleteProduct = factory.deleteOne(Product);
+
+
+// *************************************** UPDATE PRODUCT *******************************************
 exports.updateProduct = catchAsync(async (req, res) => {
   let product;
     product = {
@@ -78,6 +95,8 @@ exports.updateProduct = catchAsync(async (req, res) => {
   res.status(200).json(doc);
 });
 
+
+// **************************************** GET CATEGORIES ******************************************
 exports.getProductCategories = catchAsync(async (req, res) => {
   const product = await Product.find();
   const categories = await product.map((p) => p.category);
@@ -89,6 +108,9 @@ exports.getProductCategories = catchAsync(async (req, res) => {
     data: uniqueCategories,
   });
 });
+
+
+// ************************************** GET CATEGORY WISE PRODUCTS ******************************
 exports.getProductByCategoryName = catchAsync(async (req, res) => {
   const categories = await Product.find({ category: req.params.categoryName });
   res.status(200).json({
@@ -100,7 +122,7 @@ exports.getProductByCategoryName = catchAsync(async (req, res) => {
     },
   });
 });
-
+  // ************************************** SEARCH API *********************************************
 exports.searchProducts = catchAsync(async (req, res) => {
   const query = req.query.q;
   const sort = req.query.sort;
