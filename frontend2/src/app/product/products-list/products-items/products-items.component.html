@@ -12,8 +12,8 @@
     <p style="color:	#4b0082">
       {{ products.category }}
     </p>
-    <p class="{{products.inStock ? 'text-success' : 'text-danger'}}">
-      {{products.inStock ? 'Available' : 'Out of Stock'}}
+    <p class="{{products.stock !== 0 ? 'text-success' : 'text-danger'}}">
+      {{products.stock !== 0 ? 'Available' : 'Out of Stock'}}
     </p>
   </div>
     <div style="display:flex">
@@ -26,7 +26,7 @@
   </div>
     <div class="button-wrapper">
       <button
-        class="btn btn-info product__add-to-cart" [disabled]="!products.inStock"
+        class="btn btn-info product__add-to-cart" [disabled]="!products.inStock || products.stock ===0"
         (click)="onCart()"
       >
         Add to cart

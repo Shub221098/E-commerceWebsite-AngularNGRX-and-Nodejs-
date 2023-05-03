@@ -35,7 +35,6 @@ router.get(
 router
   .route("/:id")
   .get(productController.getProduct)
-
   .delete(
     authController.protect,
     authController.restrictTo("admin"),

@@ -37,7 +37,7 @@ export function authReducer(
       return {
         ...state,
         user: null,
-        authError: action.payload,
+        // authError: action.payload,
         loading: false,
       };
     case AuthActions.LOGIN_START:

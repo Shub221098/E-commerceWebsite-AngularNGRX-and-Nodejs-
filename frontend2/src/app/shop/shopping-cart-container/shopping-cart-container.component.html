@@ -24,11 +24,11 @@
             </p>
             <p class="card-text">
               Total Discount:
-              {{ discount | currency : "INR" : "symbol" : "1.2-2" }}
+              {{ totalDiscountPrice | currency : "INR" : "symbol" : "1.2-2" }}
             </p>
             <p class="card-text">
               Total Amount:
-              {{ totalDiscountPrice | currency : "INR" : "symbol" : "1.2-2" }}
+              {{ discount | currency : "INR" : "symbol" : "1.2-2" }}
             </p>
           </div>
         </div>
