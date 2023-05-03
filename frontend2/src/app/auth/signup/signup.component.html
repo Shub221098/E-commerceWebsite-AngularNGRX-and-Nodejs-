@@ -76,22 +76,26 @@
                       #password="ngModel"
                       #pw
                       pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{6,20}"
-                    /><span
+                    /><span class="text-danger"
+                    ng-message="pattern"
+                    *ngIf="password.errors && password.touched">
+                    <span
                       class="text-danger"
                       ng-message="pattern"
-                      *ngIf="!password.valid && password.touched"
+                      *ngIf="password.errors?.['required']"
                     >
                       Password is required
                     </span>
                     <span
                       class="text-danger"
                       ng-message="pattern"
-                      *ngIf="password.errors?.['pattern']"
+                      *ngIf=" password.errors?.['pattern']"
                     >
                       Password must contain at least one number, one uppercase
-                      and a lowercase letter and at least 6-20 characters<br />Password
+                      and a lowercase letter and at least 6-20 characters.Password
                       cannot contain whitespace
                     </span>
+                  </span>
                   </div>
 
                   <div class="form-outline mb-4 form-group">
