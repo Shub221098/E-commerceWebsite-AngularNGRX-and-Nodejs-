@@ -20,6 +20,7 @@ export class ShoppingCartItemsComponent implements OnInit {
   valid : boolean = true
   constructor(private store: Store<fromApp.AppState>, private toastr : ToastrService) {}
     ngOnInit(){
+      
     }
 
   removeItem(id : string) {

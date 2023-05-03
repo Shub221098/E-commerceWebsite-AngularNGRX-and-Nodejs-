@@ -33,16 +33,22 @@ export function shoppingListReducer(
       updatedCart = state.cart;
       let updated1 = updatedCart.map((item: any) => {
         if (item.productId == action.payload) {
+          console.log("jfsdvabvvafd")
           let updatedItem = JSON.parse(JSON.stringify(item));
-          if (updatedItem.totalProductQuantity < 10)
+          if (updatedItem.totalProductQuantity < updatedItem.totalAvailableStock){
+            console.log(updatedItem.totalProductQuantity)
             updatedItem.totalProductQuantity += 1;
+            console.log(updatedItem.totalProductQuantity)
+
           return updatedItem;
+          }
         }
         return item;
       });
       return { ...state, cart: updated1 };
     case ShoppingCartActions.DECREMENT_CART_ITEM_QUANTITY:
       updatedCart = state.cart;
+      console.log(updatedCart)
       let updated = updatedCart.map((item: any) => {
         if (item.productId == action.payload) {
           let updatedItem = JSON.parse(JSON.stringify(item));
